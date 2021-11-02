@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/constants.dart';
 
 class NavigationView extends StatefulWidget {
@@ -16,31 +15,7 @@ class _NavigationViewState extends State<NavigationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: appBarColor),
-        backgroundColor: appBarColor,
-        title: const Text('Commed'),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('This is a snackbar')));
-                },
-              )),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: IconButton(
-              icon: const Icon(Icons.account_circle),
-              onPressed: () {},
-            ),
-          ),
-        ],
-        elevation: 0,
-      ),
+      appBar: appBarFactory(context),
       body: PageView(
           controller: pageController,
           physics: const NeverScrollableScrollPhysics(),
