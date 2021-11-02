@@ -1,7 +1,7 @@
 ---
 name: Development Issue Template
 about: Describe this issue template's purpose here.
-title: 'DEV - '
+title: 'Implementation of'
 labels: 'sprint 2'
 assignees: ''
 
