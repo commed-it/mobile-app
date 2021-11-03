@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/widgets/appbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({Key? key}) : super(key: key);
@@ -30,6 +32,7 @@ class _NavigationViewState extends State<NavigationView> {
           ]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currrentPage,
+        fixedColor: appBarColor,
         onTap: (index) {
           currrentPage = index;
           pageController.animateToPage(currrentPage,
@@ -56,7 +59,13 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: backgroundColor, child: const Center(child: Text("Home")));
+        color: backgroundColor,
+        child: Center(
+            child: Stack(
+          children: [
+            Text(AppLocalizations.of(context)!.helloWorld),
+          ],
+        )));
   }
 }
 
