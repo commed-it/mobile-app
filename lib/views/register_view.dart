@@ -40,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
               Padding(
                 padding: const EdgeInsets.only(top: 40.0, left: 10.0),
                 child: Stack(children: [
-                  BackButton(),
+                  BackButton(color: Colors.white),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 20.0, bottom: 20.0, left: 20, right: 20.0),
@@ -50,7 +50,7 @@ class _RegisterViewState extends State<RegisterView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text('Register',
+                            const Text('Register',
                                 style: TextStyle(
                                     fontSize: 50.0, color: Colors.white)),
                           ],

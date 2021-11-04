@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/views/register_view.dart';
+import 'package:flutter_app/views/login_view.dart';
 import '../constants.dart';
 
 appBarFactory(context) {
@@ -32,7 +32,7 @@ appBarFactory(context) {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const RegisterView()),
+              MaterialPageRoute(builder: (context) => const LoginView()),
             );
           },
         ),

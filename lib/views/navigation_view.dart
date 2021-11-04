@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/views/chat_view.dart';
+import 'package:flutter_app/views/formaloffer_view.dart';
+import 'package:flutter_app/views/home_view.dart';
 import 'package:flutter_app/widgets/appbar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({Key? key}) : super(key: key);
@@ -50,42 +52,5 @@ class _NavigationViewState extends State<NavigationView> {
         ],
       ),
     );
-  }
-}
-
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: backgroundColor,
-        child: Center(
-            child: Stack(
-          children: [
-            Text(AppLocalizations.of(context)!.helloWorld),
-          ],
-        )));
-  }
-}
-
-class ChatView extends StatelessWidget {
-  const ChatView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: backgroundColor, child: const Center(child: Text("Chat")));
-  }
-}
-
-class FormalOffersView extends StatelessWidget {
-  const FormalOffersView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: backgroundColor,
-        child: const Center(child: Text("Formal Offers")));
   }
 }
