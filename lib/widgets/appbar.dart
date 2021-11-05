@@ -32,7 +32,7 @@ appBarFactory(context) {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LoginView()),
+              MaterialPageRoute(builder: (context) => LoginView()),
             );
           },
         ),
