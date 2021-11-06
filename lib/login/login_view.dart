@@ -16,7 +16,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'fields/username_password.dart';
 
 class LoginView extends StatelessWidget {
-  final store = Store(reducer, initialState: const LoginState(false, "", ""));
+  final store = Store(reducer, initialState: LoginState.init());
 
   LoginView({Key? key}) : super(key: key);
 

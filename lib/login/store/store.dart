@@ -9,6 +9,8 @@ class LoginState {
   final String password;
 
   const LoginState(this.isOnRegister, this.username, this.password);
+
+  LoginState.init() : isOnRegister = false, username = '', password = '';
 }
 
 LoginState reducer(LoginState prev, action) {
