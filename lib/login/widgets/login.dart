@@ -29,7 +29,7 @@ class LoginWidget extends StatelessWidget {
           height: 10,
         ),
         buildGenericBottomWidget(context, (x) => x.login_verb,
-            (x) => x.register_switch, 100, Icons.add, TurnOnRegisterAction),
+            (x) => x.register_switch, 100, Icons.add, const TurnOnRegisterAction()),
         const SizedBox(height: 20),
       ],
     );

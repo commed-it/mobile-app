@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class LoginAction {
+abstract class LoginAction {
   const LoginAction();
 }
 

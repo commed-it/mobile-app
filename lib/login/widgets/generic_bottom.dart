@@ -12,8 +12,8 @@ FadeAnimation buildGenericBottomWidget(
     fromAppLocalization elevatedFunc,
     fromAppLocalization outlinedFunc,
     double outWidth,
-    IconData outIcon, Type action
-    ) {
+    IconData outIcon,
+    LoginAction action) {
   return FadeAnimation(
     1,
     Padding(
@@ -23,8 +23,8 @@ FadeAnimation buildGenericBottomWidget(
         children: [
           FormElevatedButton(context: context, func: (x) => x.login_verb),
           const SizedBox(width: 15),
-          buildOutlinedButton(context, (x) => x.register_switch, 100, Icons.add,
-              action),
+          buildOutlinedButton(
+              context, (x) => x.register_switch, 100, Icons.add, action),
         ],
       ),
     ),
@@ -32,7 +32,7 @@ FadeAnimation buildGenericBottomWidget(
 }
 
 Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
-    double width, IconData icon, Type action) {
+    double width, IconData icon, LoginAction action) {
   return StoreConnector<LoginState, VoidCallback>(
       builder: (context, callback) {
         return OutlinedButton.icon(
@@ -66,9 +66,7 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
               ],
             ),
           ),
-          onPressed: () {
-            callback();
-          },
+          onPressed: callback,
         );
       },
       converter: (store) => store.dispatch(action));
