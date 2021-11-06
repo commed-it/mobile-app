@@ -450,43 +450,47 @@ class _BodyLoginState extends State<BodyLogin> {
                                       ),
                                     ),
                                     const SizedBox(width: 15),
-                                    OutlinedButton.icon(
-                                      icon: const Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
-                                        child: Icon(
-                                          Icons.remove,
-                                          size: 18,
-                                          color: Colors.teal,
-                                        ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        primary: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      label: SizedBox(
-                                        width: 170,
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .login_switch,
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.teal,
+                                    StoreConnector<LoginState, VoidCallback>(
+                                        builder: (context, callBack) {
+                                          return OutlinedButton.icon(
+                                              icon: const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8.0),
+                                                child: Icon(
+                                                  Icons.remove,
+                                                  size: 18,
+                                                  color: Colors.teal,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {});
-                                      },
-                                    ),
+                                              style: ElevatedButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                primary: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                              label: SizedBox(
+                                                width: 170,
+                                                height: 50,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .login_switch,
+                                                      style: const TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.teal,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              onPressed: callBack);
+                                        },
+                                        converter: (store) =>
+                                            store.dispatch(TurnOnLoginAction))
                                   ],
                                 ),
                               ),
