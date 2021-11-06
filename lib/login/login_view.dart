@@ -337,162 +337,161 @@ class _BodyLoginState extends State<BodyLogin> {
                 const SizedBox(
                   height: 10,
                 ),
-                Visibility(
-                  visible: !register,
-                  child: FadeAnimation(
-                    0.5,
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Row(
-                        textDirection: TextDirection.rtl,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.teal.shade300,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Container(
-                              width: 110,
-                              height: 45,
-                              alignment: Alignment.center,
-                              child: Text(
-                                AppLocalizations.of(context)!.login_verb,
-                                style: const TextStyle(
-                                  fontFamily: 'RobotoMono',
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          StoreConnector<LoginState, VoidCallback>(
-                              converter: (store) {
-                            return () => store.dispatch(TurnOnRegisterAction);
-                          }, builder: (context, callback) {
-                            return OutlinedButton.icon(
-                              icon: const Padding(
-                                padding: EdgeInsets.only(left: 8.0),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 18,
-                                  color: Colors.teal,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                primary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              label: SizedBox(
-                                width: 100,
-                                height: 50,
+                StoreConnector<LoginState, bool>(
+                    converter: (store) => store.state.isOnRegister,
+                    builder: (context, isOnRegister) {
+                      return !isOnRegister
+                          ? FadeAnimation(
+                              1,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
                                 child: Row(
+                                  textDirection: TextDirection.rtl,
                                   children: [
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .register_switch,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.teal,
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        primary: Colors.teal.shade300,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
                                       ),
+                                      child: Container(
+                                        width: 110,
+                                        height: 45,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .login_verb,
+                                          style: const TextStyle(
+                                            fontFamily: 'RobotoMono',
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
+                                    OutlinedButton.icon(
+                                      icon: const Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 18,
+                                          color: Colors.teal,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        primary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      label: SizedBox(
+                                        width: 100,
+                                        height: 50,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)!
+                                                  .register_switch,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.teal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          register = false;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  callback();
-                                });
-                              },
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: register,
-                  child: FadeAnimation(
-                    1,
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Row(
-                        textDirection: TextDirection.rtl,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.teal.shade300,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Container(
-                              width: 110,
-                              height: 45,
-                              alignment: Alignment.center,
-                              child: Text(
-                                AppLocalizations.of(context)!.register,
-                                style: const TextStyle(
-                                  fontFamily: 'RobotoMono',
-                                  fontSize: 20,
-                                  color: Colors.white,
+                            )
+                          : FadeAnimation(
+                              1,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20.0),
+                                child: Row(
+                                  textDirection: TextDirection.rtl,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        primary: Colors.teal.shade300,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: Container(
+                                        width: 110,
+                                        height: 45,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .register,
+                                          style: const TextStyle(
+                                            fontFamily: 'RobotoMono',
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 15),
+                                    OutlinedButton.icon(
+                                      icon: const Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: Icon(
+                                          Icons.remove,
+                                          size: 18,
+                                          color: Colors.teal,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        primary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      label: SizedBox(
+                                        width: 170,
+                                        height: 50,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)!
+                                                  .login_switch,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.teal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          OutlinedButton.icon(
-                            icon: const Padding(
-                              padding: EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.remove,
-                                size: 18,
-                                color: Colors.teal,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            label: SizedBox(
-                              width: 170,
-                              height: 50,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.login_switch,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.teal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                register = false;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                            );
+                    }),
                 SizedBox(height: 20),
               ],
             ),
