@@ -90,75 +90,88 @@ class _BodyLoginState extends State<BodyLogin> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Visibility(
-                  visible: register,
-                  child: FadeAnimation(
-                    0.2,
-                    Column(
-                      children: [
-                        Container(
-                            width: double.infinity,
-                            height: 70,
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            decoration: fieldBoxDecoration(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                StoreConnector<LoginState, bool>(
+                  converter: (store) {
+                    return store.state.isOnRegister;
+                  },
+                  builder: (context, isOnRegister) {
+                    return isOnRegister
+                        ? FadeAnimation(
+                            0.2,
+                            Column(
                               children: [
-                                const Icon(Icons.work_outline),
-                                Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 10),
-                                    child: TextFormField(
-                                      maxLines: 1,
-                                      decoration: InputDecoration(
-                                        label: Text(" " +
-                                            AppLocalizations.of(context)!
-                                                .company_name),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                Container(
+                                    width: double.infinity,
+                                    height: 70,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    decoration: fieldBoxDecoration(),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Icon(Icons.work_outline),
+                                        Expanded(
+                                          child: Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 10),
+                                            child: TextFormField(
+                                              maxLines: 1,
+                                              decoration: InputDecoration(
+                                                label: Text(" " +
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .company_name),
+                                                border: InputBorder.none,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                Container(
+                                    width: double.infinity,
+                                    height: 70,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    decoration: fieldBoxDecoration(),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Icon(Icons.article_outlined),
+                                        Expanded(
+                                          child: Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 10),
+                                            child: TextFormField(
+                                              maxLines: 1,
+                                              decoration: InputDecoration(
+                                                label: Text(" " +
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .nif),
+                                                border: InputBorder.none,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                const Divider(
+                                  indent: 30,
+                                  endIndent: 30,
+                                  thickness: 1.0,
+                                )
                               ],
-                            )),
-                        Container(
-                            width: double.infinity,
-                            height: 70,
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            decoration: fieldBoxDecoration(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.article_outlined),
-                                Expanded(
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 10),
-                                    child: TextFormField(
-                                      maxLines: 1,
-                                      decoration: InputDecoration(
-                                        label: Text(" " +
-                                            AppLocalizations.of(context)!.nif),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        const Divider(
-                          indent: 30,
-                          endIndent: 30,
-                          thickness: 1.0,
-                        )
-                      ],
-                    ),
-                  ),
+                            ),
+                          )
+                        : Container();
+                  },
                 ),
                 FadeAnimation(
                   2,
@@ -357,44 +370,49 @@ class _BodyLoginState extends State<BodyLogin> {
                             ),
                           ),
                           const SizedBox(width: 15),
-                          OutlinedButton.icon(
-                            icon: const Padding(
-                              padding: EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.add,
-                                size: 18,
-                                color: Colors.teal,
+                          StoreConnector<LoginState, VoidCallback>(
+                              converter: (store) {
+                            return () => store.dispatch(TurnOnRegisterAction);
+                          }, builder: (context, callback) {
+                            return OutlinedButton.icon(
+                              icon: const Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 18,
+                                  color: Colors.teal,
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              primary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                primary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
-                            ),
-                            label: SizedBox(
-                              width: 100,
-                              height: 50,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .register_switch,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.teal,
+                              label: SizedBox(
+                                width: 100,
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .register_switch,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.teal,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                register = true;
-                              });
-                            },
-                          ),
+                              onPressed: () {
+                                setState(() {
+                                  callback();
+                                });
+                              },
+                            );
+                          }),
                         ],
                       ),
                     ),

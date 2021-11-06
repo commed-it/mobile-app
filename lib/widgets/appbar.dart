@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/views/login_view.dart';
+import 'package:flutter_app/login/login_view.dart';
 import '../constants.dart';
 
 appBarFactory(context) {
