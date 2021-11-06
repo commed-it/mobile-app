@@ -69,7 +69,8 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
           onPressed: callback,
         );
       },
-      converter: (store) => store.dispatch(action));
+      converter: (store) => () => store.dispatch(action)
+  );
 }
 
 class FormElevatedButton extends StatelessWidget {

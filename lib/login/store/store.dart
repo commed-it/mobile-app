@@ -12,7 +12,7 @@ class LoginState {
 }
 
 LoginState reducer(LoginState prev, action) {
-  switch (action) {
+  switch (action.runtimeType) {
     case TurnOnRegisterAction:
       return LoginState(true, prev.username, prev.password);
     case TurnOnLoginAction:
