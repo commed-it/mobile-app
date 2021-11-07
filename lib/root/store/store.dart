@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_app/root/store/actions.dart';
-
+import './actions.dart';
 
 @immutable
 class PageControlState {

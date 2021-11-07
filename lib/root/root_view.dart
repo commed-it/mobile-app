@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/store/router.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -6,12 +7,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class RootWidget extends StatelessWidget {
-  final store = Store((x, a) => x, initialState: AppState.init());
+  final store = Store<AppState>((x, a) => x, initialState: AppState.init());
   RootWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider(store: store, child: _RouterWidget());
+    return StoreProvider<AppState>(store: store, child: _RouterWidget());
   }
 
 }
