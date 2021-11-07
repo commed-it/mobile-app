@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
-import 'package:flutter_app/views/chat_view.dart';
-import 'package:flutter_app/views/formaloffer_view.dart';
-import 'package:flutter_app/views/home_view.dart';
+import 'package:flutter_app/chat/chat_view.dart';
+import 'package:flutter_app/formaloffer/formaloffer_view.dart';
+import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/widgets/appbar.dart';
 
 class NavigationView extends StatefulWidget {

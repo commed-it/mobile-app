@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/store/store.dart';
-import 'package:flutter_app/login/utils/box_decoration.dart';
-import 'package:flutter_app/login/utils/generic_field.dart';
 import 'package:flutter_app/login/utils/header.dart';
-import 'package:flutter_app/login/widgets/generic_bottom.dart';
 import 'package:flutter_app/login/widgets/login.dart';
 import 'package:flutter_app/login/widgets/register.dart';
-import 'package:flutter_app/views/register_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:flutter_app/widgets/fade_animation.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 

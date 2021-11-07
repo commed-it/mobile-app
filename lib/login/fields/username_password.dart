@@ -1,13 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'package:flutter_app/widgets/fade_animation.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import '../utils.dart';
 
 
 class UsernameAndPasswordField extends StatelessWidget {
