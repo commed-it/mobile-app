@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/login/store/route.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 
@@ -18,10 +17,12 @@ class PageControlState {
 AppState globalPageControlReducer(AppState prev, AppAction action) {
   switch (action.runtimeType) {
     case MovePageFromPageController:
-      action as MovePageFromPageController;
-      return AppState(prev.router, prev.loginViewState, PageControlState(action.numPage));
+      action = action as MovePageFromPageController;
+      return AppState(prev.loginViewState,
+          PageControlState(action.numPage), prev.navigatorKey);
     case ProfileButtonAction:
-      return AppState(LoginRouter(), prev.loginViewState, prev.pageControlState);
+      return AppState(prev.loginViewState,
+          prev.pageControlState, prev.navigatorKey);
     default:
       return prev;
   }

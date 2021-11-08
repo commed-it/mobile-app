@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/store/actions.dart';
+import 'package:flutter_app/store/store.dart';
 
 @immutable
 class MovePageFromPageController extends AppAction {
