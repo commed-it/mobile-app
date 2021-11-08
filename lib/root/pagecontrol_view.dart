@@ -81,17 +81,17 @@ class PageControlWidget extends StatelessWidget {
             )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, GlobalKey<NavigatorState>>(
-              builder: (context, navKey) {
+          child: StoreConnector<AppState, VoidCallback>(
+              builder: (context, callback) {
                 return IconButton(
                   icon: const Icon(
                     Icons.account_circle,
                     color: Colors.white,
                   ),
-                  onPressed: () => navKey.currentState!.pushNamed(Routes.login),
+                  onPressed: callback,
                 );
               },
-              converter: (store) => store.state.navigatorKey),
+              converter: (store) => () => store.dispatch(NavigateToNext(Routes.login))),
         ),
       ],
       elevation: 0,

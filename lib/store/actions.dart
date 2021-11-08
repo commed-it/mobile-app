@@ -11,12 +11,12 @@ abstract class AppAction {
   const AppAction();
 }
 
-class NavigateToNext {
+class NavigateToNext extends AppAction {
   final String destinationRoute;
-  NavigateToNext(this.destinationRoute);
+  const NavigateToNext(this.destinationRoute);
 }
-class NavigateToNextAndReplace {
+class NavigateToNextAndReplace extends AppAction {
   final String destinationRoute;
-  NavigateToNextAndReplace(this.destinationRoute);
+  const NavigateToNextAndReplace(this.destinationRoute);
 }
-class NavigateBack {}
+class NavigateBack extends AppAction {}

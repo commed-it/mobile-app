@@ -39,7 +39,7 @@ AppState navigationReducer(AppState prev, AppAction action) {
 }
 
 AppState appReducer(AppState prev, AppAction action) {
-  print(action);
+  prev = navigationReducer(prev, action);
   prev = globalLoginReducer(prev, action);
   prev = globalPageControlReducer(prev, action);
   return prev;
