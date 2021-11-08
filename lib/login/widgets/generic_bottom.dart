@@ -21,10 +21,10 @@ FadeAnimation buildGenericBottomWidget(
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
-          FormElevatedButton(context: context, func: (x) => x.login_verb),
+          FormElevatedButton(context: context, func: elevatedFunc),
           const SizedBox(width: 15),
           buildOutlinedButton(
-              context, (x) => x.register_switch, 100, Icons.add, action),
+              context, outlinedFunc, outWidth, outIcon, action),
         ],
       ),
     ),

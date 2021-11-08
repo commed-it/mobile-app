@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              HeadLogin(func: (x) => x.login_noun),
+              StoreConnector<AppState, bool>(builder: (context, isOnRegister) => HeadLogin(func: (x) => isOnRegister ? x.register : x.login_noun), converter: (store) => store.state.loginViewState.isOnRegister),
               BodyLogin(),
             ],
           )),
