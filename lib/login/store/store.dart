@@ -17,7 +17,7 @@ class LoginState {
   const LoginState(this.isOnRegister, this.username, this.password,
       this.company, this.nif, this.repeatPassword, this.email, this.contact);
 
-  LoginState.init()
+  const LoginState.init()
       : isOnRegister = false,
         username = '',
         password = '',
@@ -70,6 +70,6 @@ LoginState loginReducer(LoginState prev, AppAction action) {
 }
 
 AppState globalLoginReducer(AppState prev, AppAction action) {
-  return AppState(prev.router, loginReducer(prev.loginViewState, action),
-      prev.pageControlState);
+  return AppState(loginReducer(prev.loginViewState, action),
+      prev.pageControlState, prev.navigatorKey);
 }

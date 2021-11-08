@@ -6,6 +6,7 @@ import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/store/actions.dart';
 import 'package:flutter_app/root/store/store.dart';
+import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -81,17 +82,16 @@ class PageControlWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: StoreConnector<AppState, VoidCallback>(
-            builder: (context, callback) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.account_circle,
-                  color: Colors.white,
-                ),
-                onPressed: callback,
-              );
-            },
-            converter: (store) => () => store.dispatch(ProfileButtonAction()),
-          ),
+              builder: (context, callback) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                  ),
+                  onPressed: callback,
+                );
+              },
+              converter: (store) => () => store.dispatch(NavigateToNext(Routes.login))),
         ),
       ],
       elevation: 0,
