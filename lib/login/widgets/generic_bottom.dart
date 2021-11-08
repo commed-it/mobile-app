@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/store/actions.dart';
-import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:flutter_app/store/actions.dart';
+import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/widgets/fade_animation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 FadeAnimation buildGenericBottomWidget(
@@ -13,7 +13,7 @@ FadeAnimation buildGenericBottomWidget(
     fromAppLocalization outlinedFunc,
     double outWidth,
     IconData outIcon,
-    LoginAction action) {
+    AppAction action) {
   return FadeAnimation(
     1,
     Padding(
@@ -32,8 +32,8 @@ FadeAnimation buildGenericBottomWidget(
 }
 
 Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
-    double width, IconData icon, LoginAction action) {
-  return StoreConnector<LoginState, VoidCallback>(
+    double width, IconData icon, AppAction action) {
+  return StoreConnector<AppState, VoidCallback>(
       builder: (context, callback) {
         return OutlinedButton.icon(
           icon: Padding(
@@ -69,8 +69,7 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
           onPressed: callback,
         );
       },
-      converter: (store) => () => store.dispatch(action)
-  );
+      converter: (store) => () => store.dispatch(action));
 }
 
 class FormElevatedButton extends StatelessWidget {

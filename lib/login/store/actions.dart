@@ -1,17 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/store/actions.dart';
 
 @immutable
-abstract class LoginAction {
-  const LoginAction();
-}
-
-@immutable
-class TurnOnRegisterAction extends LoginAction {
+class TurnOnRegisterAction extends AppAction {
   const TurnOnRegisterAction();
 }
 
 @immutable
-class TurnOnLoginAction extends LoginAction {
+class TurnOnLoginAction extends AppAction {
   const TurnOnLoginAction();
 }

@@ -1,14 +1,12 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:flutter_app/widgets/fade_animation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HeadLogin extends StatelessWidget {
   const HeadLogin({
-   required this.func, Key? key,
+    required this.func,
+    Key? key,
   }) : super(key: key);
 
   final fromAppLocalization func;
@@ -38,8 +36,7 @@ class HeadLogin extends StatelessWidget {
                               height: 120,
                             ),
                             Text(
-                              func(AppLocalizations.of(context)!)
-                                  .toUpperCase(),
+                              func(AppLocalizations.of(context)!).toUpperCase(),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 50,

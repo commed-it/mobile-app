@@ -46,8 +46,13 @@ class RegisterWidget extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        buildGenericBottomWidget(context, (x) => x.register,
-            (x) => x.login_switch, 170, Icons.remove, const TurnOnLoginAction()),
+        buildGenericBottomWidget(
+            context,
+            (x) => x.register,
+            (x) => x.login_switch,
+            170,
+            Icons.remove,
+            const TurnOnLoginAction()),
         const SizedBox(height: 20),
       ],
     );
