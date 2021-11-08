@@ -5,19 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5af0dcc-221e-43fc-8fb9-89585b7d337d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/store/router.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/store/store.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/login/login_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/login_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/login/store/actions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/store/actions.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/login/store/route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/store/route.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/login/store/store.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/store/store.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/views/navigation_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/navigation_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/login/utils/generic_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/utils/generic_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/login/widgets/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/widgets/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/login/widgets/register.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/login/widgets/register.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/root/root_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root/root_view.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[f8690043]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/home/sergi/.android/avd/Pixel_4_XL_API_30.avd]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -28,6 +31,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="20SgSDNySeXMlIPjnzQriPde5cO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -44,6 +55,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
@@ -76,7 +89,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636216720581</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Architecture proposal with stores and states">
+      <created>1636223885497</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1636223885497</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -99,6 +119,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add generic_bottom and store" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add generic_bottom and store" />
+    <MESSAGE value="Architecture proposal with stores and states" />
+    <option name="LAST_COMMIT_MESSAGE" value="Architecture proposal with stores and states" />
   </component>
 </project>
