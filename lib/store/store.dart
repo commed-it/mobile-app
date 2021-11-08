@@ -14,7 +14,7 @@ class AppState {
   AppState(this.loginViewState, this.pageControlState, this.navigatorKey);
 
   AppState.init()
-      : loginViewState = LoginState.init(),
+      : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>();
 }
