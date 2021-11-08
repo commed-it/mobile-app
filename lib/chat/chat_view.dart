@@ -50,18 +50,15 @@ class GenericSummary extends StatelessWidget {
 
   GenericSummary(
       {Key? key,
-      required ImageProvider image,
-      required String title,
-      required String subtitle,
+      required this.image,
+      required this.title,
+      required this.subtitle,
       Widget? secondWidget,
       double? textRatio,
       double? imgRatio})
       : rightWidget = secondWidget ?? Container(),
         textRatio = textRatio ?? 1.0,
         imgRatio = imgRatio ?? 1.0,
-        image = image,
-        title = title,
-        subtitle = subtitle,
         super(key: key);
 
   factory GenericSummary.only(
