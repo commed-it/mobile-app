@@ -50,35 +50,23 @@ class GenericCarrousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ImageContainer>(
-      builder: (ctx, cont) => Column(
-        children: [
-          CarouselSlider(
-              carouselController: _controller,
-              items: cont.imgContainer.listOfUrls
-                  .map((e) => Center(child: Image.network(e)))
-                  .toList(),
-              options: CarouselOptions(
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  aspectRatio: 16 / 9,
-                  onPageChanged: (index, reason) {
-                    cont.dispatchAction(index, _controller);
-                  })),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: cont.imgContainer.listOfUrls.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => cont.dispatchAction(entry.key, _controller),
-                child: CoolCarouselCircle(
-                    isActivated: cont.imgContainer.index == entry.key),
-              );
-            }).toList(),
-          )
-        ],
-      ),
+      builder: (ctx, cont) => CarouselSlider(
+          carouselController: _controller,
+          items: cont.imgContainer.listOfUrls
+              .map((e) => Center(child: Image.network(e)))
+              .toList(),
+          options: CarouselOptions(
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+              aspectRatio: 16 / 9,
+              onPageChanged: (index, reason) {
+                cont.dispatchAction(index, _controller);
+              })),
       converter: (store) {
         var imgContainer = getContainer(store);
         return _ImageContainer(imgContainer, (index, controller) {
+          print(controller);
+          print(index);
           _controller.animateToPage(index);
           store.dispatch(imgContainer.action(index, controller));
         });
