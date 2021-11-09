@@ -29,6 +29,7 @@ dependencies:
   rxdart: ^0.27.2
   rx_redux: ^2.0.0
   flutter_redux: ^0.8.2
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

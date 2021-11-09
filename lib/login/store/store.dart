@@ -70,6 +70,5 @@ LoginState loginReducer(LoginState prev, AppAction action) {
 }
 
 AppState globalLoginReducer(AppState prev, AppAction action) {
-  return AppState(loginReducer(prev.loginViewState, action),
-      prev.pageControlState, prev.navigatorKey);
+  return prev.copy(loginViewState: loginReducer(prev.loginViewState, action));
 }

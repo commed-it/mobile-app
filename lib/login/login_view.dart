@@ -12,22 +12,36 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.teal,
-                  Colors.yellow.shade700,
-                ]),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.teal,
+                Colors.yellow.shade700,
+              ]),
+        ),
+        child: Expanded(
+          child: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  StoreConnector<AppState, bool>(
+                      builder: (context, isOnRegister) => HeadLogin(
+                          func: (x) =>
+                              isOnRegister ? x.register : x.login_noun),
+                      converter: (store) =>
+                          store.state.loginViewState.isOnRegister),
+                  BodyLogin(),
+                ],
+              ),
+            ),
           ),
-          child: Column(
-            children: [
-              StoreConnector<AppState, bool>(builder: (context, isOnRegister) => HeadLogin(func: (x) => isOnRegister ? x.register : x.login_noun), converter: (store) => store.state.loginViewState.isOnRegister),
-              BodyLogin(),
-            ],
-          )),
+        ),
+      ),
     );
   }
 }
@@ -39,11 +53,7 @@ class BodyLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: StoreConnector<AppState, bool>(
+    return StoreConnector<AppState, bool>(
                 builder: (context, isOnRegister) {
                   return isOnRegister
                       ? RegisterWidget(
@@ -51,8 +61,7 @@ class BodyLogin extends StatelessWidget {
                         )
                       : LoginWidget(context: context);
                 },
-                converter: (store) => store.state.loginViewState.isOnRegister),
-          )),
+                converter: (store) => store.state.loginViewState.isOnRegister
     );
   }
 }
