@@ -222,3 +222,4 @@ fabric.properties
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart,visualstudiocode,intellij,studio
+workspace.xml

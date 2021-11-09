@@ -18,11 +18,7 @@ AppState globalPageControlReducer(AppState prev, AppAction action) {
   switch (action.runtimeType) {
     case MovePageFromPageController:
       action = action as MovePageFromPageController;
-      return AppState(prev.loginViewState,
-          PageControlState(action.numPage), prev.navigatorKey);
-    case ProfileButtonAction:
-      return AppState(prev.loginViewState,
-          prev.pageControlState, prev.navigatorKey);
+      return prev.copy(pageControlState: PageControlState(action.numPage));
     default:
       return prev;
   }
