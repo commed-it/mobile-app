@@ -40,7 +40,8 @@ class GenericCarrousel extends StatelessWidget {
               options: CarouselOptions(
                   enlargeCenterPage: true,
                   enableInfiniteScroll: false,
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 1.85,
+                disableCenter: true,
                   )
           ),
         ],
