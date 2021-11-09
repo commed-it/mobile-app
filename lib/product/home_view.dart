@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:redux/redux.dart';
 
@@ -14,11 +15,19 @@ class HomeView extends StatelessWidget {
     return Container(
         color: backgroundColor,
         child: Center(
-            child: Stack(
+            child: Column(
           children: [
             GenericCarrousel(
               getContainer: (Store<AppState> s) { return s.state.imageContainerMock; },
-            )
+            ),
+            GenSummaryButton.only(
+              ratio: 0.8,
+              image: const NetworkImage(
+                  "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg"),
+              title: "Moniatios",
+              subtitle: "Subtitle",
+              onPressed: () {},
+            ),
           ],
         )));
   }
