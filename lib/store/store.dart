@@ -38,11 +38,7 @@ class AppState {
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
-        imageContainerMock = ImageContainer(imgList, 0, (index, controller) {
-          return LambdaAction((AppState s) {
-            return s.copy(imageContainerMock: s.imageContainerMock.setIndex(index));
-          });
-        });
+        imageContainerMock = ImageContainer(imgList);
 
   AppState copy(
           {LoginState? loginViewState,
