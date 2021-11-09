@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
+import 'package:flutter_app/widgets/search.dart';
 
 class ChatView extends StatelessWidget {
   ChatView({Key? key}) : super(key: key);
@@ -15,6 +16,8 @@ class ChatView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Searcher(),
+                  Padding(padding: EdgeInsets.only(top: 5),),
                   GenSummaryButton.only(
                     ratio: 0.8,
                     image: const NetworkImage(

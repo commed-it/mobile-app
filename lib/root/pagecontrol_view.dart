@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/chat/chat_view.dart';
+import 'package:flutter_app/chat/listchat_view.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
