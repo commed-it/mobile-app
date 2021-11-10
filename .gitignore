@@ -114,3 +114,4 @@ lib/generated_plugin_registrant.dart
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart,visualstudiocode
+.idea/*
