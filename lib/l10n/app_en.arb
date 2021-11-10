@@ -2,5 +2,17 @@
     "helloWorld": "Hello World!",
     "@helloWorld": {
       "description": "The conventional newborn programmer greeting"
-    }
+    },
+    "login_noun" : "Login",
+    "login_verb" : "Log in",
+    "register" : "Register",
+    "register_switch" : "I am new",
+    "login_switch" : "I have an account",
+    "username" : "Username",
+    "password" : "Password",
+    "repeat_password" : "Repeat password",
+    "nif" : "NIF",
+    "company_name" : "Name of the company",
+    "email" : "Email",
+    "contact" : "Contact"
 }
