@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/chat/chat_view.dart';
+import 'package:flutter_app/chat/listchat_view.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
@@ -27,7 +27,7 @@ class PageControlWidget extends StatelessWidget {
                     controller: state.pageController,
                     physics: const NeverScrollableScrollPhysics(),
                     onPageChanged: callback,
-                    children: const [
+                    children: [
                       HomeView(),
                       ChatView(),
                       FormalOffersView(),
@@ -36,7 +36,6 @@ class PageControlWidget extends StatelessWidget {
                   currentIndex: state.currentPage,
                   fixedColor: appBarColor,
                   onTap: (index) {
-                    print("OnTap " + index.toString());
                     callback(index);
                     state.pageController.animateToPage(index,
                         duration: const Duration(milliseconds: 500),
