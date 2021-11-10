@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/root/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 
 import 'actions.dart';
 
@@ -29,27 +30,31 @@ class AppState {
   final PageControlState pageControlState;
   final GlobalKey<NavigatorState> navigatorKey;
   final ImageContainer imageContainerMock;
+  final CommedTheme theme;
 
   // add User, ...
   const AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.imageContainerMock);
+      this.imageContainerMock, this.theme);
 
   AppState.init()
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
-        imageContainerMock = ImageContainer(imgList);
+        imageContainerMock = ImageContainer(imgList),
+        theme = CommedTheme.init();
 
   AppState copy(
           {LoginState? loginViewState,
           PageControlState? pageControlState,
           GlobalKey<NavigatorState>? navigatorKey,
-          ImageContainer? imageContainerMock}) =>
+          ImageContainer? imageContainerMock,
+          CommedTheme? theme}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
-          imageContainerMock ?? this.imageContainerMock);
+          imageContainerMock ?? this.imageContainerMock,
+          theme ?? this.theme);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/login/store/actions.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/fade_animation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -23,17 +23,23 @@ FadeAnimation buildGenericBottomWidget(
         children: [
           FormElevatedButton(context: context, func: elevatedFunc),
           const SizedBox(width: 15),
-          buildOutlinedButton(
-              context, outlinedFunc, outWidth, outIcon, action),
+          buildOutlinedButton(context, outlinedFunc, outWidth, outIcon, action),
         ],
       ),
     ),
   );
 }
 
+class VoidCallbackAndTheme {
+  final VoidCallback func;
+  final CommedTheme theme;
+
+  VoidCallbackAndTheme(this.func, this.theme);
+}
+
 Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
     double width, IconData icon, AppAction action) {
-  return StoreConnector<AppState, VoidCallback>(
+  return StoreConnector<AppState, VoidCallbackAndTheme>(
       builder: (context, callback) {
         return OutlinedButton.icon(
           icon: Padding(
@@ -41,12 +47,12 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
             child: Icon(
               icon,
               size: 18,
-              color: Colors.teal,
+              color: callback.theme.primary.color,
             ),
           ),
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.zero,
-            primary: Colors.white,
+            primary: callback.theme.primary.textColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -58,18 +64,19 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
               children: [
                 Text(
                   func(AppLocalizations.of(context)!),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
-                    color: Colors.teal,
+                    color: callback.theme.primary.color,
                   ),
                 ),
               ],
             ),
           ),
-          onPressed: callback,
+          onPressed: callback.func,
         );
       },
-      converter: (store) => () => store.dispatch(action));
+      converter: (store) => VoidCallbackAndTheme(
+          () => store.dispatch(action), store.state.theme));
 }
 
 class FormElevatedButton extends StatelessWidget {
@@ -84,28 +91,31 @@ class FormElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.zero,
-        primary: Colors.teal.shade300,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    return StoreConnector<AppState, CommedTheme>(
+      builder: (ctx, theme) => ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          primary: theme.primary.color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-      ),
-      child: Container(
-        width: 110,
-        height: 45,
-        alignment: Alignment.center,
-        child: Text(
-          func(AppLocalizations.of(context)!),
-          style: const TextStyle(
-            fontFamily: 'RobotoMono',
-            fontSize: 20,
-            color: Colors.white,
+        child: Container(
+          width: 110,
+          height: 45,
+          alignment: Alignment.center,
+          child: Text(
+            func(AppLocalizations.of(context)!),
+            style: TextStyle(
+              fontFamily: 'RobotoMono',
+              fontSize: 20,
+              color: theme.primary.textColor,
+            ),
           ),
         ),
       ),
+      converter: (s) => s.state.theme,
     );
   }
 }
