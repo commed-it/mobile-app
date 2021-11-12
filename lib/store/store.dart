@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/login/store/store.dart';
+import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/root/store/store.dart';
 
 import 'actions.dart';
@@ -28,28 +29,37 @@ class AppState {
   final LoginState loginViewState;
   final PageControlState pageControlState;
   final GlobalKey<NavigatorState> navigatorKey;
-  final ImageContainer imageContainerMock;
+  final List<Product> products;
 
   // add User, ...
   const AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.imageContainerMock);
+      this.products);
 
   AppState.init()
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
-        imageContainerMock = ImageContainer(imgList);
+        products = List.filled(
+            5,
+            Product(
+                ImageContainer(imgList),
+                "Name",
+                "DescriptionDescriptionDescriptionDe scrip32tionDescriptionDescriptionionDe323232scri ption Descr iptio nDescriptionDescriptionDescription",
+                false,
+                CompanySmallDetail(
+                    "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg",
+                    "Company Name")));
 
   AppState copy(
           {LoginState? loginViewState,
           PageControlState? pageControlState,
           GlobalKey<NavigatorState>? navigatorKey,
-          ImageContainer? imageContainerMock}) =>
+          List<Product>? products}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
-          imageContainerMock ?? this.imageContainerMock);
+          products ?? this.products);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {

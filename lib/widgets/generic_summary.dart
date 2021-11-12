@@ -40,8 +40,6 @@ class GenericSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
             Row(
@@ -61,16 +59,14 @@ class GenericSummary extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.all(4 * textRatio)),
+                          Padding(padding: EdgeInsets.all(6 * textRatio)),
                           Text(
                             title,
                             style: TextStyle(
                               fontSize: 20 * textRatio,
                               color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 6,
                           ),
                           Padding(padding: EdgeInsets.all(2 * textRatio)),
                           Text(
@@ -156,11 +152,14 @@ class GenSummaryButton extends StatelessWidget {
         padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
       ),
       onPressed: onPressed,
-      child: GenericSummary.only(
-        ratio: textRatio,
-        image: image,
-        title: title,
-        subtitle: subtitle,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 13),
+        child: GenericSummary.only(
+          ratio: textRatio,
+          image: image,
+          title: title,
+          subtitle: subtitle,
+        ),
       ),
     );
   }
