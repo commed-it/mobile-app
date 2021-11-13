@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class GenericSummary extends StatelessWidget {
   final Widget rightWidget;
@@ -41,50 +44,53 @@ class GenericSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-          children: [
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: image,
-                    maxRadius: 40 * imgRatio,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.all(6 * textRatio)),
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 20 * textRatio,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.all(2 * textRatio)),
-                          Text(
-                            subtitle,
-                            style: TextStyle(
-                                fontSize: 20 * textRatio,
-                                color: Colors.grey.shade600,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  rightWidget,
-                ]),
-          ],
-        ));
+      children: [
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          CircleAvatar(
+            backgroundImage: image,
+            maxRadius: 40 * imgRatio,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: StoreConnector<AppState, CommedTheme>(
+              converter: (s) => s.state.theme,
+              builder: themedGenericSummary,
+            ),
+          ),
+          rightWidget,
+        ]),
+      ],
+    ));
   }
+
+  Widget themedGenericSummary(ctx, theme) => Container(
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.all(6 * textRatio)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20 * textRatio,
+                color: theme.background.textColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(2 * textRatio)),
+            Text(
+              subtitle,
+              style: TextStyle(
+                  fontSize: 20 * textRatio,
+                  color: theme.background.subtitleColor,
+                  fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
+      );
 }
 
 class ListDivider extends StatelessWidget {
@@ -114,13 +120,13 @@ class GenSummaryButton extends StatelessWidget {
 
   GenSummaryButton(
       {Key? key,
-        required this.image,
-        required this.title,
-        required this.subtitle,
-        required this.onPressed,
-        Widget? secondWidget,
-        double? textRatio,
-        double? imgRatio})
+      required this.image,
+      required this.title,
+      required this.subtitle,
+      required this.onPressed,
+      Widget? secondWidget,
+      double? textRatio,
+      double? imgRatio})
       : textRatio = textRatio ?? 1.0,
         rightWidget = secondWidget ?? Container(),
         imgRatio = imgRatio ?? 1.0,
@@ -128,11 +134,11 @@ class GenSummaryButton extends StatelessWidget {
 
   factory GenSummaryButton.only(
       {required double ratio,
-        required ImageProvider image,
-        required String title,
-        required String subtitle,
-        required VoidCallback onPressed,
-        Widget? secondWidget}) {
+      required ImageProvider image,
+      required String title,
+      required String subtitle,
+      required VoidCallback onPressed,
+      Widget? secondWidget}) {
     return GenSummaryButton(
       image: image,
       title: title,
@@ -149,7 +155,7 @@ class GenSummaryButton extends StatelessWidget {
     return TextButton(
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all<Color>(Colors.black12),
-        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0)),
+        padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
       ),
       onPressed: onPressed,
       child: Padding(

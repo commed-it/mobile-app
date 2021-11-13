@@ -3,15 +3,18 @@ import 'package:flutter_app/login/utils/header.dart';
 import 'package:flutter_app/login/widgets/login.dart';
 import 'package:flutter_app/login/widgets/register.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class LoginView extends StatelessWidget {
-  LoginView({Key? key}) : super(key: key);
+  const LoginView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: StoreConnector<AppState, CommedTheme>(
+        converter: (store) => store.state.theme,
+      builder: (ctx, theme) => Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -19,30 +22,42 @@ class LoginView extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.teal,
-                Colors.yellow.shade700,
+                theme.primary.color,
+                theme.accent.color,
               ]),
         ),
-        child: Expanded(
-          child: SizedBox(
-            width: double.infinity,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  StoreConnector<AppState, bool>(
-                      builder: (context, isOnRegister) => HeadLogin(
-                          func: (x) =>
-                              isOnRegister ? x.register : x.login_noun),
-                      converter: (store) =>
-                          store.state.loginViewState.isOnRegister),
-                  BodyLogin(),
-                ],
-              ),
+        child: const _LoginExpanded(),
+      ),
+      )
+    );
+  }
+}
+
+class _LoginExpanded extends StatelessWidget {
+  const _LoginExpanded({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: SizedBox(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                StoreConnector<AppState, bool>(
+                    builder: (context, isOnRegister) => HeadLogin(
+                        func: (x) =>
+                            isOnRegister ? x.register : x.login_noun),
+                    converter: (store) =>
+                        store.state.loginViewState.isOnRegister),
+                BodyLogin(),
+              ],
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 

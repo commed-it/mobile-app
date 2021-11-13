@@ -8,6 +8,7 @@ import 'package:flutter_app/root/store/actions.dart';
 import 'package:flutter_app/root/store/store.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class PageControlWidget extends StatelessWidget {
@@ -21,8 +22,9 @@ class PageControlWidget extends StatelessWidget {
             converter: (store) =>
                 (i) => store.dispatch(MovePageFromPageController(i)),
             builder: (context, callback) {
-              return Scaffold(
-                appBar: buildAppBar(context),
+              return StoreConnector<AppState, CommedTheme>(
+                  builder: (ctx, theme) => Scaffold(
+                appBar: buildAppBar(context, theme),
                 body: PageView(
                     controller: state.pageController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -51,6 +53,8 @@ class PageControlWidget extends StatelessWidget {
                         label: 'Formal Offers')
                   ],
                 ),
+              ),
+                converter: (s) => s.state.theme,
               );
             },
           );
@@ -58,7 +62,7 @@ class PageControlWidget extends StatelessWidget {
         converter: (store) => store.state.pageControlState);
   }
 
-  AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context, CommedTheme theme) {
     return AppBar(
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarColor: appBarColor),
@@ -72,7 +76,7 @@ class PageControlWidget extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: IconButton(
-              icon: const Icon(Icons.search, color: Colors.white),
+              icon: Icon(Icons.search, color: theme.primary.textColor),
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('This is a snackbar')));
@@ -83,9 +87,9 @@ class PageControlWidget extends StatelessWidget {
           child: StoreConnector<AppState, VoidCallback>(
               builder: (context, callback) {
                 return IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.account_circle,
-                    color: Colors.white,
+                    color: theme.primary.textColor,
                   ),
                   onPressed: callback,
                 );

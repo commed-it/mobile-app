@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
+import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -25,14 +27,16 @@ class HomeView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:
-                    products.map((prod) => ProductItem(product: prod)).fold(
-                        [],
-                            (value, element) =>
-                        value..add(const Padding(
-                          padding: EdgeInsets.only(top: 20),
-                        ))..add(element)..add(const Padding(
-                          padding: EdgeInsets.only(top: 20),
-                        ))),
+                        products.map((prod) => ProductItem(product: prod)).fold(
+                            [],
+                            (value, element) => value
+                              ..add(const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                              ))
+                              ..add(element)
+                              ..add(const Padding(
+                                padding: EdgeInsets.only(top: 20),
+                              ))),
                   ),
                 ),
               ),
@@ -54,7 +58,7 @@ class ProductItem extends StatelessWidget {
     return Column(
       children: [
         GenericCarrousel(
-          imageContainer: product.imageContainer,
+          imageContainer: product.content.imageContainer,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 50.0, right: 40.0, top: 10),
@@ -62,9 +66,9 @@ class ProductItem extends StatelessWidget {
             children: [
               GenericSummary.only(
                 ratio: 0.8,
-                image: NetworkImage(product.company.logoURI),
-                title: product.name,
-                subtitle: product.company.name,
+                image: NetworkImage(product.content.company.logoURI),
+                title: product.content.name,
+                subtitle: product.content.company.name,
               ),
               Container(
                 padding: const EdgeInsets.only(top: 15),
@@ -72,17 +76,33 @@ class ProductItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      product.description,
-                      overflow: product.isAllShown ? null : TextOverflow
-                          .ellipsis,
-                      maxLines: product.isAllShown ? null : 2,
-                      softWrap: product.isAllShown,
+                      product.content.description,
+                      overflow: product.content.isAllShown
+                          ? null
+                          : TextOverflow.ellipsis,
+                      maxLines: product.content.isAllShown ? null : 2,
+                      softWrap: product.content.isAllShown,
                     ),
-                    product.isAllShown ? Container() : InkWell(
-                        child: Text("Hi"),
-                    onTap: () {
-                          print("TAPTAP");
-                    },)
+                    StoreConnector<AppState, VoidCallback>(
+                            converter: (ste) => () =>
+                                ste.dispatch(ToggleDescription(product.id)),
+                            builder: (cte, callback) {
+                              return InkWell(
+                                child: StoreConnector<AppState, CommedTheme>(
+                                  converter: (sto) => sto.state.theme,
+                                  builder: (context, theme) {
+                                    return Text(
+                                      product.content.isAllShown
+                                        ? "See less" : "See more",
+                                      style: TextStyle(
+                                          color: theme.link.textColor),
+                                    );
+                                  },
+                                ),
+                                onTap: callback,
+                              );
+                            },
+                          ),
                   ],
                 ),
               ),

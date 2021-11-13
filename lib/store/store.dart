@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
+import 'package:flutter_app/product/store/store.dart';
 import 'package:flutter_app/root/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 
 import 'actions.dart';
 
@@ -30,36 +32,46 @@ class AppState {
   final PageControlState pageControlState;
   final GlobalKey<NavigatorState> navigatorKey;
   final List<Product> products;
+  final CommedTheme theme;
 
   // add User, ...
-  const AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.products);
+  AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
+      this.products, this.theme);
+
+  // add User, ...
 
   AppState.init()
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
         products = List.filled(
-            5,
-            Product(
-                ImageContainer(imgList),
-                "Name",
-                "DescriptionDescriptionDescriptionDe scrip32tionDescriptionDescriptionionDe323232scri ption Descr iptio nDescriptionDescriptionDescription",
-                false,
-                CompanySmallDetail(
-                    "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg",
-                    "Company Name")));
+                5,
+                ProductContent(
+                    ImageContainer(imgList),
+                    "Name",
+                    "DescriptionDescriptionDescriptionDe scrip32tionDescriptionDescriptionionDe323232scri ption Descr iptio nDescriptionDescriptionDescription",
+                    false,
+                    CompanySmallDetail(
+                        "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg",
+                        "Company Name")))
+            .asMap()
+            .map((index, value) => MapEntry(index, Product(index, value)))
+            .values
+            .toList(),
+        theme = CommedTheme.init();
 
   AppState copy(
           {LoginState? loginViewState,
           PageControlState? pageControlState,
           GlobalKey<NavigatorState>? navigatorKey,
-          List<Product>? products}) =>
+          List<Product>? products,
+          CommedTheme? theme}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
-          products ?? this.products);
+          products ?? this.products,
+          theme ?? this.theme);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
@@ -87,5 +99,6 @@ AppState appReducer(AppState prev, AppAction action) {
   prev = navigationReducer(prev, action);
   prev = globalLoginReducer(prev, action);
   prev = globalPageControlReducer(prev, action);
+  prev = listProductsReducer(prev, action);
   return prev;
 }
