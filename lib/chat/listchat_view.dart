@@ -27,6 +27,7 @@ class ChatView extends StatelessWidget {
                     title: "Moniatios",
                     subtitle: "Subtitle",
                     onPressed: () {},
+                    onPressedLogo: () {},
                   ),
                   const ListDivider(),
                   GenSummaryButton.only(
@@ -36,6 +37,7 @@ class ChatView extends StatelessWidget {
                     title: "Chicken",
                     subtitle: "Subtitle",
                     onPressed: () {},
+                    onPressedLogo: () {},
                   ),
                   const ListDivider(),
                   GenSummaryButton.only(
@@ -44,7 +46,10 @@ class ChatView extends StatelessWidget {
                           "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg"),
                       title: "Chicken",
                       subtitle: "Subtitle",
-                      onPressed: () {}),
+                      onPressed: () {},
+                    onPressedLogo: () {},
+
+                  ),
                   ListDivider(),
                 ],
               ),

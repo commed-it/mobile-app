@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/product/store/actions.dart';
+import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
@@ -68,12 +69,15 @@ class ProductItem extends StatelessWidget {
           padding: const EdgeInsets.only(left: 50.0, right: 40.0, top: 10),
           child: Column(
             children: [
-              GenericSummary.only(
+              StoreConnector<AppState, VoidCallback>(
+                converter : (sto) => sto.dispatch(NavigateToNext(Routes.login)),
+                  builder : (cto, onPressedLogo) => GenericSummary.only(
                 ratio: 0.8,
                 image: NetworkImage(product.content.company.logoURI),
                 title: product.content.name,
                 subtitle: product.content.company.name,
-              ),
+                onPressedLogo: onPressedLogo,
+              )),
               Container(
                 padding: const EdgeInsets.only(top: 15),
                 child: Column(

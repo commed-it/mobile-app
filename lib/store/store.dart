@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
@@ -33,10 +34,11 @@ class AppState {
   final GlobalKey<NavigatorState> navigatorKey;
   final List<Product> products;
   final CommedTheme theme;
+  final Enterprise enterpriseDetail;
 
   // add User, ...
   AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.products, this.theme);
+      this.products, this.theme, this.enterpriseDetail);
 
   // add User, ...
 
@@ -58,20 +60,23 @@ class AppState {
             .map((index, value) => MapEntry(index, Product(index, value)))
             .values
             .toList(),
-        theme = CommedTheme.init();
+        theme = CommedTheme.init(),
+        enterpriseDetail = Enterprise.init();
 
   AppState copy(
           {LoginState? loginViewState,
           PageControlState? pageControlState,
           GlobalKey<NavigatorState>? navigatorKey,
           List<Product>? products,
-          CommedTheme? theme}) =>
+          CommedTheme? theme,
+          Enterprise? enterpriseDetail}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
           products ?? this.products,
-          theme ?? this.theme);
+          theme ?? this.theme,
+          enterpriseDetail ?? this.enterpriseDetail);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {

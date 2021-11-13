@@ -10,30 +10,32 @@ class GenericSummary extends StatelessWidget {
   final ImageProvider image;
   final String title;
   final String subtitle;
+  final VoidCallback onPressedLogo;
 
-  GenericSummary(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.subtitle,
-      Widget? secondWidget,
-      double? textRatio,
-      double? imgRatio})
-      : rightWidget = secondWidget ?? Container(),
+  GenericSummary({Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.onPressedLogo,
+    Widget? secondWidget,
+    double? textRatio,
+    double? imgRatio}) :
+        rightWidget = secondWidget ?? Container(),
         textRatio = textRatio ?? 1.0,
         imgRatio = imgRatio ?? 1.0,
         super(key: key);
 
-  factory GenericSummary.only(
-      {required double ratio,
-      required ImageProvider image,
-      required String title,
-      required String subtitle,
-      Widget? secondWidget}) {
+  factory GenericSummary.only({required double ratio,
+    required ImageProvider image,
+    required String title,
+    required String subtitle,
+    required VoidCallback onPressedLogo,
+    Widget? secondWidget}) {
     return GenericSummary(
       image: image,
       title: title,
       subtitle: subtitle,
+      onPressedLogo: onPressedLogo,
       secondWidget: secondWidget,
       textRatio: ratio,
       imgRatio: ratio,
@@ -44,28 +46,33 @@ class GenericSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Column(
-      children: [
-        Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-          CircleAvatar(
-            backgroundImage: image,
-            maxRadius: 40 * imgRatio,
-          ),
-          const SizedBox(
-            width: 16,
-          ),
-          Expanded(
-            child: StoreConnector<AppState, CommedTheme>(
-              converter: (s) => s.state.theme,
-              builder: themedGenericSummary,
-            ),
-          ),
-          rightWidget,
-        ]),
-      ],
-    ));
+          children: [
+            Row(crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  InkWell(
+                    child: CircleAvatar(
+                      backgroundImage: image,
+                      maxRadius: 40 * imgRatio,
+                    ),
+                    onTap: onPressedLogo,
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: StoreConnector<AppState, CommedTheme>(
+                      converter: (s) => s.state.theme,
+                      builder: themedGenericSummary,
+                    ),
+                  ),
+                  rightWidget,
+                ]),
+          ],
+        ));
   }
 
-  Widget themedGenericSummary(ctx, theme) => Container(
+  Widget themedGenericSummary(ctx, theme) =>
+      Container(
         color: Colors.transparent,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,36 +124,38 @@ class GenSummaryButton extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onPressed;
+  final VoidCallback onPressedLogo;
 
-  GenSummaryButton(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.subtitle,
-      required this.onPressed,
-      Widget? secondWidget,
-      double? textRatio,
-      double? imgRatio})
+  GenSummaryButton({Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+    required this.onPressedLogo,
+    Widget? secondWidget,
+    double? textRatio,
+    double? imgRatio})
       : textRatio = textRatio ?? 1.0,
         rightWidget = secondWidget ?? Container(),
         imgRatio = imgRatio ?? 1.0,
         super(key: key);
 
-  factory GenSummaryButton.only(
-      {required double ratio,
-      required ImageProvider image,
-      required String title,
-      required String subtitle,
-      required VoidCallback onPressed,
-      Widget? secondWidget}) {
+  factory GenSummaryButton.only({required double ratio,
+    required ImageProvider image,
+    required String title,
+    required String subtitle,
+    required VoidCallback onPressed,
+    required VoidCallback onPressedLogo,
+    Widget? secondWidget}) {
     return GenSummaryButton(
       image: image,
       title: title,
+      onPressed: onPressed,
+      onPressedLogo: onPressedLogo,
       subtitle: subtitle,
       secondWidget: secondWidget,
       textRatio: ratio,
       imgRatio: ratio,
-      onPressed: onPressed,
     );
   }
 
@@ -165,6 +174,7 @@ class GenSummaryButton extends StatelessWidget {
           image: image,
           title: title,
           subtitle: subtitle,
+          onPressedLogo: onPressedLogo,
         ),
       ),
     );

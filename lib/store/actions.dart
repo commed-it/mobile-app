@@ -20,3 +20,4 @@ class NavigateToNextAndReplace extends AppAction {
   const NavigateToNextAndReplace(this.destinationRoute);
 }
 class NavigateBack extends AppAction {}
+
