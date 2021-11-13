@@ -5,9 +5,9 @@ import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../constants.dart';
 import 'model/product.dart';
 
 class HomeView extends StatelessWidget {
@@ -15,34 +15,38 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: backgroundColor,
-      child: StoreConnector<AppState, List<Product>>(
-        converter: (store) => store.state.products,
-        builder: (context, products) {
-          return Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children:
-                        products.map((prod) => ProductItem(product: prod)).fold(
-                            [],
-                            (value, element) => value
-                              ..add(const Padding(
-                                padding: EdgeInsets.only(top: 20),
-                              ))
-                              ..add(element)
-                              ..add(const Padding(
-                                padding: EdgeInsets.only(top: 20),
-                              ))),
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (sto) => sto.state.theme,
+      builder: (cte, theme) => Container(
+        color: theme.background.color,
+        child: StoreConnector<AppState, List<Product>>(
+          converter: (store) => store.state.products,
+          builder: (context, products) {
+            return Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: products
+                          .map((prod) => ProductItem(product: prod))
+                          .fold(
+                              [],
+                              (value, element) => value
+                                ..add(const Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                ))
+                                ..add(element)
+                                ..add(const Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                ))),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -84,25 +88,25 @@ class ProductItem extends StatelessWidget {
                       softWrap: product.content.isAllShown,
                     ),
                     StoreConnector<AppState, VoidCallback>(
-                            converter: (ste) => () =>
-                                ste.dispatch(ToggleDescription(product.id)),
-                            builder: (cte, callback) {
-                              return InkWell(
-                                child: StoreConnector<AppState, CommedTheme>(
-                                  converter: (sto) => sto.state.theme,
-                                  builder: (context, theme) {
-                                    return Text(
-                                      product.content.isAllShown
-                                        ? "See less" : "See more",
-                                      style: TextStyle(
-                                          color: theme.link.textColor),
-                                    );
-                                  },
-                                ),
-                                onTap: callback,
+                      converter: (ste) =>
+                          () => ste.dispatch(ToggleDescription(product.id)),
+                      builder: (cte, callback) {
+                        return InkWell(
+                          child: StoreConnector<AppState, CommedTheme>(
+                            converter: (sto) => sto.state.theme,
+                            builder: (context, theme) {
+                              return Text(
+                                product.content.isAllShown
+                                    ? AppLocalizations.of(context)!.see_less
+                                    : AppLocalizations.of(context)!.see_more,
+                                style: TextStyle(color: theme.link.textColor),
                               );
                             },
                           ),
+                          onTap: callback,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

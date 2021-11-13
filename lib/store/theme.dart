@@ -19,21 +19,24 @@ class CommedTheme {
   final ColorText accent;
   final ColorText background;
   final ColorText link;
+  final Color appBarColor;
 
-  CommedTheme(this.primary, this.accent, this.background, this.link);
+  CommedTheme(this.primary, this.accent, this.background, this.link, this.appBarColor);
 
   CommedTheme copy({
     ColorText? primary,
     ColorText? accent,
     ColorText? background,
     ColorText? link,
+    Color? appBarColor,
   }) =>
       CommedTheme(primary ?? this.primary, accent ?? this.accent,
-          background ?? this.background, link ?? this.link);
+          background ?? this.background, link ?? this.link, appBarColor ?? this.appBarColor);
 
   CommedTheme.init()
       : primary = ColorText(Colors.teal, Colors.white),
         accent = ColorText(Colors.yellow.shade700, Colors.black),
         background = ColorText(Colors.white, Colors.black),
-        link = ColorText(Colors.white, Color.fromARGB(0xff, 0xC, 0x6A, 0xd2));
+        link = ColorText(Colors.white, Color.fromARGB(0xff, 0xC, 0x6A, 0xd2)),
+        appBarColor = Colors.teal;
 }

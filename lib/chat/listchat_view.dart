@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_app/widgets/search.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class ChatView extends StatelessWidget {
   ChatView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return StoreConnector<AppState, CommedTheme>(builder: (sto, theme) => Column(
       children: [
         Expanded(
           child: Container(
-            color: backgroundColor,
+            color: theme.background.color,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -50,6 +52,7 @@ class ChatView extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ),
+    converter: (sto) => sto.state.theme);
   }
 }

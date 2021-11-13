@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/chat/listchat_view.dart';
-import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/store/actions.dart';
@@ -36,7 +35,7 @@ class PageControlWidget extends StatelessWidget {
                     ]),
                 bottomNavigationBar: BottomNavigationBar(
                   currentIndex: state.currentPage,
-                  fixedColor: appBarColor,
+                  fixedColor: theme.appBarColor,
                   onTap: (index) {
                     callback(index);
                     state.pageController.animateToPage(index,
@@ -65,8 +64,8 @@ class PageControlWidget extends StatelessWidget {
   AppBar buildAppBar(BuildContext context, CommedTheme theme) {
     return AppBar(
       systemOverlayStyle:
-          const SystemUiOverlayStyle(statusBarColor: appBarColor),
-      backgroundColor: appBarColor,
+          SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+      backgroundColor: theme.appBarColor,
       title: Image.asset(
         'assets/logo-white.png',
         fit: BoxFit.cover,
