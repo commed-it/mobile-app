@@ -18,19 +18,24 @@ class CommedTheme {
   final ColorText primary;
   final ColorText accent;
   final ColorText background;
+  final Color lightBackground;
 
-  CommedTheme(this.primary, this.accent, this.background);
+  CommedTheme(this.primary, this.accent, this.background, this.lightBackground);
 
-  CommedTheme copy({
-    ColorText? primary,
-    ColorText? accent,
-    ColorText? background,
-  }) =>
-      CommedTheme(primary ?? this.primary, accent ?? this.accent,
-          background ?? this.background);
+  CommedTheme copy(
+          {ColorText? primary,
+          ColorText? accent,
+          ColorText? background,
+          Color? lightBackground}) =>
+      CommedTheme(
+          primary ?? this.primary,
+          accent ?? this.accent,
+          background ?? this.background,
+          lightBackground ?? this.lightBackground);
 
   CommedTheme.init()
-    : primary = ColorText(Colors.teal, Colors.white),
-      accent = ColorText(Colors.yellow.shade700, Colors.black),
-      background = ColorText(Colors.white, Colors.black);
+      : primary = ColorText(Colors.teal, Colors.white),
+        accent = ColorText(Colors.yellow.shade700, Colors.black),
+        background = ColorText(Colors.white, Colors.black),
+        lightBackground = const Color.fromARGB(255, 0xe5, 0xe5, 0xe5);
 }

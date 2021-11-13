@@ -8,10 +8,9 @@ import 'package:flutter_redux/flutter_redux.dart';
 class _Message {
   final bool isOther;
   final String username;
+  final ColorText color;
 
-  _Message(this.isOther, this.username);
-
-  Color get color => Colors.teal;
+  _Message(this.isOther, this.username, this.color);
 
   Widget buildWidget() {
     return const Text("You shouldn't see this");
@@ -23,18 +22,17 @@ class MessageModel implements _Message {
   final bool isOther;
   final String username;
   final String message;
+  final ColorText color;
 
-  const MessageModel(this.isOther, this.username, this.message);
+  const MessageModel(this.isOther, this.username, this.message, this.color);
 
   @override
   Widget buildWidget() {
-    return Text(message);
+    return Text(
+      message,
+      style: TextStyle(color: color.textColor),
+    );
   }
-
-  @override
-  // TODO: implement color
-  Color get color => Colors.teal; // TODO Change
-
 }
 
 @immutable
@@ -55,7 +53,7 @@ class FormalOfferMessage implements _Message {
 
   @override
   // TODO: implement color
-  Color get color => throw UnimplementedError();
+  ColorText get color => throw UnimplementedError();
 }
 
 class ConversationScreen extends StatelessWidget {
@@ -66,17 +64,31 @@ class ConversationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.bottomStart,
-      //crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.background.color,
+                  theme.lightBackground,
+                ]),
+          ),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomStart,
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Conversation(messages: messages),
+            Column(
+              children: [
+                Conversation(messages: messages),
+              ],
+            ),
+            const MessageSender(),
           ],
         ),
-        MessageSender(),
-      ],
+      ),
     );
   }
 }
@@ -155,9 +167,9 @@ class Conversation extends StatelessWidget {
                           ? MainAxisAlignment.start
                           : MainAxisAlignment.end,
                       children: [MessageWidget(message: x)],
-                    )) as Widget)// ITS NOT UNNECESSARY!
+                    )) as Widget) // ITS NOT UNNECESSARY!
                 .toList()
-            ..add(const Padding(padding: EdgeInsets.all(35))),
+              ..add(const Padding(padding: EdgeInsets.all(35))),
           )),
     );
   }
@@ -178,7 +190,7 @@ class MessageWidget extends StatelessWidget {
         children: [
           Text(
             message.username,
-            style: const TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14),
           ),
           Material(
             elevation: 10,
@@ -191,7 +203,7 @@ class MessageWidget extends StatelessWidget {
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                     topLeft: Radius.circular(20)),
-            color: message.color,
+            color: message.color.color,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: message.buildWidget(),
@@ -202,7 +214,6 @@ class MessageWidget extends StatelessWidget {
     );
   }
 }
-
 
 class MockConversation extends StatelessWidget {
   const MockConversation({
@@ -217,8 +228,9 @@ class MockConversation extends StatelessWidget {
         appBar: buildAppBar(context, theme),
         body: ConversationScreen(
           messages: List.filled(120, [
-            const MessageModel(false, "user1", "Hi nice to meet y'all!"),
-            const MessageModel(true, "user2", "Hi how are you doing!")
+            MessageModel(
+                false, "user1", "Hi nice to meet y'all!", theme.background),
+            MessageModel(true, "user2", "Hi how are you doing!", theme.primary)
           ]).fold([], (xs, x) {
             xs.addAll(x);
             return xs;
