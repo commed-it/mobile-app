@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/chat/conversation/conversation_view.dart';
 import 'package:flutter_app/login/login_view.dart';
 import 'package:flutter_app/root/root_view.dart';
 import 'package:flutter_app/store/actions.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
             routes: {
               Routes.home: (c) => const RootWidget(),
               Routes.login: (c) => LoginView(),
+              Routes.chat: (c) => MockConversation(),
             },
             home: const RootWidget(),
           );
