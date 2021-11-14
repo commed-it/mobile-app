@@ -9,6 +9,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
+import 'enterprise/profile_view.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: StoreConnector<AppState, GlobalKey<NavigatorState>>(
-        converter : (store) => store.state.navigatorKey,
+        converter: (store) => store.state.navigatorKey,
         builder: (context, navKey) {
           return MaterialApp(
             navigatorKey: navKey,
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
               Routes.home: (c) => const RootWidget(),
               Routes.login: (c) => LoginView(),
               Routes.chat: (c) => MockConversation(),
+              Routes.enterprise: (c) => EnterpriseView(),
             },
             home: const RootWidget(),
           );

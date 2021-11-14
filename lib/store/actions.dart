@@ -4,7 +4,7 @@ class Routes {
   static const String home = "HOME";
   static const String login = "LOGIN";
   static const String chat = "CHAT";
-
+  static const String enterprise = "ENTERPRISE";
 }
 
 @immutable
@@ -21,3 +21,4 @@ class NavigateToNextAndReplace extends AppAction {
   const NavigateToNextAndReplace(this.destinationRoute);
 }
 class NavigateBack extends AppAction {}
+

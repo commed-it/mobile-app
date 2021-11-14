@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/chat/listchat_view.dart';
-import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/store/actions.dart';
@@ -17,12 +16,11 @@ class PageControlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PageControlState>(
-        builder: (context, state) {
-          return StoreConnector<AppState, Function(int)>(
-            converter: (store) =>
-                (i) => store.dispatch(MovePageFromPageController(i)),
-            builder: (context, callback) {
-              return StoreConnector<AppState, CommedTheme>(
+        builder: (context, state) => StoreConnector<AppState, Function(int)>(
+              converter: (store) =>
+                  (i) => store.dispatch(MovePageFromPageController(i)),
+              builder: (context, callback) =>
+                  StoreConnector<AppState, CommedTheme>(
                 builder: (ctx, theme) => Scaffold(
                   appBar: buildAppBar(context, theme),
                   body: PageView(
@@ -36,7 +34,7 @@ class PageControlWidget extends StatelessWidget {
                       ]),
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: state.currentPage,
-                    fixedColor: appBarColor,
+                    fixedColor: theme.appBarColor,
                     onTap: (index) {
                       callback(index);
                       state.pageController.animateToPage(index,
@@ -55,18 +53,16 @@ class PageControlWidget extends StatelessWidget {
                   ),
                 ),
                 converter: (s) => s.state.theme,
-              );
-            },
-          );
-        },
+              ),
+            ),
         converter: (store) => store.state.pageControlState);
   }
 }
 
 AppBar buildAppBar(BuildContext context, CommedTheme theme) {
   return AppBar(
-    systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: appBarColor),
-    backgroundColor: appBarColor,
+    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+    backgroundColor: theme.appBarColor,
     title: Image.asset(
       'assets/logo-white.png',
       fit: BoxFit.cover,

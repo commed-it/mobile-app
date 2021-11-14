@@ -10,30 +10,32 @@ class GenericSummary extends StatelessWidget {
   final ImageProvider image;
   final String title;
   final String subtitle;
+  final VoidCallback onPressedLogo;
 
-  GenericSummary(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.subtitle,
-      Widget? secondWidget,
-      double? textRatio,
-      double? imgRatio})
-      : rightWidget = secondWidget ?? Container(),
+  GenericSummary({Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.onPressedLogo,
+    Widget? secondWidget,
+    double? textRatio,
+    double? imgRatio}) :
+        rightWidget = secondWidget ?? Container(),
         textRatio = textRatio ?? 1.0,
         imgRatio = imgRatio ?? 1.0,
         super(key: key);
 
-  factory GenericSummary.only(
-      {required double ratio,
-      required ImageProvider image,
-      required String title,
-      required String subtitle,
-      Widget? secondWidget}) {
+  factory GenericSummary.only({required double ratio,
+    required ImageProvider image,
+    required String title,
+    required String subtitle,
+    required VoidCallback onPressedLogo,
+    Widget? secondWidget}) {
     return GenericSummary(
       image: image,
       title: title,
       subtitle: subtitle,
+      onPressedLogo: onPressedLogo,
       secondWidget: secondWidget,
       textRatio: ratio,
       imgRatio: ratio,
@@ -43,16 +45,16 @@ class GenericSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
         child: Column(
           children: [
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Row(crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: image,
-                    maxRadius: 40 * imgRatio,
+                  InkWell(
+                    child: CircleAvatar(
+                      backgroundImage: image,
+                      maxRadius: 40 * imgRatio,
+                    ),
+                    onTap: onPressedLogo,
                   ),
                   const SizedBox(
                     width: 16,
@@ -69,34 +71,33 @@ class GenericSummary extends StatelessWidget {
         ));
   }
 
-  Widget themedGenericSummary(ctx, theme) => Container(
-                      color: Colors.transparent,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.all(4 * textRatio)),
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 20 * textRatio,
-                              color: theme.background.textColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 6,
-                          ),
-                          Padding(padding: EdgeInsets.all(2 * textRatio)),
-                          Text(
-                            subtitle,
-                            style: TextStyle(
-                                fontSize: 20 * textRatio,
-                                color: theme.background.subtitleColor,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ],
-                      ),
-                    );
+  Widget themedGenericSummary(ctx, theme) =>
+      Container(
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.all(6 * textRatio)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20 * textRatio,
+                color: theme.background.textColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(2 * textRatio)),
+            Text(
+              subtitle,
+              style: TextStyle(
+                  fontSize: 20 * textRatio,
+                  color: theme.background.subtitleColor,
+                  fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
+      );
 }
 
 class ListDivider extends StatelessWidget {
@@ -123,36 +124,38 @@ class GenSummaryButton extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onPressed;
+  final VoidCallback onPressedLogo;
 
-  GenSummaryButton(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.subtitle,
-      required this.onPressed,
-      Widget? secondWidget,
-      double? textRatio,
-      double? imgRatio})
+  GenSummaryButton({Key? key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+    required this.onPressedLogo,
+    Widget? secondWidget,
+    double? textRatio,
+    double? imgRatio})
       : textRatio = textRatio ?? 1.0,
         rightWidget = secondWidget ?? Container(),
         imgRatio = imgRatio ?? 1.0,
         super(key: key);
 
-  factory GenSummaryButton.only(
-      {required double ratio,
-      required ImageProvider image,
-      required String title,
-      required String subtitle,
-      required VoidCallback onPressed,
-      Widget? secondWidget}) {
+  factory GenSummaryButton.only({required double ratio,
+    required ImageProvider image,
+    required String title,
+    required String subtitle,
+    required VoidCallback onPressed,
+    required VoidCallback onPressedLogo,
+    Widget? secondWidget}) {
     return GenSummaryButton(
       image: image,
       title: title,
+      onPressed: onPressed,
+      onPressedLogo: onPressedLogo,
       subtitle: subtitle,
       secondWidget: secondWidget,
       textRatio: ratio,
       imgRatio: ratio,
-      onPressed: onPressed,
     );
   }
 
@@ -164,11 +167,15 @@ class GenSummaryButton extends StatelessWidget {
         padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
       ),
       onPressed: onPressed,
-      child: GenericSummary.only(
-        ratio: textRatio,
-        image: image,
-        title: title,
-        subtitle: subtitle,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 13),
+        child: GenericSummary.only(
+          ratio: textRatio,
+          image: image,
+          title: title,
+          subtitle: subtitle,
+          onPressedLogo: onPressedLogo,
+        ),
       ),
     );
   }
