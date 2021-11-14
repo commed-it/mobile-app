@@ -8,9 +8,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 class _Message {
   final bool isOther;
   final String username;
-  final ColorText color;
 
-  _Message(this.isOther, this.username, this.color);
+  _Message(this.isOther, this.username);
 
   Widget buildWidget() {
     return const Text("You shouldn't see this");
@@ -22,38 +21,73 @@ class MessageModel implements _Message {
   final bool isOther;
   final String username;
   final String message;
-  final ColorText color;
 
-  const MessageModel(this.isOther, this.username, this.message, this.color);
+  const MessageModel(this.isOther, this.username, this.message);
 
   @override
   Widget buildWidget() {
-    return Text(
-      message,
-      style: TextStyle(color: color.textColor),
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Text(
+        message,
+        style: TextStyle(
+            color:
+                isOther ? theme.primary.textColor : theme.background.textColor),
+      ),
     );
   }
 }
 
 @immutable
 class FormalOfferMessage implements _Message {
-  @override
-  // TODO: implement isMine
-  bool get isOther => throw UnimplementedError();
+  final bool isOther;
+  final String username;
+  final int version;
+
+  FormalOfferMessage(this.isOther, this.username, this.version);
 
   @override
   Widget buildWidget() {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Column(children: [
+        Text(
+          "Formal Offer version " + version.toString(),
+          style: TextStyle(
+              color: isOther
+                  ? theme.primary.textColor
+                  : theme.background.textColor),
+        ),
+        Row(
+          children: [
+            buildButton(theme, "Download PDF", Icons.download),
+            const SizedBox(
+              width: 20,
+            ),
+            buildButton(theme, "Sign PDF", Icons.vpn_key),
+          ],
+        ),
+      ]),
+    );
   }
 
-  @override
-  // TODO: implement username
-  String get username => throw UnimplementedError();
-
-  @override
-  // TODO: implement color
-  ColorText get color => throw UnimplementedError();
+  ElevatedButton buildButton(CommedTheme theme, String message, IconData icon) {
+    return ElevatedButton.icon(
+      label: Text(
+        message,
+        style: TextStyle(
+            color:
+                isOther ? theme.background.textColor : theme.primary.textColor),
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: isOther ? theme.background.color : theme.primary.color,
+        onPrimary: theme.accent.color,
+      ),
+      onPressed: () {},
+      icon: Icon(icon,
+          color: isOther ? theme.primary.color : theme.background.color),
+    );
+  }
 }
 
 class ConversationScreen extends StatelessWidget {
@@ -66,7 +100,9 @@ class ConversationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
-      builder: (ctx, theme) => Container(
+      builder: (ctx, theme) => Scaffold(
+        appBar: buildAppBar(context, theme),
+        body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -76,17 +112,18 @@ class ConversationScreen extends StatelessWidget {
                   theme.lightBackground,
                 ]),
           ),
-        child: Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              children: [
-                Conversation(messages: messages),
-              ],
-            ),
-            const MessageSender(),
-          ],
+          child: Stack(
+            alignment: AlignmentDirectional.bottomStart,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Conversation(messages: messages),
+                ],
+              ),
+              const MessageSender(),
+            ],
+          ),
         ),
       ),
     );
@@ -182,34 +219,41 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment:
-            message.isOther ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-        children: [
-          Text(
-            message.username,
-            style: TextStyle(fontSize: 14),
-          ),
-          Material(
-            elevation: 10,
-            borderRadius: message.isOther
-                ? const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                    topRight: Radius.circular(20))
-                : const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                    topLeft: Radius.circular(20)),
-            color: message.color.color,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: message.buildWidget(),
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: message.isOther
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
+          children: [
+            Text(
+              message.username,
+              style: TextStyle(fontSize: 14),
             ),
-          ),
-        ],
+            Material(
+              elevation: 10,
+              borderRadius: message.isOther
+                  ? const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))
+                  : const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
+              color: message.isOther
+                  ? theme.primary.color
+                  : theme.background.color,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: message.buildWidget(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -224,18 +268,16 @@ class MockConversation extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       converter: (sto) => sto.state.theme,
-      builder: (ctx, theme) => Scaffold(
-        appBar: buildAppBar(context, theme),
-        body: ConversationScreen(
-          messages: List.filled(120, [
-            MessageModel(
-                false, "user1", "Hi nice to meet y'all!", theme.background),
-            MessageModel(true, "user2", "Hi how are you doing!", theme.primary)
-          ]).fold([], (xs, x) {
-            xs.addAll(x);
-            return xs;
-          }),
-        ),
+      builder: (ctx, theme) => ConversationScreen(
+        messages: List.filled(120, [
+          const MessageModel(false, "user1", "Hi nice to meet y'all!"),
+          const MessageModel(true, "user2", "Hi how are you doing!")
+        ]).fold([], (xs, x) {
+          xs.addAll(x);
+          return xs;
+        })
+          ..add(FormalOfferMessage(true, "user2", 3))
+          ..add(FormalOfferMessage(false, "user1", 4)),
       ),
     );
   }

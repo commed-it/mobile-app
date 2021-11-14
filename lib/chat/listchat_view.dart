@@ -19,6 +19,8 @@ class ChatView extends StatelessWidget {
             child: SingleChildScrollView(
               child: StoreConnector<AppState, VoidCallback>(
                 converter: (store) => () => store.dispatch(LambdaAction((s) =>
+                // TODO this should be in an action, and should also upload which
+                // chat to use.
                     s.copy(
                         navigatorKey: s.navigatorKey
                           ..currentState!.pushNamed(Routes.chat)))),

@@ -54,7 +54,7 @@ class _LoginExpanded extends StatelessWidget {
                               isOnRegister ? x.register : x.login_noun),
                       converter: (store) =>
                           store.state.loginViewState.isOnRegister),
-                  BodyLogin(),
+                  const BodyLogin(),
                 ],
               ),
             ),
