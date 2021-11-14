@@ -12,8 +12,8 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StoreConnector<AppState, CommedTheme>(
-        converter: (store) => store.state.theme,
+        body: StoreConnector<AppState, CommedTheme>(
+      converter: (store) => store.state.theme,
       builder: (ctx, theme) => Container(
         width: double.infinity,
         height: double.infinity,
@@ -24,12 +24,12 @@ class LoginView extends StatelessWidget {
               colors: [
                 theme.primary.color,
                 theme.accent.color,
+                theme.primary.color,
               ]),
         ),
         child: const _LoginExpanded(),
       ),
-      )
-    );
+    ));
   }
 }
 
@@ -40,24 +40,28 @@ class _LoginExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: SizedBox(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                StoreConnector<AppState, bool>(
-                    builder: (context, isOnRegister) => HeadLogin(
-                        func: (x) =>
-                            isOnRegister ? x.register : x.login_noun),
-                    converter: (store) =>
-                        store.state.loginViewState.isOnRegister),
-                BodyLogin(),
-              ],
+    return Column(
+      children: [
+        Expanded(
+          child: SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  StoreConnector<AppState, bool>(
+                      builder: (context, isOnRegister) => HeadLogin(
+                          func: (x) =>
+                              isOnRegister ? x.register : x.login_noun),
+                      converter: (store) =>
+                          store.state.loginViewState.isOnRegister),
+                  BodyLogin(),
+                ],
+              ),
             ),
           ),
         ),
-      );
+      ],
+    );
   }
 }
 
@@ -69,14 +73,13 @@ class BodyLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
-                builder: (context, isOnRegister) {
-                  return isOnRegister
-                      ? RegisterWidget(
-                          context: context,
-                        )
-                      : LoginWidget(context: context);
-                },
-                converter: (store) => store.state.loginViewState.isOnRegister
-    );
+        builder: (context, isOnRegister) {
+          return isOnRegister
+              ? RegisterWidget(
+                  context: context,
+                )
+              : LoginWidget(context: context);
+        },
+        converter: (store) => store.state.loginViewState.isOnRegister);
   }
 }

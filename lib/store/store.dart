@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
+import 'package:flutter_app/enterprise/store/store.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
@@ -105,5 +106,6 @@ AppState appReducer(AppState prev, AppAction action) {
   prev = globalLoginReducer(prev, action);
   prev = globalPageControlReducer(prev, action);
   prev = listProductsReducer(prev, action);
+  prev = enterpriseReducer(prev, action);
   return prev;
 }

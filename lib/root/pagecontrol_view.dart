@@ -16,87 +16,84 @@ class PageControlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PageControlState>(
-        builder: (context, state) {
-          return StoreConnector<AppState, Function(int)>(
-            converter: (store) =>
-                (i) => store.dispatch(MovePageFromPageController(i)),
-            builder: (context, callback) {
-              return StoreConnector<AppState, CommedTheme>(
-                  builder: (ctx, theme) => Scaffold(
-                appBar: buildAppBar(context, theme),
-                body: PageView(
-                    controller: state.pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    onPageChanged: callback,
-                    children: [
-                      HomeView(),
-                      ChatView(),
-                      FormalOffersView(),
-                    ]),
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: state.currentPage,
-                  fixedColor: theme.appBarColor,
-                  onTap: (index) {
-                    callback(index);
-                    state.pageController.animateToPage(index,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOut);
-                  },
-                  items: const [
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.home_outlined), label: 'Home'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.chat_outlined), label: 'Chat'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.app_registration),
-                        label: 'Formal Offers')
-                  ],
+        builder: (context, state) => StoreConnector<AppState, Function(int)>(
+              converter: (store) =>
+                  (i) => store.dispatch(MovePageFromPageController(i)),
+              builder: (context, callback) =>
+                  StoreConnector<AppState, CommedTheme>(
+                builder: (ctx, theme) => Scaffold(
+                  appBar: buildAppBar(context, theme),
+                  body: PageView(
+                      controller: state.pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: callback,
+                      children: [
+                        HomeView(),
+                        ChatView(),
+                        FormalOffersView(),
+                      ]),
+                  bottomNavigationBar: BottomNavigationBar(
+                    currentIndex: state.currentPage,
+                    fixedColor: theme.appBarColor,
+                    onTap: (index) {
+                      callback(index);
+                      state.pageController.animateToPage(index,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOut);
+                    },
+                    items: const [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.home_outlined), label: 'Home'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.chat_outlined), label: 'Chat'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.app_registration),
+                          label: 'Formal Offers')
+                    ],
+                  ),
                 ),
-              ),
                 converter: (s) => s.state.theme,
-              );
-            },
-          );
-        },
+              ),
+            ),
         converter: (store) => store.state.pageControlState);
   }
+}
 
-  AppBar buildAppBar(BuildContext context, CommedTheme theme) {
-    return AppBar(
-      systemOverlayStyle:
-          SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
-      backgroundColor: theme.appBarColor,
-      title: Image.asset(
-        'assets/logo-white.png',
-        fit: BoxFit.cover,
-        height: 50,
-      ),
-      actions: [
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
-              },
-            )),
-        Padding(
+AppBar buildAppBar(BuildContext context, CommedTheme theme) {
+  return AppBar(
+    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+    backgroundColor: theme.appBarColor,
+    title: Image.asset(
+      'assets/logo-white.png',
+      fit: BoxFit.cover,
+      height: 50,
+    ),
+    actions: [
+      Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, VoidCallback>(
-              builder: (context, callback) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.account_circle,
-                    color: theme.primary.textColor,
-                  ),
-                  onPressed: callback,
-                );
-              },
-              converter: (store) => () => store.dispatch(NavigateToNext(Routes.login))),
-        ),
-      ],
-      elevation: 0,
-    );
-  }
+          child: IconButton(
+            icon: Icon(Icons.search, color: theme.primary.textColor),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('This is a snackbar')));
+            },
+          )),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: StoreConnector<AppState, VoidCallback>(
+            builder: (context, callback) {
+              return IconButton(
+                icon: Icon(
+                  Icons.account_circle,
+                  color: theme.primary.textColor,
+                ),
+                onPressed: callback,
+              );
+            },
+            converter: (store) =>
+                () => store.dispatch(NavigateToNext(Routes.login))),
+      ),
+    ],
+    elevation: 0,
+  );
 }

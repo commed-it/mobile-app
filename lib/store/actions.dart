@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class Routes {
   static const String home = "HOME";
   static const String login = "LOGIN";
+  static const String chat = "CHAT";
+  static const String enterprise = "ENTERPRISE";
 
 }
 
