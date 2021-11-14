@@ -5,7 +5,6 @@ class Routes {
   static const String login = "LOGIN";
   static const String chat = "CHAT";
   static const String enterprise = "ENTERPRISE";
-
 }
 
 @immutable

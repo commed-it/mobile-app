@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: StoreConnector<AppState, GlobalKey<NavigatorState>>(
-        converter : (store) => store.state.navigatorKey,
+        converter: (store) => store.state.navigatorKey,
         builder: (context, navKey) {
           return MaterialApp(
             navigatorKey: navKey,

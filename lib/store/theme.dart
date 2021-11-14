@@ -36,6 +36,7 @@ class CommedTheme {
           background ?? this.background, lightBackground ?? this.lightBackground, link ?? this.link, appBarColor ?? this.appBarColor);
 
 
+
   CommedTheme.init()
       : primary = ColorText(Colors.teal, Colors.white),
         accent = ColorText(Colors.yellow.shade700, Colors.black),
@@ -43,5 +44,4 @@ class CommedTheme {
         lightBackground = const Color.fromARGB(255, 0xe5, 0xe5, 0xe5),
         link = ColorText(Colors.white, Color.fromARGB(0xff, 0xC, 0x6A, 0xd2)),
         appBarColor = Colors.teal;
-
 }
