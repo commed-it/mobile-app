@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
+import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/fade_animation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class HeadLogin extends StatelessWidget {
   const HeadLogin({
@@ -35,21 +38,25 @@ class HeadLogin extends StatelessWidget {
                               fit: BoxFit.cover,
                               height: 120,
                             ),
-                            Text(
-                              func(AppLocalizations.of(context)!).toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 50,
-                                fontFamily: 'Market',
-                              ),
-                            ),
-                          ],
+                            StoreConnector<AppState, CommedTheme>(
+                                builder: (ctx, theme) =>
+                                    Text(
+                                      func(AppLocalizations.of(context)!).toUpperCase(),
+                                      style: TextStyle(
+                                        color: theme.primary.textColor,
+                                        fontSize: 50,
+                                        fontFamily: 'Market',
+                                      ),
+                                    ),
+
+                                converter: (s) => s.state.theme)
+                         ],
                         ),
                       ),
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.all(20),)
+              const Padding(padding: EdgeInsets.all(20),)
             ]),
       ),
     );

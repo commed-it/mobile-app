@@ -14,5 +14,7 @@
     "nif" : "NIF",
     "company_name" : "Name of the company",
     "email" : "Email",
-    "contact" : "Contact"
+    "contact" : "Contact",
+    "see_more" : "See more",
+    "see_less" : "See less"
 }

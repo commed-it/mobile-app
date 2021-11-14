@@ -3,15 +3,18 @@ import 'package:flutter_app/login/utils/header.dart';
 import 'package:flutter_app/login/widgets/login.dart';
 import 'package:flutter_app/login/widgets/register.dart';
 import 'package:flutter_app/store/store.dart';
+import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class LoginView extends StatelessWidget {
-  LoginView({Key? key}) : super(key: key);
+  const LoginView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+        body: StoreConnector<AppState, CommedTheme>(
+      converter: (store) => store.state.theme,
+      builder: (ctx, theme) => Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -19,11 +22,27 @@ class LoginView extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Colors.teal,
-                Colors.yellow.shade700,
+                theme.primary.color,
+                theme.accent.color,
+                theme.primary.color,
               ]),
         ),
-        child: Expanded(
+        child: const _LoginExpanded(),
+      ),
+    ));
+  }
+}
+
+class _LoginExpanded extends StatelessWidget {
+  const _LoginExpanded({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
           child: SizedBox(
             width: double.infinity,
             child: SingleChildScrollView(
@@ -41,7 +60,7 @@ class LoginView extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -54,14 +73,13 @@ class BodyLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, bool>(
-                builder: (context, isOnRegister) {
-                  return isOnRegister
-                      ? RegisterWidget(
-                          context: context,
-                        )
-                      : LoginWidget(context: context);
-                },
-                converter: (store) => store.state.loginViewState.isOnRegister
-    );
+        builder: (context, isOnRegister) {
+          return isOnRegister
+              ? RegisterWidget(
+                  context: context,
+                )
+              : LoginWidget(context: context);
+        },
+        converter: (store) => store.state.loginViewState.isOnRegister);
   }
 }
