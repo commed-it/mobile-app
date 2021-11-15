@@ -53,11 +53,11 @@ class SearcherView extends StatelessWidget {
         converter: (s) {
           var text2 = s.state.searcher.text;
           _controller.text = text2;
-          _controller.selection =
-              TextSelection(baseOffset: text2.length, extentOffset: text2.length);
+          _controller.selection = TextSelection(
+              baseOffset: text2.length, extentOffset: text2.length);
           return text2;
         },
-        builder: (ctx, s) => TextFormField(
+        builder: (ctx, onChanged) => TextFormField(
           controller: _controller,
           decoration: InputDecoration(
             hintText: "Search...",
@@ -122,7 +122,6 @@ class SearcherView extends StatelessWidget {
       MapEntry<int, String> mp, CommedTheme theme) {
     return StoreConnector<AppState, VoidCallback>(
       converter: (s) => () {
-        _controller.text = mp.value;
         s.dispatch(DeleteRecommendationIndex(mp.key));
       },
       builder: (ctx, callback) => TextButton(
@@ -137,7 +136,9 @@ class SearcherView extends StatelessWidget {
 
   Widget buildRecommendationText(MapEntry<int, String> mp, CommedTheme theme) {
     return StoreConnector<AppState, VoidCallback>(
-      converter: (s) => () => s.dispatch(SearcherIs(mp.value)),
+      converter: (s) => () {
+        s.dispatch(SearcherIs(mp.value));
+      },
       builder: (ctx, callback) => TextButton(
         child:
             Text(mp.value, style: TextStyle(color: theme.background.textColor)),
