@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/searcher/action.dart';
@@ -7,7 +9,9 @@ import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class SearcherView extends StatelessWidget {
-  const SearcherView({
+  final TextEditingController _controller = TextEditingController();
+
+  SearcherView({
     Key? key,
   }) : super(key: key);
 
@@ -45,14 +49,24 @@ class SearcherView extends StatelessWidget {
       const SizedBox(
         height: 20,
       ),
-      TextField(
-        decoration: InputDecoration(
-          hintText: "Search...",
-          hintStyle: TextStyle(color: Colors.grey.shade600),
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.grey.shade600,
-            size: 20,
+      StoreConnector<AppState, String>(
+        converter: (s) {
+          var text2 = s.state.searcher.text;
+          _controller.text = text2;
+          _controller.selection =
+              TextSelection(baseOffset: text2.length, extentOffset: text2.length);
+          return text2;
+        },
+        builder: (ctx, s) => TextFormField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: "Search...",
+            hintStyle: TextStyle(color: Colors.grey.shade600),
+            prefixIcon: Icon(
+              Icons.search,
+              color: Colors.grey.shade600,
+              size: 20,
+            ),
           ),
         ),
       ),
@@ -74,7 +88,7 @@ class SearcherView extends StatelessWidget {
       builder: (ctx, theme) => Expanded(
         child: SingleChildScrollView(
           child: StoreConnector<AppState, List<String>>(
-            converter: (s) => s.state.historicOfMessages,
+            converter: (s) => s.state.searcher.historic,
             builder: (ctx, list) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: list
@@ -107,7 +121,10 @@ class SearcherView extends StatelessWidget {
   StoreConnector<AppState, VoidCallback> buildDeleteButton(
       MapEntry<int, String> mp, CommedTheme theme) {
     return StoreConnector<AppState, VoidCallback>(
-      converter: (s) => () => s.dispatch(DeleteRecommendationIndex(mp.key)),
+      converter: (s) => () {
+        _controller.text = mp.value;
+        s.dispatch(DeleteRecommendationIndex(mp.key));
+      },
       builder: (ctx, callback) => TextButton(
         onPressed: callback,
         child: Icon(
@@ -118,12 +135,23 @@ class SearcherView extends StatelessWidget {
     );
   }
 
-  TextButton buildRecommendationText(
-      MapEntry<int, String> mp, CommedTheme theme) {
-    return TextButton(
-      child:
-          Text(mp.value, style: TextStyle(color: theme.background.textColor)),
-      onPressed: () {},
+  Widget buildRecommendationText(MapEntry<int, String> mp, CommedTheme theme) {
+    return StoreConnector<AppState, VoidCallback>(
+      converter: (s) => () => s.dispatch(SearcherIs(mp.value)),
+      builder: (ctx, callback) => TextButton(
+        child:
+            Text(mp.value, style: TextStyle(color: theme.background.textColor)),
+        onPressed: callback,
+      ),
     );
   }
 }
+
+class _SearcherSomething {
+  final String text;
+  final StringCallback updateText;
+
+  _SearcherSomething(this.text, this.updateText);
+}
+
+typedef StringCallback = void Function(String);

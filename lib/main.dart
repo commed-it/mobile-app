@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               Routes.login: (c) => const LoginView(),
               Routes.chat: (c) => const MockConversation(),
               Routes.enterprise: (c) => const EnterpriseView(),
-              Routes.searcher: (c) => const SearcherView()
+              Routes.searcher: (c) => SearcherView()
             },
             home: const RootWidget(),
           );
