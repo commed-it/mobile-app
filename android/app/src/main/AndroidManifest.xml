@@ -2,8 +2,8 @@
     package="com.example.flutter_app">
 
     <application
-        android:label="flutter_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Commed"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
