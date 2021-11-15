@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -92,8 +94,14 @@ class FormalOfferMessage implements _Message {
 
 class ConversationScreen extends StatelessWidget {
   final List<_Message> messages;
+  final String urlImage;
+  final String enterprise;
 
-  const ConversationScreen({Key? key, required this.messages})
+  const ConversationScreen(
+      {Key? key,
+      required this.messages,
+      required this.urlImage,
+      required this.enterprise})
       : super(key: key);
 
   @override
@@ -126,6 +134,59 @@ class ConversationScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context, CommedTheme theme) {
+    return AppBar(
+      systemOverlayStyle:
+          SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+      backgroundColor: theme.appBarColor,
+      title: StoreConnector<AppState, CommedTheme>(
+        converter: (s) => s.state.theme,
+        builder: (ctx, theme) => Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(
+                urlImage,
+              ),
+            ),
+            const SizedBox(width: 10,),
+            Text(
+              enterprise,
+              style: TextStyle(color: theme.primary.textColor),
+            )
+          ],
+        ),
+      ),
+      actions: [
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: IconButton(
+              icon: Icon(Icons.search, color: theme.primary.textColor),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            )),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: StoreConnector<AppState, VoidCallback>(
+              builder: (context, callback) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.account_circle,
+                    color: theme.primary.textColor,
+                  ),
+                  onPressed: callback,
+                );
+              },
+              converter: (store) =>
+                  () => store.dispatch(const NavigateToNext(Routes.login))),
+        ),
+      ],
+      elevation: 0,
     );
   }
 }
@@ -266,19 +327,18 @@ class MockConversation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, CommedTheme>(
-      converter: (sto) => sto.state.theme,
-      builder: (ctx, theme) => ConversationScreen(
-        messages: List.filled(120, [
-          const MessageModel(false, "user1", "Hi nice to meet y'all!"),
-          const MessageModel(true, "user2", "Hi how are you doing!")
-        ]).fold([], (xs, x) {
-          xs.addAll(x);
-          return xs;
-        })
-          ..add(FormalOfferMessage(true, "user2", 3))
-          ..add(FormalOfferMessage(false, "user1", 4)),
-      ),
+    return ConversationScreen(
+      messages: List.filled(120, [
+        const MessageModel(false, "user1", "Hi nice to meet y'all!"),
+        const MessageModel(true, "user2", "Hi how are you doing!")
+      ]).fold([], (xs, x) {
+        xs.addAll(x);
+        return xs;
+      })
+        ..add(FormalOfferMessage(true, "user2", 3))
+        ..add(FormalOfferMessage(false, "user1", 4)),
+      enterprise: "Moniatios",
+      urlImage: "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg",
     );
   }
 }
