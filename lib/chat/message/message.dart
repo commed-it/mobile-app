@@ -23,10 +23,6 @@ class MessageWidget extends StatelessWidget {
               ? CrossAxisAlignment.start
               : CrossAxisAlignment.end,
           children: [
-            Text(
-              message.username,
-              style: TextStyle(fontSize: 14),
-            ),
             Material(
               elevation: 10,
               borderRadius: message.isOther

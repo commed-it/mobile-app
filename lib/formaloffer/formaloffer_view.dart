@@ -64,8 +64,8 @@ class FormalOffersView extends StatelessWidget {
                                         ratio: 0.8,
                                         image: NetworkImage(
                                             formalOffer.enterprise.urlLogo),
-                                        title: formalOffer.enterprise.name,
-                                        subtitle: formalOffer.productContent,
+                                        title:  formalOffer.productContent,
+                                        subtitle: formalOffer.enterprise.name,
                                         onPressed: callback,
                                         onPressedLogo: callbackLogo,
                                         secondWidget: Column(
