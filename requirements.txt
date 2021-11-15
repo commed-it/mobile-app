@@ -1,0 +1,2 @@
+- emojis disabled
+- notifications push with options
