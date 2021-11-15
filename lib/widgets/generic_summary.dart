@@ -175,6 +175,7 @@ class GenSummaryButton extends StatelessWidget {
           title: title,
           subtitle: subtitle,
           onPressedLogo: onPressedLogo,
+          secondWidget: rightWidget,
         ),
       ),
     );
