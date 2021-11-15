@@ -1,99 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/chat/message/conversation.dart';
+import 'package:flutter_app/chat/message/sender.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-class _Message {
-  final bool isOther;
-  final String username;
-
-  _Message(this.isOther, this.username);
-
-  Widget buildWidget() {
-    return const Text("You shouldn't see this");
-  }
-}
-
-@immutable
-class MessageModel implements _Message {
-  final bool isOther;
-  final String username;
-  final String message;
-
-  const MessageModel(this.isOther, this.username, this.message);
-
-  @override
-  Widget buildWidget() {
-    return StoreConnector<AppState, CommedTheme>(
-      converter: (s) => s.state.theme,
-      builder: (ctx, theme) => Text(
-        message,
-        style: TextStyle(
-            color:
-                isOther ? theme.primary.textColor : theme.background.textColor),
-      ),
-    );
-  }
-}
-
-@immutable
-class FormalOfferMessage implements _Message {
-  final bool isOther;
-  final String username;
-  final int version;
-
-  FormalOfferMessage(this.isOther, this.username, this.version);
-
-  @override
-  Widget buildWidget() {
-    return StoreConnector<AppState, CommedTheme>(
-      converter: (s) => s.state.theme,
-      builder: (ctx, theme) => Column(children: [
-        Text(
-          "Formal Offer version " + version.toString(),
-          style: TextStyle(
-              color: isOther
-                  ? theme.primary.textColor
-                  : theme.background.textColor),
-        ),
-        Row(
-          children: [
-            buildButton(theme, "Download PDF", Icons.download),
-            const SizedBox(
-              width: 20,
-            ),
-            buildButton(theme, "Sign PDF", Icons.vpn_key),
-          ],
-        ),
-      ]),
-    );
-  }
-
-  ElevatedButton buildButton(CommedTheme theme, String message, IconData icon) {
-    return ElevatedButton.icon(
-      label: Text(
-        message,
-        style: TextStyle(
-            color:
-                isOther ? theme.background.textColor : theme.primary.textColor),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: isOther ? theme.background.color : theme.primary.color,
-        onPrimary: theme.accent.color,
-      ),
-      onPressed: () {},
-      icon: Icon(icon,
-          color: isOther ? theme.primary.color : theme.background.color),
-    );
-  }
-}
+import 'model.dart';
 
 class ConversationScreen extends StatelessWidget {
-  final List<_Message> messages;
+  final List<CommedMessage> messages;
   final String urlImage;
   final String enterprise;
 
@@ -144,181 +62,65 @@ class ConversationScreen extends StatelessWidget {
       backgroundColor: theme.appBarColor,
       title: StoreConnector<AppState, CommedTheme>(
         converter: (s) => s.state.theme,
-        builder: (ctx, theme) => Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(
-                urlImage,
-              ),
-            ),
-            const SizedBox(width: 10,),
-            Text(
-              enterprise,
-              style: TextStyle(color: theme.primary.textColor),
-            )
-          ],
-        ),
+        builder: (ctx, theme) => buildLogoAndEnterprise(theme),
       ),
       actions: [
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
-              },
-            )),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, VoidCallback>(
-              builder: (context, callback) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.account_circle,
-                    color: theme.primary.textColor,
-                  ),
-                  onPressed: callback,
-                );
-              },
-              converter: (store) =>
-                  () => store.dispatch(const NavigateToNext(Routes.login))),
-        ),
+        buildSearchButton(theme, context),
+        buildAccount(theme),
       ],
       elevation: 0,
     );
   }
-}
 
-class MessageSender extends StatelessWidget {
-  const MessageSender({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Row buildLogoAndEnterprise(CommedTheme theme) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
-            child: TextField(
-              onChanged: (str) {},
-              cursorColor: Colors.black,
-              cursorHeight: 25,
-              decoration: InputDecoration(
-                  border: buildOutlineInputBorder(),
-                  focusedBorder: buildOutlineInputBorder(),
-                  disabledBorder: buildOutlineInputBorder(),
-                  enabledBorder: buildOutlineInputBorder(),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'say something...',
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                  )),
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundImage: NetworkImage(
+              urlImage,
             ),
           ),
-        ),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(5, 10, 20, 10),
-            child: CircleAvatar(
-              child: IconButton(
-                icon: const Icon(Icons.send_rounded),
-                color: Colors.white,
-                iconSize: 30,
-                onPressed: () {},
-              ),
-              backgroundColor: Colors.black,
-              radius: 25,
-            ))
-      ],
-    );
+          const SizedBox(width: 10,),
+          Text(
+            enterprise,
+            style: TextStyle(color: theme.primary.textColor),
+          )
+        ],
+      );
   }
 
-  OutlineInputBorder buildOutlineInputBorder() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
-      borderSide: const BorderSide(color: Colors.black, width: 2),
-    );
+  Padding buildSearchButton(CommedTheme theme, BuildContext context) {
+    return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: IconButton(
+            icon: Icon(Icons.search, color: theme.primary.textColor),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('This is a snackbar')));
+            },
+          ));
   }
-}
 
-class Conversation extends StatelessWidget {
-  const Conversation({
-    Key? key,
-    required this.messages,
-  }) : super(key: key);
-
-  final List<_Message> messages;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-          reverse: true,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: messages
-                .map((x) => (Row(
-                      mainAxisAlignment: x.isOther
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.end,
-                      children: [MessageWidget(message: x)],
-                    )) as Widget) // ITS NOT UNNECESSARY!
-                .toList()
-              ..add(const Padding(padding: EdgeInsets.all(35))),
-          )),
-    );
+  Padding buildAccount(CommedTheme theme) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: StoreConnector<AppState, VoidCallback>(
+            builder: (context, callback) {
+              return IconButton(
+                icon: Icon(
+                  Icons.account_circle,
+                  color: theme.primary.textColor,
+                ),
+                onPressed: callback,
+              );
+            },
+            converter: (store) =>
+                () => store.dispatch(const NavigateToNext(Routes.login))),
+      );
   }
 }
 
-class MessageWidget extends StatelessWidget {
-  final _Message message;
-
-  const MessageWidget({Key? key, required this.message}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StoreConnector<AppState, CommedTheme>(
-      converter: (s) => s.state.theme,
-      builder: (ctx, theme) => Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: message.isOther
-              ? CrossAxisAlignment.start
-              : CrossAxisAlignment.end,
-          children: [
-            Text(
-              message.username,
-              style: TextStyle(fontSize: 14),
-            ),
-            Material(
-              elevation: 10,
-              borderRadius: message.isOther
-                  ? const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                      topRight: Radius.circular(20))
-                  : const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                      topLeft: Radius.circular(20)),
-              color: message.isOther
-                  ? theme.primary.color
-                  : theme.background.color,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: message.buildWidget(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class MockConversation extends StatelessWidget {
   const MockConversation({
