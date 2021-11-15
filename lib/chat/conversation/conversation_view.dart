@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,9 +10,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 class _Message {
   final bool isOther;
   final String username;
-  final ColorText color;
 
-  _Message(this.isOther, this.username, this.color);
+  _Message(this.isOther, this.username);
 
   Widget buildWidget() {
     return const Text("You shouldn't see this");
@@ -22,51 +23,94 @@ class MessageModel implements _Message {
   final bool isOther;
   final String username;
   final String message;
-  final ColorText color;
 
-  const MessageModel(this.isOther, this.username, this.message, this.color);
+  const MessageModel(this.isOther, this.username, this.message);
 
   @override
   Widget buildWidget() {
-    return Text(
-      message,
-      style: TextStyle(color: color.textColor),
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Text(
+        message,
+        style: TextStyle(
+            color:
+                isOther ? theme.primary.textColor : theme.background.textColor),
+      ),
     );
   }
 }
 
 @immutable
 class FormalOfferMessage implements _Message {
-  @override
-  // TODO: implement isMine
-  bool get isOther => throw UnimplementedError();
+  final bool isOther;
+  final String username;
+  final int version;
+
+  FormalOfferMessage(this.isOther, this.username, this.version);
 
   @override
   Widget buildWidget() {
-    // TODO: implement buildWidget
-    throw UnimplementedError();
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Column(children: [
+        Text(
+          "Formal Offer version " + version.toString(),
+          style: TextStyle(
+              color: isOther
+                  ? theme.primary.textColor
+                  : theme.background.textColor),
+        ),
+        Row(
+          children: [
+            buildButton(theme, "Download PDF", Icons.download),
+            const SizedBox(
+              width: 20,
+            ),
+            buildButton(theme, "Sign PDF", Icons.vpn_key),
+          ],
+        ),
+      ]),
+    );
   }
 
-  @override
-  // TODO: implement username
-  String get username => throw UnimplementedError();
-
-  @override
-  // TODO: implement color
-  ColorText get color => throw UnimplementedError();
+  ElevatedButton buildButton(CommedTheme theme, String message, IconData icon) {
+    return ElevatedButton.icon(
+      label: Text(
+        message,
+        style: TextStyle(
+            color:
+                isOther ? theme.background.textColor : theme.primary.textColor),
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: isOther ? theme.background.color : theme.primary.color,
+        onPrimary: theme.accent.color,
+      ),
+      onPressed: () {},
+      icon: Icon(icon,
+          color: isOther ? theme.primary.color : theme.background.color),
+    );
+  }
 }
 
 class ConversationScreen extends StatelessWidget {
   final List<_Message> messages;
+  final String urlImage;
+  final String enterprise;
 
-  const ConversationScreen({Key? key, required this.messages})
+  const ConversationScreen(
+      {Key? key,
+      required this.messages,
+      required this.urlImage,
+      required this.enterprise})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
-      builder: (ctx, theme) => Container(
+      builder: (ctx, theme) => Scaffold(
+        appBar: buildAppBar(context, theme),
+        body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -76,19 +120,73 @@ class ConversationScreen extends StatelessWidget {
                   theme.lightBackground,
                 ]),
           ),
-        child: Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          //crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
+            alignment: AlignmentDirectional.bottomStart,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Conversation(messages: messages),
+                ],
+              ),
+              const MessageSender(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context, CommedTheme theme) {
+    return AppBar(
+      systemOverlayStyle:
+          SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+      backgroundColor: theme.appBarColor,
+      title: StoreConnector<AppState, CommedTheme>(
+        converter: (s) => s.state.theme,
+        builder: (ctx, theme) => Row(
           children: [
-            Column(
-              children: [
-                Conversation(messages: messages),
-              ],
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(
+                urlImage,
+              ),
             ),
-            const MessageSender(),
+            const SizedBox(width: 10,),
+            Text(
+              enterprise,
+              style: TextStyle(color: theme.primary.textColor),
+            )
           ],
         ),
       ),
+      actions: [
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: IconButton(
+              icon: Icon(Icons.search, color: theme.primary.textColor),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('This is a snackbar')));
+              },
+            )),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: StoreConnector<AppState, VoidCallback>(
+              builder: (context, callback) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.account_circle,
+                    color: theme.primary.textColor,
+                  ),
+                  onPressed: callback,
+                );
+              },
+              converter: (store) =>
+                  () => store.dispatch(const NavigateToNext(Routes.login))),
+        ),
+      ],
+      elevation: 0,
     );
   }
 }
@@ -182,34 +280,41 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment:
-            message.isOther ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-        children: [
-          Text(
-            message.username,
-            style: TextStyle(fontSize: 14),
-          ),
-          Material(
-            elevation: 10,
-            borderRadius: message.isOther
-                ? const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                    topRight: Radius.circular(20))
-                : const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                    topLeft: Radius.circular(20)),
-            color: message.color.color,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: message.buildWidget(),
+    return StoreConnector<AppState, CommedTheme>(
+      converter: (s) => s.state.theme,
+      builder: (ctx, theme) => Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: message.isOther
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
+          children: [
+            Text(
+              message.username,
+              style: TextStyle(fontSize: 14),
             ),
-          ),
-        ],
+            Material(
+              elevation: 10,
+              borderRadius: message.isOther
+                  ? const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topRight: Radius.circular(20))
+                  : const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)),
+              color: message.isOther
+                  ? theme.primary.color
+                  : theme.background.color,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: message.buildWidget(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -222,21 +327,18 @@ class MockConversation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, CommedTheme>(
-      converter: (sto) => sto.state.theme,
-      builder: (ctx, theme) => Scaffold(
-        appBar: buildAppBar(context, theme),
-        body: ConversationScreen(
-          messages: List.filled(120, [
-            MessageModel(
-                false, "user1", "Hi nice to meet y'all!", theme.background),
-            MessageModel(true, "user2", "Hi how are you doing!", theme.primary)
-          ]).fold([], (xs, x) {
-            xs.addAll(x);
-            return xs;
-          }),
-        ),
-      ),
+    return ConversationScreen(
+      messages: List.filled(120, [
+        const MessageModel(false, "user1", "Hi nice to meet y'all!"),
+        const MessageModel(true, "user2", "Hi how are you doing!")
+      ]).fold([], (xs, x) {
+        xs.addAll(x);
+        return xs;
+      })
+        ..add(FormalOfferMessage(true, "user2", 3))
+        ..add(FormalOfferMessage(false, "user1", 4)),
+      enterprise: "Moniatios",
+      urlImage: "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg",
     );
   }
 }

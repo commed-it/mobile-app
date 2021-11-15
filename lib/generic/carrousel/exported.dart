@@ -5,9 +5,6 @@ import 'package:flutter_app/store/store.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-typedef SetIndexAction = LambdaAction Function(
-    int index, CarouselController controller);
-
 @immutable
 class ImageContainer {
   final List<String> listOfUrls;
