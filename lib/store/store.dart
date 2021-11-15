@@ -6,6 +6,7 @@ import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/product/store/store.dart';
 import 'package:flutter_app/root/store/store.dart';
+import 'package:flutter_app/searcher/action.dart';
 import 'package:flutter_app/store/theme.dart';
 
 import 'actions.dart';
@@ -36,10 +37,17 @@ class AppState {
   final List<Product> products;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
+  final List<String> historicOfMessages;
 
   // add User, ...
-  AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.products, this.theme, this.enterpriseDetail);
+  AppState(
+      this.loginViewState,
+      this.pageControlState,
+      this.navigatorKey,
+      this.products,
+      this.theme,
+      this.enterpriseDetail,
+      this.historicOfMessages);
 
   // add User, ...
 
@@ -62,7 +70,9 @@ class AppState {
             .values
             .toList(),
         theme = CommedTheme.init(),
-        enterpriseDetail = Enterprise.init();
+        enterpriseDetail = const Enterprise.init(),
+        historicOfMessages = List.generate(
+            15, (index) => "This is a recommendation " + index.toString());
 
   AppState copy(
           {LoginState? loginViewState,
@@ -70,14 +80,16 @@ class AppState {
           GlobalKey<NavigatorState>? navigatorKey,
           List<Product>? products,
           CommedTheme? theme,
-          Enterprise? enterpriseDetail}) =>
+          Enterprise? enterpriseDetail,
+          List<String>? historicOfMessages}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
           products ?? this.products,
           theme ?? this.theme,
-          enterpriseDetail ?? this.enterpriseDetail);
+          enterpriseDetail ?? this.enterpriseDetail,
+          historicOfMessages ?? this.historicOfMessages);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
@@ -97,6 +109,14 @@ AppState navigationReducer(AppState prev, AppAction action) {
       return prev.copy(navigatorKey: navKey);
     case LambdaAction:
       return (action as LambdaAction).func(prev);
+    case DeleteRecommendationIndex:
+      var actionD = action as DeleteRecommendationIndex;
+      if (actionD.index < prev.historicOfMessages.length) {
+        var removeAt = prev.historicOfMessages.toList()
+          ..removeAt(actionD.index);
+        return prev.copy(historicOfMessages: removeAt);
+      }
+      return prev;
   }
   return prev;
 }
