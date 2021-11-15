@@ -21,6 +21,7 @@ class ChatView extends StatelessWidget {
               color: theme.background.color,
               child: SingleChildScrollView(
                 child: StoreConnector<AppState, VoidCallback>(
+                  // TODO change action
                   converter: (store) => () => store.dispatch(LambdaAction((s) =>
                       s.copy(
                           navigatorKey: s.navigatorKey
@@ -31,44 +32,20 @@ class ChatView extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                       ),
-                      StoreConnector<AppState, VoidCallback>(
-                        converter: (sto) =>
-                            () => sto.dispatch(ChangeEnterpriseDetail(1)),
-                        builder: (c, callbackLogo) => GenSummaryButton.only(
-                          ratio: 0.8,
-                          image: const NetworkImage(
-                              "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg"),
-                          title: "Moniatios",
-                          subtitle: "Subtitle",
-                          onPressed: callback,
-                          onPressedLogo: callbackLogo,
-                        ),
-                      ),
+                      buildItem(
+                          callback,
+                          "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg",
+                          "Moniation",
+                          "Subtitle"),
                       const ListDivider(),
-                      StoreConnector<AppState, VoidCallback>(
-                        converter: (sto) =>
-                            () => sto.dispatch(ChangeEnterpriseDetail(1)),
-                        builder: (c, callbackLogo) => GenSummaryButton.only(
-                          ratio: 0.8,
-                          image: NetworkImage(
-                              "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg"),
-                          title: "Chicken",
-                          subtitle: "Subtitle",
-                          onPressed: callback,
-                          onPressedLogo: callbackLogo,
-                        ),
-                      ),
-                      const ListDivider(),
-                      GenSummaryButton.only(
-                        ratio: 0.8,
-                        image: NetworkImage(
-                            "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg"),
-                        title: "Chicken",
-                        subtitle: "Subtitle",
-                        onPressed: callback,
-                        onPressedLogo: () {},
-                      ),
-                      ListDivider(),
+                      buildItem(callback,
+                          "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg",
+                          "Chicken on the corn", "Anther subtitle"),
+                     const ListDivider(),
+                      buildItem(callback,
+                          "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg",
+                          "Chick Korea", "Just a subtitle"),
+                     const ListDivider(),
                     ],
                   ),
                 ),
@@ -76,6 +53,21 @@ class ChatView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  StoreConnector<AppState, VoidCallback> buildItem(
+      VoidCallback callback, String image, String title, String subtitle) {
+    return StoreConnector<AppState, VoidCallback>(
+      converter: (sto) => () => sto.dispatch(ChangeEnterpriseDetail(1)),
+      builder: (c, callbackLogo) => GenSummaryButton.only(
+        ratio: 0.8,
+        image: NetworkImage(image),
+        title: title,
+        subtitle: subtitle,
+        onPressed: callback,
+        onPressedLogo: callbackLogo,
       ),
     );
   }
