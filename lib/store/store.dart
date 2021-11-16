@@ -6,6 +6,8 @@ import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/product/store/store.dart';
 import 'package:flutter_app/root/store/store.dart';
+import 'package:flutter_app/searcher/action.dart';
+import 'package:flutter_app/searcher/model.dart';
 import 'package:flutter_app/store/theme.dart';
 
 import 'actions.dart';
@@ -36,10 +38,11 @@ class AppState {
   final List<Product> products;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
+  final Searcher searcher;
 
   // add User, ...
   AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.products, this.theme, this.enterpriseDetail);
+      this.products, this.theme, this.enterpriseDetail, this.searcher);
 
   // add User, ...
 
@@ -62,7 +65,8 @@ class AppState {
             .values
             .toList(),
         theme = CommedTheme.init(),
-        enterpriseDetail = Enterprise.init();
+        enterpriseDetail = const Enterprise.init(),
+        searcher = Searcher.init();
 
   AppState copy(
           {LoginState? loginViewState,
@@ -70,14 +74,16 @@ class AppState {
           GlobalKey<NavigatorState>? navigatorKey,
           List<Product>? products,
           CommedTheme? theme,
-          Enterprise? enterpriseDetail}) =>
+          Enterprise? enterpriseDetail,
+          Searcher? searcher}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
           navigatorKey ?? this.navigatorKey,
           products ?? this.products,
           theme ?? this.theme,
-          enterpriseDetail ?? this.enterpriseDetail);
+          enterpriseDetail ?? this.enterpriseDetail,
+          searcher ?? this.searcher);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
@@ -97,6 +103,7 @@ AppState navigationReducer(AppState prev, AppAction action) {
       return prev.copy(navigatorKey: navKey);
     case LambdaAction:
       return (action as LambdaAction).func(prev);
+
   }
   return prev;
 }
@@ -107,5 +114,6 @@ AppState appReducer(AppState prev, AppAction action) {
   prev = globalPageControlReducer(prev, action);
   prev = listProductsReducer(prev, action);
   prev = enterpriseReducer(prev, action);
+  prev = searcherReducer(prev, action);
   return prev;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/chat/conversation/conversation_view.dart';
 import 'package:flutter_app/login/login_view.dart';
 import 'package:flutter_app/root/root_view.dart';
+import 'package:flutter_app/searcher/searcher_view.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -45,9 +46,10 @@ class MyApp extends StatelessWidget {
             initialRoute: Routes.home,
             routes: {
               Routes.home: (c) => const RootWidget(),
-              Routes.login: (c) => LoginView(),
-              Routes.chat: (c) => MockConversation(),
-              Routes.enterprise: (c) => EnterpriseView(),
+              Routes.login: (c) => const LoginView(),
+              Routes.chat: (c) => const MockConversation(),
+              Routes.enterprise: (c) => const EnterpriseView(),
+              Routes.searcher: (c) => SearcherView()
             },
             home: const RootWidget(),
           );

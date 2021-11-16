@@ -71,12 +71,13 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
     actions: [
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: IconButton(
-            icon: Icon(Icons.search, color: theme.primary.textColor),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
+          child: StoreConnector<AppState, VoidCallback>(
+          converter: (store) =>
+              () => store.dispatch(const NavigateToNext(Routes.searcher)),
+            builder: (ctx, callback) => IconButton(
+              icon: Icon(Icons.search, color: theme.primary.textColor),
+              onPressed: callback,
+            ),
           )),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -91,7 +92,7 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
               );
             },
             converter: (store) =>
-                () => store.dispatch(NavigateToNext(Routes.login))),
+                () => store.dispatch(const NavigateToNext(Routes.login))),
       ),
     ],
     elevation: 0,
