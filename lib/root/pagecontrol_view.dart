@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/chat/listchat_view.dart';
+import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/store/actions.dart';
@@ -92,7 +93,7 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
               );
             },
             converter: (store) =>
-                () => store.dispatch(const NavigateToNext(Routes.login))),
+                () => store.state.isLogged ? store.dispatch(NavigateToEnterpriseDetail(1)): store.dispatch(const NavigateToNext(Routes.login))),
       ),
     ],
     elevation: 0,

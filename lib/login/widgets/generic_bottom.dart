@@ -13,7 +13,8 @@ FadeAnimation buildGenericBottomWidget(
     fromAppLocalization outlinedFunc,
     double outWidth,
     IconData outIcon,
-    AppAction action) {
+    AppAction action,
+    VoidCallback elevatedCallback) {
   return FadeAnimation(
     1,
     Padding(
@@ -21,7 +22,7 @@ FadeAnimation buildGenericBottomWidget(
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
-          FormElevatedButton(context: context, func: elevatedFunc),
+          FormElevatedButton(context: context, func: elevatedFunc, callbackButton: elevatedCallback,),
           const SizedBox(width: 15),
           buildOutlinedButton(context, outlinedFunc, outWidth, outIcon, action),
         ],
@@ -80,10 +81,13 @@ Widget buildOutlinedButton(BuildContext context, fromAppLocalization func,
 }
 
 class FormElevatedButton extends StatelessWidget {
+  final VoidCallback callbackButton;
+
   const FormElevatedButton({
     Key? key,
     required this.context,
     required this.func,
+    required this.callbackButton,
   }) : super(key: key);
 
   final BuildContext context;
@@ -93,7 +97,7 @@ class FormElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       builder: (ctx, theme) => ElevatedButton(
-        onPressed: () {},
+        onPressed: callbackButton,
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
           primary: theme.primary.color,

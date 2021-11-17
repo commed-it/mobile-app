@@ -85,7 +85,7 @@ class ProductItem extends StatelessWidget {
             children: [
               StoreConnector<AppState, VoidCallback>(
                   converter: (sto) => () =>
-                      sto.dispatch(ChangeEnterpriseDetail(1)),
+                      sto.dispatch(NavigateToEnterpriseDetail(1)),
                   builder: (cto, onPressedLogo) => GenericSummary.only(
                         ratio: 0.8,
                         image: NetworkImage(product.content.company.logoURI),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/store/actions.dart';
 
 @immutable
-class ChangeEnterpriseDetail extends AppAction {
+class NavigateToEnterpriseDetail extends AppAction {
   int enterpriseID;
-  ChangeEnterpriseDetail(this.enterpriseID);
+  NavigateToEnterpriseDetail(this.enterpriseID);
 }
