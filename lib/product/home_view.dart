@@ -45,8 +45,9 @@ class HomeBody extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children:
-                        products.map((prod) => ProductItem(product: prod)).fold(
+                    children: products
+                        .map((prod) => ProductItem(product: prod, theme: theme))
+                        .fold(
                             [],
                             (value, element) => value
                               ..add(const Padding(
@@ -69,8 +70,10 @@ class HomeBody extends StatelessWidget {
 
 class ProductItem extends StatelessWidget {
   final Product product;
+  final CommedTheme theme;
 
-  const ProductItem({Key? key, required this.product}) : super(key: key);
+  const ProductItem({Key? key, required this.product, required this.theme})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +87,15 @@ class ProductItem extends StatelessWidget {
           child: Column(
             children: [
               StoreConnector<AppState, VoidCallback>(
-                  converter: (sto) => () =>
-                      sto.dispatch(NavigateToEnterpriseDetail(1)),
+                  converter: (sto) =>
+                      () => sto.dispatch(NavigateToEnterpriseDetail(1)),
                   builder: (cto, onPressedLogo) => GenericSummary.only(
                         ratio: 0.8,
                         image: NetworkImage(product.content.company.logoURI),
                         title: product.content.name,
                         subtitle: product.content.company.name,
                         onPressedLogo: onPressedLogo,
+                        secondWidget: ChatButton(theme: theme),
                       )),
               Container(
                 padding: const EdgeInsets.only(top: 15),
@@ -118,6 +122,42 @@ class ProductItem extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ChatButton extends StatelessWidget {
+  const ChatButton({
+    Key? key,
+    required this.theme,
+  }) : super(key: key);
+
+  final CommedTheme theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        StoreConnector<AppState, VoidCallback>(
+          converter: (sto) => () =>
+              sto.dispatch(LambdaAction((s) =>
+                  s.copy(
+                      navigatorKey: s.navigatorKey
+                        ..currentState!.pushNamed(Routes.chat)))),
+          builder: (cto, onPressedChat) => ElevatedButton(
+            onPressed: onPressedChat,
+            child: Icon(Icons.chat_outlined),
+            style: ElevatedButton.styleFrom(
+              primary: theme.primary.color,
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(13),
+            ),
           ),
         ),
       ],
