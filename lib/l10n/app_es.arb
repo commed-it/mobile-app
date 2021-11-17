@@ -1,12 +1,27 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    },
-    "login_noun" : "Login",
-    "login_verb" : "Log in",
-    "register" : "Register",
-    "register_button" : "I am new",
-    "username" : "Username",
-    "password" : "Password"
+    "login_noun" : "autenticar",
+    "login_verb" : "Iniciar",
+    "register" : "Registro",
+    "register_switch" : "Soy nuevo",
+    "login_switch" : "Ya tengo cuenta",
+    "register_button" : "Registrarse",
+    "username" : "Nombre de usuario",
+    "password" : "Contrasenya",
+    "repeat_password" : "Repite contrasenya",
+    "nif" : "NIF",
+    "company_name" : "Nombre de la empresa",
+    "email" : "Correo electrónico",
+    "contact" : "Contacto",
+    "see_more" : "Ver más",
+    "see_less" : "Ver menos",
+    "formal_offer_version" : "Versión del contracto",
+    "download_pdf" : "Descarregar PDF",
+    "sign_pdf" : "Signar PDF",
+    "description" : "Descripción",
+    "signed" : "signado",
+    "not_signed" : "no signado",
+    "num_version" : "versión: ",
+    "search" : "Cerca",
+    "dots": "..."
+
 }

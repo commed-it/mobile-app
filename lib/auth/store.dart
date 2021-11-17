@@ -7,7 +7,7 @@ AppState authenticationReducer(AppState prev, AppAction action) {
   switch (action.runtimeType) {
     case ToggleAuthToken:
       var newAction = action as ToggleAuthToken;
-      GlobalKey<NavigatorState> navKey = prev.navigatorKey
+      GlobalKey<NavigatorState> navKey = prev.navigatorKey..currentState!.pop()
         ..currentState!.pushReplacementNamed(Routes.home);
       return prev.copy(isLogged: newAction.authenticate, navigatorKey: navKey);
   }

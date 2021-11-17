@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
 
 class CommedMessage {
   final bool isOther;
@@ -30,7 +30,7 @@ class MessageModel implements CommedMessage {
         message,
         style: TextStyle(
             color:
-            isOther ? theme.primary.textColor : theme.background.textColor),
+                isOther ? theme.primary.textColor : theme.background.textColor),
       ),
     );
   }
@@ -49,7 +49,8 @@ class FormalOfferMessage implements CommedMessage {
       converter: (s) => s.state.theme,
       builder: (ctx, theme) => Column(children: [
         Text(
-          "Formal Offer version " + version.toString(),
+          AppLocalizations.of(ctx)!.formal_offer_version +
+              version.toString(),
           style: TextStyle(
               color: isOther
                   ? theme.primary.textColor
@@ -57,11 +58,13 @@ class FormalOfferMessage implements CommedMessage {
         ),
         Row(
           children: [
-            buildButton(theme, "Download PDF", Icons.download),
+            buildButton(theme, AppLocalizations.of(ctx)!.download_pdf,
+                Icons.download),
             const SizedBox(
               width: 20,
             ),
-            buildButton(theme, "Sign PDF", Icons.vpn_key),
+            buildButton(
+                theme, AppLocalizations.of(ctx)!.sign_pdf, Icons.vpn_key),
           ],
         ),
       ]),
@@ -74,7 +77,7 @@ class FormalOfferMessage implements CommedMessage {
         message,
         style: TextStyle(
             color:
-            isOther ? theme.background.textColor : theme.primary.textColor),
+                isOther ? theme.background.textColor : theme.primary.textColor),
       ),
       style: ElevatedButton.styleFrom(
         primary: isOther ? theme.background.color : theme.primary.color,

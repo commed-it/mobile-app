@@ -6,6 +6,7 @@ import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'model/formaloffer.dart';
 
@@ -56,59 +57,10 @@ class FormalOffersView extends StatelessWidget {
                         children: formalOffers
                             .map((formalOffer) => Column(
                                   children: [
-                                    StoreConnector<AppState, VoidCallback>(
-                                      converter: (sto) => () => sto
-                                          .dispatch(NavigateToEnterpriseDetail(1)),
-                                      builder: (c, callbackLogo) =>
-                                          GenSummaryButton.only(
-                                        ratio: 0.8,
-                                        image: NetworkImage(
-                                            formalOffer.enterprise.urlLogo),
-                                        title:  formalOffer.productContent,
-                                        subtitle: formalOffer.enterprise.name,
-                                        onPressed: callback,
-                                        onPressedLogo: callbackLogo,
-                                        secondWidget: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "num version: " +
-                                                  formalOffer.numVersion
-                                                      .toString(),
-                                              style: TextStyle(
-                                                color: theme.accent.textColor,
-                                                fontStyle: FontStyle.italic,
-                                              ),
-                                            ),
-                                            formalOffer.isSigned
-                                                ? Chip(
-                                                    padding: EdgeInsets.all(0),
-                                                    backgroundColor:
-                                                        theme.primary.color,
-                                                    label: Text(
-                                                        'signed'.toUpperCase(),
-                                                        style: TextStyle(
-                                                            color: theme.primary
-                                                                .textColor)),
-                                                  )
-                                                : Chip(
-                                                    padding: EdgeInsets.all(0),
-                                                    backgroundColor:
-                                                        theme.accent.color,
-                                                    label: Text(
-                                                        'not signed'
-                                                            .toUpperCase(),
-                                                        style: TextStyle(
-                                                            color: theme.accent
-                                                                .textColor)),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    FormalOfferItem(
+                                        formalOffer: formalOffer,
+                                        callback: callback,
+                                        theme: theme),
                                     const ListDivider(),
                                   ],
                                 ))
@@ -123,5 +75,75 @@ class FormalOffersView extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class FormalOfferItem extends StatelessWidget {
+  const FormalOfferItem({
+    Key? key,
+    required this.formalOffer,
+    required this.callback,
+    required this.theme,
+  }) : super(key: key);
+
+  final FormalOffer formalOffer;
+  final VoidCallback callback;
+  final CommedTheme theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, VoidCallback>(
+      converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(1)),
+      builder: (c, callbackLogo) => GenSummaryButton.only(
+        ratio: 0.8,
+        image: NetworkImage(formalOffer.enterprise.urlLogo),
+        title: formalOffer.productContent,
+        subtitle: formalOffer.enterprise.name,
+        onPressed: callback,
+        onPressedLogo: callbackLogo,
+        secondWidget: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.num_version + formalOffer.numVersion.toString(),
+              style: TextStyle(
+                color: theme.accent.textColor,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            SignBadge(formalOffer: formalOffer, theme: theme),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SignBadge extends StatelessWidget {
+  const SignBadge({
+    Key? key,
+    required this.formalOffer,
+    required this.theme,
+  }) : super(key: key);
+
+  final FormalOffer formalOffer;
+  final CommedTheme theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return formalOffer.isSigned
+        ? Chip(
+            padding: EdgeInsets.all(0),
+            backgroundColor: theme.primary.color,
+            label: Text(AppLocalizations.of(context)!.signed.toUpperCase(),
+                style: TextStyle(color: theme.primary.textColor)),
+          )
+        : Chip(
+            padding: EdgeInsets.all(0),
+            backgroundColor: theme.accent.color,
+            label: Text(AppLocalizations.of(context)!.not_signed.toUpperCase(),
+                style: TextStyle(color: theme.accent.textColor)),
+          );
   }
 }

@@ -79,7 +79,7 @@ class ConversationScreen extends StatelessWidget {
     return Row(
       children: [
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(ChangeEnterpriseDetail(conversationId)),
+          converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(conversationId)),
           builder: (con, callback) => InkWell(
             child: CircleAvatar(
               radius: 20,
@@ -101,16 +101,15 @@ class ConversationScreen extends StatelessWidget {
     );
   }
 
-  Padding buildSearchButton(CommedTheme theme, BuildContext context) {
-    return Padding(
+  Widget buildSearchButton(CommedTheme theme, BuildContext context) {
+    return StoreConnector<AppState, VoidCallback>(
+    converter : (sto) => () => sto.dispatch(const NavigateToNext(Routes.searcher)),
+        builder: (cto, callback) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: IconButton(
           icon: Icon(Icons.search, color: theme.primary.textColor),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('This is a snackbar')));
-          },
-        ));
+          onPressed: callback,
+        )));
   }
 
   Padding buildAccount(CommedTheme theme) {

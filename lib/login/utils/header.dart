@@ -20,9 +20,7 @@ class HeadLogin extends StatelessWidget {
       margin: const EdgeInsets.only(top: 40),
       child: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
             children: [
               const BackButton(),
               Column(
@@ -56,7 +54,6 @@ class HeadLogin extends StatelessWidget {
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.all(20),)
             ]),
       ),
     );

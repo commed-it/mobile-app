@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/login/utils/box_decoration.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Searcher extends StatelessWidget {
   const Searcher({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class Searcher extends StatelessWidget {
         child: Container(
           child: TextField(
             decoration: InputDecoration(
-              hintText: "Search...",
+              hintText: AppLocalizations.of(context)!.search + AppLocalizations.of(context)!.dots,
               hintStyle: TextStyle(color: Colors.grey.shade600),
               prefixIcon: Icon(
                 Icons.search, color: Colors.grey.shade600, size: 20,),

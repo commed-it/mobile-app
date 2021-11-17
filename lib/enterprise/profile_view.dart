@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
-import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/list_item.dart';
@@ -104,7 +102,7 @@ class DescriptionContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Description",
+          Text(AppLocalizations.of(context)!.description,
               style: TextStyle(
                 fontSize: 30,
               )),

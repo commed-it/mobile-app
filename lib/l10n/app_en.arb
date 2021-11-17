@@ -1,8 +1,4 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    },
     "login_noun" : "Login",
     "login_verb" : "Log in",
     "register" : "Register",
@@ -16,5 +12,14 @@
     "email" : "Email",
     "contact" : "Contact",
     "see_more" : "See more",
-    "see_less" : "See less"
+    "see_less" : "See less",
+    "formal_offer_version" : "Formal offer version ",
+    "download_pdf" : "Download PDF",
+    "sign_pdf" : "Sign PDF",
+    "description" : "Description",
+    "signed" : "signed",
+    "not_signed" : "not signed",
+    "num_version" : "num version: ",
+    "search" : "Search",
+    "dots": "..."
 }

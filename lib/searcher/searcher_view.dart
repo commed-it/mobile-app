@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/searcher/action.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearcherView extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
@@ -60,7 +59,7 @@ class SearcherView extends StatelessWidget {
         builder: (ctx, onChanged) => TextFormField(
           controller: _controller,
           decoration: InputDecoration(
-            hintText: "Search...",
+            hintText: AppLocalizations.of(ctx)!.search + AppLocalizations.of(ctx)!.dots,
             hintStyle: TextStyle(color: Colors.grey.shade600),
             prefixIcon: Icon(
               Icons.search,
