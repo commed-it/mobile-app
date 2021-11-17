@@ -13,13 +13,16 @@ import 'package:flutter_app/store/theme.dart';
 
 import 'actions.dart';
 
-List<String> imgList = [
-  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+List<String> bicicletaImageList = [
+  "https://instagram.fbcn7-2.fna.fbcdn.net/v/t51.2885-15/e35/255858093_469135257869381_6653683263538409749_n.jpg?_nc_ht=instagram.fbcn7-2.fna.fbcdn.net&_nc_cat=105&_nc_ohc=83KlgONymIoAX_-hMc-&edm=AABBvjUBAAAA&ccb=7-4&oh=ecec01dccc7118a2e65013db041ed9a0&oe=619BFB74&_nc_sid=83d603",
+  "https://instagram.fbcn7-2.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/222854503_991402534928079_1208240465553245294_n.jpg?_nc_ht=instagram.fbcn7-2.fna.fbcdn.net&_nc_cat=103&_nc_ohc=iw8vN24ekIsAX8UQtGH&edm=AP_V10EBAAAA&ccb=7-4&oh=b47484986a47883da10a1a6886d228bb&oe=619C0C3F&_nc_sid=4f375e",
+  "https://instagram.fbcn7-2.fna.fbcdn.net/v/t51.2885-15/e35/s1080x1080/225119727_249351956766946_5572182716211699871_n.jpg?_nc_ht=instagram.fbcn7-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=oCtxhiayOC8AX_hzbUH&edm=AP_V10EBAAAA&ccb=7-4&oh=ffdf872d80464cf00aad15fd0df8ddb0&oe=619B1799&_nc_sid=4f375e",
+];
+List<String> rodiImageList = [
+  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmontserratcentre.com%2Fwp-content%2Fuploads%2F2015%2F11%2FRODI-MOTOR-3.jpg&f=1&nofb=1",
+  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Foriolcastello.com%2Fwp-content%2Fuploads%2F2019%2F05%2FZ6A1293.jpg&f=1&nofb=1",
+  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.lavanguardia.com%2Ffiles%2Fog_thumbnail%2Fuploads%2F2018%2F02%2F02%2F5f1602a78773c.jpeg&f=1&nofb=1",
+  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F3f%2F49%2Fa0%2F3f49a04ac8a6d48daa164afe3393a736.jpg&f=1&nofb=1"
 ];
 
 typedef AppStateFunction = AppState Function(AppState state);
@@ -59,16 +62,28 @@ class AppState {
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
-        products = List.filled(
-                5,
-                ProductContent(
-                    ImageContainer(imgList),
-                    "Name",
-                    "DescriptionDescriptionDescriptionDe scrip32tionDescriptionDescriptionionDe323232scri ption Descr iptio nDescriptionDescriptionDescription",
-                    false,
-                    CompanySmallDetail(
-                        "https://images.dog.ceo/breeds/boxer/n02108089_15702.jpg",
-                        "Company Name")))
+        products = [
+          ProductContent(
+              ImageContainer(bicicletaImageList),
+              "Comida para llevar",
+              "El restaurante ocupa la planta baja del Casal organizado en dos comedores: El comedor Do Carrasca, con cabida para treinta comensales, nos ofrece posada al abrigo de su gran chimenea. El comedor Da Paloma está pensado para albergar pequeñas celebraciones o comidas de empresa, con una capacidad de hasta ochenta personas. Además dispone de proyector y pantalla lo que posibilita su utilización para presentaciones y eventos similares. El local, inaugurado en el verano de 2004, ofrece cocina tradicional con toques de modernidad. El restaurante aprovecha los productos de la zona ( excelentes carnes, salazones, pulpo, productos de la huerta, pescados de la cercana ría de Vigo…) combinándolos con nuevos sabores y texturas.",
+              false,
+              CompanySmallDetail(
+                  "https://instagram.fbcn5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/25024378_169126683844186_21293180838215680_n.jpg?_nc_ht=instagram.fbcn5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=jVg3B7QJJo0AX9zxkms&edm=ABfd0MgBAAAA&ccb=7-4&oh=4731660aa270050f2805bb12fd3a2a97&oe=6196859C&_nc_sid=7bff83",
+                  "La Bicicleta")),
+          ProductContent(
+              ImageContainer(rodiImageList),
+              "Revisiones de Motores",
+              """Nuestra cadena de centros de mecánica integral del automóvil RODI nació en 1990. Somos fruto del acuerdo de colaboración de dos empresas leridanas de la automoción con más de 50 años de experiencia en el sector, Neumáticos Segur y Serveis Germans Esteve, a través de la sociedad Lleidatana del Pneumàtic. Nuestro crecimiento ha sido una constante, convirtiéndonos en poco tiempo en la cadena líder en puntos de distribución y servicios de mecánica integral del automóvil en Cataluña, Aragón y Galicia, además de en las Islas Canarias, gracias a la adquisición de la cadena El Paso 2000.
+
+              A finales de 2013, tras 20 años, rediseñamos la marca y la estrategia de negocio pasando a denominarnos RODI MOTOR SERVICES.
+
+          Esta renovación responde a la nueva y firme apuesta por evolucionar y mejorar para dar respuesta a las nuevas necesidades de nuestros clientes con la incorporación de servicios de mecánica integral del automóvil. Sin embargo, esta renovación mantiene intactos los objetivos y el espíritu que nos han caracterizado y la trayectoria de la empresa en estas últimas décadas: el servicio integral al cliente, la proximidad y la accesibilidad. En definitiva, la satisfacción del cliente.""",
+              false,
+              CompanySmallDetail(
+                  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fofertes.ccoo.cat%2Fwp-content%2Fuploads%2Fsites%2F131%2F2019%2F05%2FRodi_Motor_Services_logo.jpg&f=1&nofb=1",
+                  "Rodi")),
+        ]
             .asMap()
             .map((index, value) => MapEntry(index, Product(index, value)))
             .values
@@ -118,7 +133,6 @@ AppState navigationReducer(AppState prev, AppAction action) {
   }
   return prev;
 }
-
 
 AppState appReducer(AppState prev, AppAction action) {
   prev = navigationReducer(prev, action);

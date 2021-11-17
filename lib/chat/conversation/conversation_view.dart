@@ -79,7 +79,8 @@ class ConversationScreen extends StatelessWidget {
     return Row(
       children: [
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(conversationId)),
+          converter: (sto) =>
+              () => sto.dispatch(NavigateToEnterpriseDetail(conversationId)),
           builder: (con, callback) => InkWell(
             child: CircleAvatar(
               radius: 20,
@@ -103,13 +104,14 @@ class ConversationScreen extends StatelessWidget {
 
   Widget buildSearchButton(CommedTheme theme, BuildContext context) {
     return StoreConnector<AppState, VoidCallback>(
-    converter : (sto) => () => sto.dispatch(const NavigateToNext(Routes.searcher)),
+        converter: (sto) =>
+            () => sto.dispatch(const NavigateToNext(Routes.searcher)),
         builder: (cto, callback) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: IconButton(
-          icon: Icon(Icons.search, color: theme.primary.textColor),
-          onPressed: callback,
-        )));
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: IconButton(
+              icon: Icon(Icons.search, color: theme.primary.textColor),
+              onPressed: callback,
+            )));
   }
 
   Padding buildAccount(CommedTheme theme) {
@@ -149,8 +151,9 @@ class MockConversation extends StatelessWidget {
       })
         ..add(FormalOfferMessage(true, 3))
         ..add(FormalOfferMessage(false, 4)),
-      enterprise: "Moniatios",
-      urlImage: "https://images.dog.ceo/breeds/pug/n02110958_14996.jpg",
+      enterprise: "La Bicicleta",
+      urlImage:
+          "https://instagram.fbcn5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/25024378_169126683844186_21293180838215680_n.jpg?_nc_ht=instagram.fbcn5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=jVg3B7QJJo0AX9zxkms&edm=ABfd0MgBAAAA&ccb=7-4&oh=4731660aa270050f2805bb12fd3a2a97&oe=6196859C&_nc_sid=7bff83",
     );
   }
 }
