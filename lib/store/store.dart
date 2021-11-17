@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/auth/store.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/store.dart';
 import 'package:flutter_app/generic/carrousel/exported.dart';
@@ -39,10 +40,18 @@ class AppState {
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
+  final bool isLogged;
 
   // add User, ...
-  AppState(this.loginViewState, this.pageControlState, this.navigatorKey,
-      this.products, this.theme, this.enterpriseDetail, this.searcher);
+  AppState(
+      this.loginViewState,
+      this.pageControlState,
+      this.navigatorKey,
+      this.products,
+      this.theme,
+      this.enterpriseDetail,
+      this.searcher,
+      this.isLogged);
 
   // add User, ...
 
@@ -66,7 +75,8 @@ class AppState {
             .toList(),
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
-        searcher = Searcher.init();
+        searcher = Searcher.init(),
+        isLogged = false;
 
   AppState copy(
           {LoginState? loginViewState,
@@ -75,7 +85,8 @@ class AppState {
           List<Product>? products,
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
-          Searcher? searcher}) =>
+          Searcher? searcher,
+          bool? isLogged}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
@@ -83,7 +94,8 @@ class AppState {
           products ?? this.products,
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
-          searcher ?? this.searcher);
+          searcher ?? this.searcher,
+          isLogged ?? this.isLogged);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
@@ -103,13 +115,14 @@ AppState navigationReducer(AppState prev, AppAction action) {
       return prev.copy(navigatorKey: navKey);
     case LambdaAction:
       return (action as LambdaAction).func(prev);
-
   }
   return prev;
 }
 
+
 AppState appReducer(AppState prev, AppAction action) {
   prev = navigationReducer(prev, action);
+  prev = authenticationReducer(prev, action);
   prev = globalLoginReducer(prev, action);
   prev = globalPageControlReducer(prev, action);
   prev = listProductsReducer(prev, action);

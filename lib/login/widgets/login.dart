@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/login/store/actions.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
+import 'package:flutter_app/store/store.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'generic_bottom.dart';
 
@@ -28,19 +31,23 @@ class LoginWidget extends StatelessWidget {
             context: context,
             icon: Icons.password_outlined,
             func: (x) => x.password,
-        newAction: (v) => SetPasswordAction(v),
-        converter: (s) => s.state.loginViewState.password
+            newAction: (v) => SetPasswordAction(v),
+            converter: (s) => s.state.loginViewState.password
         ),
         const SizedBox(
           height: 10,
         ),
-        buildGenericBottomWidget(
-            context,
-            (x) => x.login_verb,
-            (x) => x.register_switch,
-            100,
-            Icons.add,
-            const TurnOnRegisterAction()),
+        StoreConnector<AppState, VoidCallback>(converter: (sto) => () => sto.dispatch(const ToggleAuthToken(true)),
+            builder: (cto, callback) =>
+                buildGenericBottomWidget(
+                    context,
+                        (x) => x.login_verb,
+                        (x) => x.register_switch,
+                    100,
+                    Icons.add,
+                    const TurnOnRegisterAction(),
+                    callback
+                )),
         const SizedBox(height: 20),
       ],
     );

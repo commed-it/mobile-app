@@ -60,7 +60,7 @@ class ChatView extends StatelessWidget {
   StoreConnector<AppState, VoidCallback> buildItem(
       VoidCallback callback, String image, String title, String subtitle) {
     return StoreConnector<AppState, VoidCallback>(
-      converter: (sto) => () => sto.dispatch(ChangeEnterpriseDetail(1)),
+      converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(1)),
       builder: (c, callbackLogo) => GenSummaryButton.only(
         ratio: 0.8,
         image: NetworkImage(image),

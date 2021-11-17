@@ -58,7 +58,7 @@ class FormalOffersView extends StatelessWidget {
                                   children: [
                                     StoreConnector<AppState, VoidCallback>(
                                       converter: (sto) => () => sto
-                                          .dispatch(ChangeEnterpriseDetail(1)),
+                                          .dispatch(NavigateToEnterpriseDetail(1)),
                                       builder: (c, callbackLogo) =>
                                           GenSummaryButton.only(
                                         ratio: 0.8,
