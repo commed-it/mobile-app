@@ -7,9 +7,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 class CommedMessage {
   final bool isOther;
-  final String username;
 
-  CommedMessage(this.isOther, this.username);
+  CommedMessage(this.isOther);
 
   Widget buildWidget() {
     return const Text("You shouldn't see this");
@@ -19,10 +18,9 @@ class CommedMessage {
 @immutable
 class MessageModel implements CommedMessage {
   final bool isOther;
-  final String username;
   final String message;
 
-  const MessageModel(this.isOther, this.username, this.message);
+  const MessageModel(this.isOther, this.message);
 
   @override
   Widget buildWidget() {
@@ -41,10 +39,9 @@ class MessageModel implements CommedMessage {
 @immutable
 class FormalOfferMessage implements CommedMessage {
   final bool isOther;
-  final String username;
   final int version;
 
-  FormalOfferMessage(this.isOther, this.username, this.version);
+  FormalOfferMessage(this.isOther, this.version);
 
   @override
   Widget buildWidget() {

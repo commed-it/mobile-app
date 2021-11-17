@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/list_item.dart';
@@ -20,6 +22,7 @@ class EnterpriseView extends StatelessWidget {
       builder: (ctx, theme) => StoreConnector<AppState, Enterprise>(
         converter: (sto) => sto.state.enterpriseDetail,
         builder: (ctx, enterprise) => Scaffold(
+          backgroundColor: theme.appBarColor,
           appBar: buildAppBar(context, theme),
           body: Container(
             child: Stack(
@@ -54,21 +57,6 @@ class EnterpriseView extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Padding FormerCards(CommedTheme theme, Enterprise enterprise) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CardInformation(
-              theme, Icon(Icons.article_outlined), "NIF", enterprise.nif),
-          CardInformation(theme, Icon(Icons.local_phone), "Contact",
-              enterprise.contactInfo),
         ],
       ),
     );
