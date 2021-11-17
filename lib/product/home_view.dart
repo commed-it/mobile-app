@@ -95,7 +95,11 @@ class ProductItem extends StatelessWidget {
                         title: product.content.name,
                         subtitle: product.content.company.name,
                         onPressedLogo: onPressedLogo,
-                        secondWidget: ChatButton(theme: theme),
+                        secondWidget: StoreConnector<AppState, bool>(
+                          converter: (sto) => sto.state.isLogged,
+                          builder: (cto, isLogged) =>
+                              isLogged ? ChatButton(theme: theme) : Container(),
+                        ),
                       )),
               Container(
                 padding: const EdgeInsets.only(top: 15),
@@ -145,11 +149,9 @@ class ChatButton extends StatelessWidget {
           height: 10,
         ),
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () =>
-              sto.dispatch(LambdaAction((s) =>
-                  s.copy(
-                      navigatorKey: s.navigatorKey
-                        ..currentState!.pushNamed(Routes.chat)))),
+          converter: (sto) => () => sto.dispatch(LambdaAction((s) => s.copy(
+              navigatorKey: s.navigatorKey
+                ..currentState!.pushNamed(Routes.chat)))),
           builder: (cto, onPressedChat) => ElevatedButton(
             onPressed: onPressedChat,
             child: Icon(Icons.chat_outlined),
