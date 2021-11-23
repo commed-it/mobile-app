@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/chat/listchat_view.dart';
+import 'package:flutter_app/enterprise/model/enterprise.dart';
+import 'package:flutter_app/enterprise/profile_view.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/formaloffer/formaloffer_view.dart';
 import 'package:flutter_app/product/home_view.dart';
@@ -32,10 +34,13 @@ class PageControlWidget extends StatelessWidget {
                         HomeView(),
                         ChatView(),
                         FormalOffersView(),
+                        StoreConnector<AppState, Enterprise>(converter : (sto) =>  sto.state.enterpriseDetail, builder : (ctx, enterprise) => buildProfileView(theme, enterprise)),
                       ]),
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: state.currentPage,
                     fixedColor: theme.appBarColor,
+                    unselectedItemColor: theme.unselectedLabel,
+                    showUnselectedLabels: true,
                     onTap: (index) {
                       callback(index);
                       state.pageController.animateToPage(index,
@@ -49,7 +54,9 @@ class PageControlWidget extends StatelessWidget {
                           icon: Icon(Icons.chat_outlined), label: 'Chat'),
                       BottomNavigationBarItem(
                           icon: Icon(Icons.app_registration),
-                          label: 'Formal Offers')
+                          label: 'Formal Offers'),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.account_circle), label: 'Profile'),
                     ],
                   ),
                 ),
@@ -73,8 +80,8 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: StoreConnector<AppState, VoidCallback>(
-          converter: (store) =>
-              () => store.dispatch(const NavigateToNext(Routes.searcher)),
+            converter: (store) =>
+                () => store.dispatch(const NavigateToNext(Routes.searcher)),
             builder: (ctx, callback) => IconButton(
               icon: Icon(Icons.search, color: theme.primary.textColor),
               onPressed: callback,
@@ -92,8 +99,9 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
                 onPressed: callback,
               );
             },
-            converter: (store) =>
-                () => store.state.isLogged ? store.dispatch(NavigateToEnterpriseDetail(1)): store.dispatch(const NavigateToNext(Routes.login))),
+            converter: (store) => () => store.state.isLogged
+                ? store.dispatch(NavigateToEnterpriseDetail(1))
+                : store.dispatch(const NavigateToNext(Routes.login))),
       ),
     ],
     elevation: 0,

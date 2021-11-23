@@ -83,7 +83,7 @@ class ProductItem extends StatelessWidget {
           imageContainer: product.content.imageContainer,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 50.0, right: 40.0, top: 10),
+          padding: const EdgeInsets.only(left: 30.0, right: 20.0, top: 10),
           child: Column(
             children: [
               StoreConnector<AppState, VoidCallback>(
@@ -154,11 +154,22 @@ class ChatButton extends StatelessWidget {
                 ..currentState!.pushNamed(Routes.chat)))),
           builder: (cto, onPressedChat) => ElevatedButton(
             onPressed: onPressedChat,
-            child: Icon(Icons.chat_outlined),
+            child: Row(children: [
+              Icon(Icons.chat_outlined),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 5.0,
+                  top: 18,
+                  bottom: 18,
+                ),
+                child: Text("Connect"),
+              ),
+            ]),
             style: ElevatedButton.styleFrom(
               primary: theme.primary.color,
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(13),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0),
+              ),
             ),
           ),
         ),
