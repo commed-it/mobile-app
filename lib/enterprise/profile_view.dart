@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_app/widgets/appbar.dart';
 import 'package:flutter_app/widgets/list_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -9,8 +10,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'model/enterprise.dart';
 
 class EnterpriseView extends StatelessWidget {
-  final double yPadding = 20;
-
   const EnterpriseView({Key? key}) : super(key: key);
 
   @override
@@ -21,70 +20,78 @@ class EnterpriseView extends StatelessWidget {
         converter: (sto) => sto.state.enterpriseDetail,
         builder: (ctx, enterprise) => Scaffold(
           backgroundColor: theme.appBarColor,
-          appBar: buildAppBar(context, theme),
+          appBar: buildAppBarLogged(context, theme),
           body: Container(
-            child: Stack(
-              fit: StackFit.expand,
+            child: buildProfileView(theme, enterprise),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+}
+
+Padding body(CommedTheme theme, Enterprise enterprise, yPadding) {
+  return Padding(
+    padding: EdgeInsets.only(top: yPadding + 40.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CenterLogoEnterprise(theme, enterprise),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                header(theme, enterprise),
-                bacgroundBody(theme),
-                body(theme, enterprise),
+                CardEnterpriseInformation(theme: theme, enterprise: enterprise),
+                DescriptionContainer(theme: theme, enterprise: enterprise),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 
-  Padding body(CommedTheme theme, Enterprise enterprise) {
-    return Padding(
-      padding: EdgeInsets.only(top: yPadding + 40.0),
+Widget bacgroundBody(CommedTheme theme, yPadding) {
+  return Padding(
+    padding: EdgeInsets.only(top: yPadding + 120.0),
+    child: Container(
+      color: theme.primary.textColor,
+    ),
+  );
+}
+
+Container header(CommedTheme theme, Enterprise enterprise) {
+  return Container(
+    color: theme.primary.color,
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 30),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CenterLogoEnterprise(theme, enterprise),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  CardEnterpriseInformation(theme: theme, enterprise: enterprise),
-                  DescriptionContainer(theme: theme, enterprise: enterprise),
-                ],
-              ),
-            ),
+          Text(
+            enterprise.name,
+            style: TextStyle(color: theme.primary.textColor, fontSize: 30),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget bacgroundBody(CommedTheme theme) {
-    return Padding(
-      padding: EdgeInsets.only(top: yPadding + 120.0),
-      child: Container(
-        color: theme.primary.textColor,
-      ),
-    );
-  }
-
-  Container header(CommedTheme theme, Enterprise enterprise) {
-    return Container(
-      color: theme.primary.color,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 30),
-        child: Column(
-          children: [
-            Text(
-              enterprise.name,
-              style: TextStyle(color: theme.primary.textColor, fontSize: 30),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+Widget buildProfileView(CommedTheme theme, Enterprise enterprise) {
+  const double yPadding = 20;
+  return Stack(
+    fit: StackFit.expand,
+    children: [
+      header(theme, enterprise),
+      bacgroundBody(theme, yPadding),
+      body(theme, enterprise, yPadding),
+    ],
+  );
 }
 
 class DescriptionContainer extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
-import 'package:flutter_app/generic/carrousel/exported.dart';
+import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -13,22 +13,31 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'model/product.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  final bool isAuthenticated;
+
+  const HomeView({Key? key, bool? isAuthenticated})
+      : isAuthenticated = isAuthenticated ?? true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       converter: (sto) => sto.state.theme,
-      builder: (cte, theme) => HomeBody(theme: theme),
+      builder: (cte, theme) =>
+          HomeBody(theme: theme, isAuthenticated: isAuthenticated),
     );
   }
 }
 
 class HomeBody extends StatelessWidget {
+  final bool isAuthenticated;
+
   const HomeBody({
     Key? key,
     required this.theme,
-  }) : super(key: key);
+    bool? isAuthenticated,
+  })  : isAuthenticated = isAuthenticated ?? true,
+        super(key: key);
 
   final CommedTheme theme;
 
@@ -56,7 +65,12 @@ class HomeBody extends StatelessWidget {
                               ..add(element)
                               ..add(const Padding(
                                 padding: EdgeInsets.only(top: 20),
-                              ))),
+                              )))
+                      ..add(
+                        isAuthenticated
+                            ? Container()
+                            : const SizedBox(height: 70),
+                      ),
                   ),
                 ),
               ),
@@ -83,7 +97,7 @@ class ProductItem extends StatelessWidget {
           imageContainer: product.content.imageContainer,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 50.0, right: 40.0, top: 10),
+          padding: const EdgeInsets.only(left: 30.0, right: 20.0, top: 10),
           child: Column(
             children: [
               StoreConnector<AppState, VoidCallback>(
@@ -154,11 +168,22 @@ class ChatButton extends StatelessWidget {
                 ..currentState!.pushNamed(Routes.chat)))),
           builder: (cto, onPressedChat) => ElevatedButton(
             onPressed: onPressedChat,
-            child: Icon(Icons.chat_outlined),
+            child: Row(children: [
+              Icon(Icons.chat_outlined),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 5.0,
+                  top: 18,
+                  bottom: 18,
+                ),
+                child: Text("Connect"),
+              ),
+            ]),
             style: ElevatedButton.styleFrom(
               primary: theme.primary.color,
-              shape: CircleBorder(),
-              padding: EdgeInsets.all(13),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0),
+              ),
             ),
           ),
         ),

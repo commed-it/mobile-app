@@ -7,6 +7,7 @@ import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_app/widgets/appbar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'model.dart';
@@ -30,7 +31,7 @@ class ConversationScreen extends StatelessWidget {
     return StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
       builder: (ctx, theme) => Scaffold(
-        appBar: buildAppBar(context, theme),
+        appBar: buildChatAppBar(context, theme, enterprise, urlImage, conversationId),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -57,80 +58,6 @@ class ConversationScreen extends StatelessWidget {
       ),
     );
   }
-
-  AppBar buildAppBar(BuildContext context, CommedTheme theme) {
-    return AppBar(
-      systemOverlayStyle:
-          SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
-      backgroundColor: theme.appBarColor,
-      title: StoreConnector<AppState, CommedTheme>(
-        converter: (s) => s.state.theme,
-        builder: (ctx, theme) => buildLogoAndEnterprise(theme),
-      ),
-      actions: [
-        buildSearchButton(theme, context),
-        buildAccount(theme),
-      ],
-      elevation: 0,
-    );
-  }
-
-  Row buildLogoAndEnterprise(CommedTheme theme) {
-    return Row(
-      children: [
-        StoreConnector<AppState, VoidCallback>(
-          converter: (sto) =>
-              () => sto.dispatch(NavigateToEnterpriseDetail(conversationId)),
-          builder: (con, callback) => InkWell(
-            child: CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(
-                urlImage,
-              ),
-            ),
-            onTap: callback,
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          enterprise,
-          style: TextStyle(color: theme.primary.textColor),
-        )
-      ],
-    );
-  }
-
-  Widget buildSearchButton(CommedTheme theme, BuildContext context) {
-    return StoreConnector<AppState, VoidCallback>(
-        converter: (sto) =>
-            () => sto.dispatch(const NavigateToNext(Routes.searcher)),
-        builder: (cto, callback) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: callback,
-            )));
-  }
-
-  Padding buildAccount(CommedTheme theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: StoreConnector<AppState, VoidCallback>(
-          builder: (context, callback) {
-            return IconButton(
-              icon: Icon(
-                Icons.account_circle,
-                color: theme.primary.textColor,
-              ),
-              onPressed: callback,
-            );
-          },
-          converter: (store) =>
-              () => store.dispatch(const NavigateToNext(Routes.login))),
-    );
-  }
 }
 
 class MockConversation extends StatelessWidget {
@@ -142,7 +69,7 @@ class MockConversation extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConversationScreen(
       conversationId: 1,
-      messages: List.filled(120, [
+      messages: List.filled(20, [
         const MessageModel(false, "Hi nice to meet y'all!"),
         const MessageModel(true, "Hi how are you doing!")
       ]).fold([], (xs, x) {
@@ -153,7 +80,7 @@ class MockConversation extends StatelessWidget {
         ..add(FormalOfferMessage(false, 4)),
       enterprise: "La Bicicleta",
       urlImage:
-          "https://instagram.fbcn5-1.fna.fbcdn.net/v/t51.2885-19/s150x150/25024378_169126683844186_21293180838215680_n.jpg?_nc_ht=instagram.fbcn5-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=jVg3B7QJJo0AX9zxkms&edm=ABfd0MgBAAAA&ccb=7-4&oh=4731660aa270050f2805bb12fd3a2a97&oe=6196859C&_nc_sid=7bff83",
+          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
     );
   }
 }

@@ -10,6 +10,14 @@ AppState authenticationReducer(AppState prev, AppAction action) {
       GlobalKey<NavigatorState> navKey = prev.navigatorKey..currentState!.pop()
         ..currentState!.pushReplacementNamed(Routes.home);
       return prev.copy(isLogged: newAction.authenticate, navigatorKey: navKey);
+    case LogoutAction:
+      GlobalKey<NavigatorState> navKey = prev.navigatorKey;
+      while (navKey.currentState!.canPop()) {
+        print("CAN POP" + navKey.currentWidget.toString());
+        navKey = navKey..currentState!.pop();
+      }
+      navKey = navKey..currentState!.pushNamed(Routes.home);
+      return prev.copy(isLogged: false, navigatorKey: navKey);
   }
   return prev;
 }
