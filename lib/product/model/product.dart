@@ -1,4 +1,4 @@
-import 'package:flutter_app/generic/carrousel/exported.dart';
+import 'package:flutter_app/widgets/carroussel.dart';
 
 class Product {
   final int id;

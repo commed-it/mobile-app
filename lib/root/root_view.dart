@@ -6,6 +6,7 @@ import 'package:flutter_app/root/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_app/widgets/appbar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -29,7 +30,7 @@ class NotLoggedView extends StatelessWidget {
     return StoreConnector<AppState, CommedTheme>(
       converter: (sto) => sto.state.theme,
       builder: (cto, theme) => Scaffold(
-        body: HomeView(),
+        body: HomeView(isAuthenticated : false),
         appBar: buildNotloggedAppBar(context, theme),
         floatingActionButton: StoreConnector<AppState, Function(dynamic)>(
           converter : (sto) => (isOnLoggin) => () => isOnLoggin ? sto.dispatch(const NavigateToNext(Routes.login)) : sto.dispatch(const NavigatoToRegisterAction()),
@@ -55,36 +56,11 @@ class NotLoggedView extends StatelessWidget {
                 foregroundColor: Colors.white,
                 label: 'Register',
                 onTap: loginCallback(false),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-AppBar buildNotloggedAppBar(BuildContext context, CommedTheme theme) {
-  return AppBar(
-    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
-    backgroundColor: theme.appBarColor,
-    title: Image.asset(
-      'assets/logo-white.png',
-      fit: BoxFit.cover,
-      height: 50,
-    ),
-    actions: [
-      Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, VoidCallback>(
-            converter: (store) =>
-                () => store.dispatch(const NavigateToNext(Routes.searcher)),
-            builder: (ctx, callback) => IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: callback,
-            ),
-          )),
-    ],
-    elevation: 0,
-  );
 }

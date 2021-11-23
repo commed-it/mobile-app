@@ -21,4 +21,5 @@ class NavigateToNextAndReplace extends AppAction {
   final String destinationRoute;
   const NavigateToNextAndReplace(this.destinationRoute);
 }
+
 class NavigateBack extends AppAction {}

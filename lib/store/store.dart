@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/auth/store.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/store.dart';
-import 'package:flutter_app/generic/carrousel/exported.dart';
+import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/product/store/store.dart';

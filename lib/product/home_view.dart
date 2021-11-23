@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
-import 'package:flutter_app/generic/carrousel/exported.dart';
+import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -13,22 +13,31 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'model/product.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  final bool isAuthenticated;
+
+  const HomeView({Key? key, bool? isAuthenticated})
+      : isAuthenticated = isAuthenticated ?? true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CommedTheme>(
       converter: (sto) => sto.state.theme,
-      builder: (cte, theme) => HomeBody(theme: theme),
+      builder: (cte, theme) =>
+          HomeBody(theme: theme, isAuthenticated: isAuthenticated),
     );
   }
 }
 
 class HomeBody extends StatelessWidget {
+  final bool isAuthenticated;
+
   const HomeBody({
     Key? key,
     required this.theme,
-  }) : super(key: key);
+    bool? isAuthenticated,
+  })  : isAuthenticated = isAuthenticated ?? true,
+        super(key: key);
 
   final CommedTheme theme;
 
@@ -56,7 +65,12 @@ class HomeBody extends StatelessWidget {
                               ..add(element)
                               ..add(const Padding(
                                 padding: EdgeInsets.only(top: 20),
-                              ))),
+                              )))
+                      ..add(
+                        isAuthenticated
+                            ? Container()
+                            : const SizedBox(height: 70),
+                      ),
                   ),
                 ),
               ),

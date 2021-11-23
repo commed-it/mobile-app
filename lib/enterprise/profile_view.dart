@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_app/widgets/appbar.dart';
 import 'package:flutter_app/widgets/list_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -19,7 +20,7 @@ class EnterpriseView extends StatelessWidget {
         converter: (sto) => sto.state.enterpriseDetail,
         builder: (ctx, enterprise) => Scaffold(
           backgroundColor: theme.appBarColor,
-          appBar: buildAppBar(context, theme),
+          appBar: buildAppBarLogged(context, theme),
           body: Container(
             child: buildProfileView(theme, enterprise),
           ),
