@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/root/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -30,27 +31,33 @@ class NotLoggedView extends StatelessWidget {
       builder: (cto, theme) => Scaffold(
         body: HomeView(),
         appBar: buildNotloggedAppBar(context, theme),
-        floatingActionButton: SpeedDial(
-          backgroundColor: theme.primary.color,
-          icon: Icons.login,
-          activeIcon: Icons.close,
-          spacing: 3,
-          children: [
-            SpeedDialChild(
-              child: const Icon(Icons.accessibility),
-              backgroundColor: theme.primary.color,
-              foregroundColor: Colors.white,
-              label: 'Login',
-              onTap: () => debugPrint("FIRST CHILD"),
-            ),
-            SpeedDialChild(
-              child: const Icon(Icons.accessibility),
-              backgroundColor: theme.accent.color,
-              foregroundColor: Colors.white,
-              label: 'Register',
-              onTap: () => debugPrint("FIRST CHILD"),
-            )
-          ],
+        floatingActionButton: StoreConnector<AppState, Function(dynamic)>(
+          converter : (sto) => (isOnLoggin) => () => isOnLoggin ? sto.dispatch(const NavigateToNext(Routes.login)) : sto.dispatch(const NavigatoToRegisterAction()),
+          builder: (cto, loginCallback) => SpeedDial(
+            backgroundColor: theme.primary.color,
+            icon: Icons.login,
+            label: Text("Login"),
+            activeIcon: Icons.close,
+            activeBackgroundColor: theme.unselectedLabel,
+            activeLabel: Text("Close"),
+            spacing: 3,
+            children: [
+              SpeedDialChild(
+                child: const Icon(Icons.login),
+                backgroundColor: theme.primary.color,
+                foregroundColor: Colors.white,
+                label: 'Login',
+                onTap: loginCallback(true),
+              ),
+              SpeedDialChild(
+                child: const Icon(Icons.group_add),
+                backgroundColor: theme.primary.color,
+                foregroundColor: Colors.white,
+                label: 'Register',
+                onTap: loginCallback(false),
+              )
+            ],
+          ),
         ),
       ),
     );

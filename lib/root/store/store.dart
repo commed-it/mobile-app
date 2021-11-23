@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 
@@ -19,6 +20,11 @@ AppState globalPageControlReducer(AppState prev, AppAction action) {
     case MovePageFromPageController:
       action = action as MovePageFromPageController;
       return prev.copy(pageControlState: PageControlState(action.numPage));
+    case NavigatoToRegisterAction:
+      GlobalKey<NavigatorState> navKey = prev.navigatorKey
+        ..currentState!.pushNamed(Routes.login);
+      LoginState loginState = prev.loginViewState.copy(isOnRegister: true);
+      return prev.copy(navigatorKey: navKey, loginViewState: loginState);
     default:
       return prev;
   }

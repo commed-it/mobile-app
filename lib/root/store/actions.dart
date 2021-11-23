@@ -13,3 +13,8 @@ class MovePageFromPageController extends AppAction {
 class ProfileButtonAction extends AppAction {
   const ProfileButtonAction();
 }
+
+@immutable
+class NavigatoToRegisterAction extends AppAction {
+  const NavigatoToRegisterAction();
+}
