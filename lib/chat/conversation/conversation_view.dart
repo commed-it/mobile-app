@@ -17,13 +17,15 @@ class ConversationScreen extends StatelessWidget {
   final int conversationId;
   final String urlImage;
   final String enterprise;
+  final CommedTheme theme;
 
   const ConversationScreen(
       {Key? key,
       required this.messages,
       required this.conversationId,
       required this.urlImage,
-      required this.enterprise})
+      required this.enterprise,
+      required this.theme})
       : super(key: key);
 
   @override
@@ -51,7 +53,7 @@ class ConversationScreen extends StatelessWidget {
                   Conversation(messages: messages),
                 ],
               ),
-              const MessageSender(),
+              MessageSender(theme: theme),
             ],
           ),
         ),
@@ -61,8 +63,10 @@ class ConversationScreen extends StatelessWidget {
 }
 
 class MockConversation extends StatelessWidget {
+  final CommedTheme theme;
+
   const MockConversation({
-    Key? key,
+    Key? key, required this.theme
   }) : super(key: key);
 
   @override
@@ -81,6 +85,7 @@ class MockConversation extends StatelessWidget {
       enterprise: "La Bicicleta",
       urlImage:
           "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
+      theme: theme,
     );
   }
 }

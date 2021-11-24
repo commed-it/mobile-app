@@ -114,7 +114,7 @@ AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpris
       buildSearchButton(theme, context),
       ProfileAppBarButton(theme: theme),
     ],
-    elevation: 0,
+    elevation: 10,
   );
 }
 
