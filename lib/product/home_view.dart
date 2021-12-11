@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
@@ -45,7 +47,7 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: theme.background.color,
-      child: StoreConnector<AppState, List<Product>>(
+      child: StoreConnector<AppState, HashMap<int, Product>>(
         converter: (store) => store.state.products,
         builder: (context, products) {
           return Column(
@@ -54,7 +56,7 @@ class HomeBody extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: products
+                    children: products.values
                         .map((prod) => ProductItem(product: prod, theme: theme))
                         .fold(
                             [],

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/service/dto/product_dto.dart';
 import 'package:flutter_app/service/middleware_service.dart';
@@ -10,13 +12,12 @@ import 'commed_api.dart';
 
 ThunkAction<AppState> reloadProducts() {
   return (Store<AppState> store) async {
-    final List<Product> products = await CommedMiddleware().getProducts();
-
+    final HashMap<int, Product> products = await CommedMiddleware().getProducts();
     store.dispatch(SetProductList(products));
   };
 }
 
 class SetProductList extends AppAction {
-  final List<Product> products;
+  final HashMap<int, Product> products;
   const SetProductList(this.products);
 }

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/auth/store.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_app/root/store/store.dart';
 import 'package:flutter_app/searcher/action.dart';
 import 'package:flutter_app/searcher/model.dart';
 import 'package:flutter_app/service/commed_api.dart';
+import 'package:flutter_app/service/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -41,7 +44,7 @@ class AppState {
   final LoginState loginViewState;
   final PageControlState pageControlState;
   final GlobalKey<NavigatorState> navigatorKey;
-  final List<Product> products;
+  final HashMap<int, Product> products;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
@@ -66,32 +69,7 @@ class AppState {
       : loginViewState = const LoginState.init(),
         pageControlState = PageControlState.init(),
         navigatorKey = GlobalKey<NavigatorState>(),
-        products = [
-          ProductContent(
-              ImageContainer(rodiImageList),
-              "Comida para llevar",
-              "El restaurante ocupa la planta baja del Casal organizado en dos comedores: El comedor Do Carrasca, con cabida para treinta comensales, nos ofrece posada al abrigo de su gran chimenea. El comedor Da Paloma está pensado para albergar pequeñas celebraciones o comidas de empresa, con una capacidad de hasta ochenta personas. Además dispone de proyector y pantalla lo que posibilita su utilización para presentaciones y eventos similares. El local, inaugurado en el verano de 2004, ofrece cocina tradicional con toques de modernidad. El restaurante aprovecha los productos de la zona ( excelentes carnes, salazones, pulpo, productos de la huerta, pescados de la cercana ría de Vigo…) combinándolos con nuevos sabores y texturas.",
-              false,
-              CompanySmallDetail(
-                  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
-                  "La Bicicleta")),
-          ProductContent(
-              ImageContainer(rodiImageList),
-              "Revisiones de Motores",
-              """Nuestra cadena de centros de mecánica integral del automóvil RODI nació en 1990. Somos fruto del acuerdo de colaboración de dos empresas leridanas de la automoción con más de 50 años de experiencia en el sector, Neumáticos Segur y Serveis Germans Esteve, a través de la sociedad Lleidatana del Pneumàtic. Nuestro crecimiento ha sido una constante, convirtiéndonos en poco tiempo en la cadena líder en puntos de distribución y servicios de mecánica integral del automóvil en Cataluña, Aragón y Galicia, además de en las Islas Canarias, gracias a la adquisición de la cadena El Paso 2000.
-
-              A finales de 2013, tras 20 años, rediseñamos la marca y la estrategia de negocio pasando a denominarnos RODI MOTOR SERVICES.
-
-          Esta renovación responde a la nueva y firme apuesta por evolucionar y mejorar para dar respuesta a las nuevas necesidades de nuestros clientes con la incorporación de servicios de mecánica integral del automóvil. Sin embargo, esta renovación mantiene intactos los objetivos y el espíritu que nos han caracterizado y la trayectoria de la empresa en estas últimas décadas: el servicio integral al cliente, la proximidad y la accesibilidad. En definitiva, la satisfacción del cliente.""",
-              false,
-              CompanySmallDetail(
-                  "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fofertes.ccoo.cat%2Fwp-content%2Fuploads%2Fsites%2F131%2F2019%2F05%2FRodi_Motor_Services_logo.jpg&f=1&nofb=1",
-                  "Rodi")),
-        ]
-            .asMap()
-            .map((index, value) => MapEntry(index, Product(index, value)))
-            .values
-            .toList(),
+        products = HashMap(),
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
@@ -102,7 +80,7 @@ class AppState {
           {LoginState? loginViewState,
           PageControlState? pageControlState,
           GlobalKey<NavigatorState>? navigatorKey,
-          List<Product>? products,
+          HashMap<int, Product>? products,
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
           Searcher? searcher,
@@ -141,7 +119,6 @@ AppState navigationReducer(AppState prev, AppAction action) {
 }
 
 AppState appReducer(AppState prev, action) {
-  print("APP REDUCER");
   print(action);
   if (action is AppAction) {
     prev = navigationReducer(prev, action);
@@ -151,8 +128,7 @@ AppState appReducer(AppState prev, action) {
     prev = listProductsReducer(prev, action);
     prev = enterpriseReducer(prev, action);
     prev = searcherReducer(prev, action);
-  } else {
-    var newAction = action as ThunkAction<AppState>;
+    prev = listProductsReducerService(prev, action);
   }
   return prev;
 }

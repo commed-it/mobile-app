@@ -7,6 +7,10 @@ import 'package:http/http.dart';
 class CommedAPI {
   final String postsURL = "http://10.0.2.2:8000";
 
+  String URL() {
+    return postsURL;
+  }
+
   Future<List<ProductDTO>> getPosts() async {
     Uri uri = Uri.parse(postsURL + "/product");
     Response res = await get(uri);
