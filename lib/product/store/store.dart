@@ -13,7 +13,6 @@ AppState listProductsReducer(AppState prev, AppAction action) {
           product.content.copy(isAllShown: !product.content.isAllShown);
       Product newProduct = product.copy(content: content);
       prev.products[action.productId] = newProduct;
-
       return prev.copy(products: prev.products);
     default:
       return prev;

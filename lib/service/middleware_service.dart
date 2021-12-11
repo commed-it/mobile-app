@@ -34,6 +34,7 @@ class CommedMiddleware {
   }
 
   Future<Enterprise> getEnterprise(int userId) async {
-    return Enterprise.fromDTO(await api.getEnterpriseFromOwner(userId));
+    Enterprise ent = Enterprise.fromDTO(await api.getEnterpriseFromOwner(userId));
+    return ent.copy(urlLogo: getMedia(ent.urlLogo));
   }
 }

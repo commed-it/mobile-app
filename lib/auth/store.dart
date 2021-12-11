@@ -13,7 +13,6 @@ AppState authenticationReducer(AppState prev, AppAction action) {
     case LogoutAction:
       GlobalKey<NavigatorState> navKey = prev.navigatorKey;
       while (navKey.currentState!.canPop()) {
-        print("CAN POP" + navKey.currentWidget.toString());
         navKey = navKey..currentState!.pop();
       }
       navKey = navKey..currentState!.pushNamed(Routes.home);
