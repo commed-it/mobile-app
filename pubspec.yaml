@@ -31,6 +31,7 @@ dependencies:
   flutter_redux: ^0.8.2
   carousel_slider: ^4.0.0
   flutter_speed_dial: ^4.6.6
+  redux_thunk: ^0.4.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.8.0

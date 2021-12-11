@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/auth/store.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/store.dart';
-import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/product/store/store.dart';
 import 'package:flutter_app/root/store/store.dart';
 import 'package:flutter_app/searcher/action.dart';
 import 'package:flutter_app/searcher/model.dart';
+import 'package:flutter_app/service/commed_api.dart';
 import 'package:flutter_app/store/theme.dart';
+import 'package:flutter_app/widgets/carroussel.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 import 'actions.dart';
 
@@ -44,6 +46,7 @@ class AppState {
   final Enterprise enterpriseDetail;
   final Searcher searcher;
   final bool isLogged;
+  final CommedAPI api;
 
   // add User, ...
   AppState(
@@ -54,7 +57,8 @@ class AppState {
       this.theme,
       this.enterpriseDetail,
       this.searcher,
-      this.isLogged);
+      this.isLogged,
+      this.api);
 
   // add User, ...
 
@@ -91,7 +95,8 @@ class AppState {
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
-        isLogged = false;
+        isLogged = false,
+        api = CommedAPI();
 
   AppState copy(
           {LoginState? loginViewState,
@@ -110,7 +115,8 @@ class AppState {
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
           searcher ?? this.searcher,
-          isLogged ?? this.isLogged);
+          isLogged ?? this.isLogged,
+          this.api);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
@@ -134,13 +140,19 @@ AppState navigationReducer(AppState prev, AppAction action) {
   return prev;
 }
 
-AppState appReducer(AppState prev, AppAction action) {
-  prev = navigationReducer(prev, action);
-  prev = authenticationReducer(prev, action);
-  prev = globalLoginReducer(prev, action);
-  prev = globalPageControlReducer(prev, action);
-  prev = listProductsReducer(prev, action);
-  prev = enterpriseReducer(prev, action);
-  prev = searcherReducer(prev, action);
+AppState appReducer(AppState prev, action) {
+  print("APP REDUCER");
+  print(action);
+  if (action is AppAction) {
+    prev = navigationReducer(prev, action);
+    prev = authenticationReducer(prev, action);
+    prev = globalLoginReducer(prev, action);
+    prev = globalPageControlReducer(prev, action);
+    prev = listProductsReducer(prev, action);
+    prev = enterpriseReducer(prev, action);
+    prev = searcherReducer(prev, action);
+  } else {
+    var newAction = action as ThunkAction<AppState>;
+  }
   return prev;
 }

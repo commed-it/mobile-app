@@ -10,18 +10,25 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 import 'enterprise/profile_view.dart';
 
 void main() {
-  runApp(MyApp());
+  final store = Store<AppState>(
+    (x, a) => appReducer(x, a),
+    initialState: AppState.init(),
+    middleware: [thunkMiddleware]
+  );
+  runApp(MyApp(
+    store: store,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  final store = Store<AppState>((x, a) => appReducer(x, a),
-      initialState: AppState.init());
+  final Store<AppState> store;
 
-  MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key, required this.store}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

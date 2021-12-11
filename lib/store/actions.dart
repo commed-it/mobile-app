@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/service/dto/product_dto.dart';
 
 class Routes {
   static const String home = "HOME";
@@ -15,11 +16,16 @@ abstract class AppAction {
 
 class NavigateToNext extends AppAction {
   final String destinationRoute;
+
   const NavigateToNext(this.destinationRoute);
 }
+
 class NavigateToNextAndReplace extends AppAction {
   final String destinationRoute;
+
   const NavigateToNextAndReplace(this.destinationRoute);
 }
 
 class NavigateBack extends AppAction {}
+
+
