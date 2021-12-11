@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -55,8 +56,8 @@ class ChatView extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.only(top: 5),
                       ), ...(list.map((e) => [
-                                  buildItem(
-                                      callback, e.image, e.title, e.subtitle),
+                                  buildItem(1,
+                                      callback, e.image, e.title, e.subtitle), // TODO: TODO
                                   const ListDivider(),
                                 ]))
                             .fold(
@@ -76,10 +77,10 @@ class ChatView extends StatelessWidget {
     );
   }
 
-  StoreConnector<AppState, VoidCallback> buildItem(
+  StoreConnector<AppState, VoidCallback> buildItem(int userId,
       VoidCallback callback, String image, String title, String subtitle) {
     return StoreConnector<AppState, VoidCallback>(
-      converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(1)),
+      converter: (sto) => () => sto.dispatch(loadEnterprise(userId)),
       builder: (c, callbackLogo) => GenSummaryButton.only(
         ratio: 0.8,
         image: NetworkImage(image),

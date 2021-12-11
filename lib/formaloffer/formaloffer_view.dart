@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -93,7 +94,7 @@ class FormalOfferItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, VoidCallback>(
-      converter: (sto) => () => sto.dispatch(NavigateToEnterpriseDetail(1)),
+      converter: (sto) => () => sto.dispatch(loadEnterprise(1)), // TODO: TODO
       builder: (c, callbackLogo) => GenSummaryButton.only(
         ratio: 0.8,
         image: NetworkImage(formalOffer.enterprise.urlLogo),

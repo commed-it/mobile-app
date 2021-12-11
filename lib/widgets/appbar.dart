@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -123,7 +124,7 @@ Row buildLogoAndEnterprise(CommedTheme theme, String enterpriseName, String urlI
     children: [
       StoreConnector<AppState, VoidCallback>(
         converter: (sto) =>
-            () => sto.dispatch(NavigateToEnterpriseDetail(conversationId)),
+            () => sto.dispatch(loadEnterprise(conversationId)),
         builder: (con, callback) => InkWell(
           child: CircleAvatar(
             radius: 20,

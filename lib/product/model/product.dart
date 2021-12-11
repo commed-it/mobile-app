@@ -35,11 +35,12 @@ class ProductContent {
 }
 
 class CompanySmallDetail {
+  final int userID;
   final String logoURI;
   final String name;
 
-  CompanySmallDetail(this.logoURI, this.name);
+  CompanySmallDetail(this.userID, this.logoURI, this.name);
 
-  CompanySmallDetail copy({String? logoURI, String? name}) =>
-      CompanySmallDetail(logoURI ?? this.logoURI, name ?? this.name);
+  CompanySmallDetail copy({int? userID, String? logoURI, String? name}) =>
+      CompanySmallDetail(userID ?? this.userID, logoURI ?? this.logoURI, name ?? this.name);
 }

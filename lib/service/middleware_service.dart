@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/service/commed_api.dart';
 import 'package:flutter_app/service/dto/enterprise_dto.dart';
@@ -26,9 +27,13 @@ class CommedMiddleware {
               e.title,
               e.description,
               false,
-              CompanySmallDetail(
-                  getMedia(enterpriseDTO.profileImage), enterpriseDTO.name)));
+              CompanySmallDetail(e.owner, getMedia(enterpriseDTO.profileImage),
+                  enterpriseDTO.name)));
     }
     return products;
+  }
+
+  Future<Enterprise> getEnterprise(int userId) async {
+    return Enterprise.fromDTO(await api.getEnterpriseFromOwner(userId));
   }
 }

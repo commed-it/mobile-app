@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/service/dto/enterprise_dto.dart';
 
 @immutable
 class Enterprise {
@@ -32,4 +33,7 @@ class Enterprise {
         urlLogo =
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
         contactInfo = "+34 625485223";
+
+  static Enterprise fromDTO(EnterpriseDTO dto) => Enterprise(
+      dto.name, dto.description, dto.NIF, dto.profileImage, dto.contactInfo);
 }

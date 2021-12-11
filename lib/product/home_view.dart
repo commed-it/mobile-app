@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
@@ -104,7 +105,7 @@ class ProductItem extends StatelessWidget {
             children: [
               StoreConnector<AppState, VoidCallback>(
                   converter: (sto) =>
-                      () => sto.dispatch(NavigateToEnterpriseDetail(1)),
+                      () => sto.dispatch(loadEnterprise(product.content.company.userID)),
                   builder: (cto, onPressedLogo) => GenericSummary.only(
                         ratio: 0.8,
                         image: NetworkImage(product.content.company.logoURI),
