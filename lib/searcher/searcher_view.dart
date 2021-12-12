@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/searcher/action.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class SearcherView extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
@@ -56,15 +57,23 @@ class SearcherView extends StatelessWidget {
               baseOffset: text2.length, extentOffset: text2.length);
           return text2;
         },
-        builder: (ctx, onChanged) => TextFormField(
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: AppLocalizations.of(ctx)!.search + AppLocalizations.of(ctx)!.dots,
-            hintStyle: TextStyle(color: Colors.grey.shade600),
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.grey.shade600,
-              size: 20,
+        builder: (ctx, onChanged) => StoreConnector<AppState, Function(String)>(
+          converter: (sto) => (txt) => sto.dispatch(submitSearch(txt)),
+          builder: (cto, submitSearchCallback) => TextFormField(
+            onFieldSubmitted: (text) {
+              print(text);
+              submitSearchCallback(text);
+            },
+            controller: _controller,
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(ctx)!.search +
+                  AppLocalizations.of(ctx)!.dots,
+              hintStyle: TextStyle(color: Colors.grey.shade600),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.grey.shade600,
+                size: 20,
+              ),
             ),
           ),
         ),

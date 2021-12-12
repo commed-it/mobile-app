@@ -56,8 +56,18 @@ ThunkAction<AppState> loadMyFormalOffers() {
   };
 }
 
+ThunkAction<AppState> submitSearch(String text) {
+  return (Store<AppState> store) async {
+    final HashMap<int, Product> products =
+        await store.state.commedMiddleware.getProducts();
+    store.dispatch(SetProductList(products));
+    store.dispatch(NavigateBack());
+  };
+}
+
 class SetProductList extends AppAction {
   final HashMap<int, Product> products;
 
   const SetProductList(this.products);
 }
+
