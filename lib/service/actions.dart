@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/formaloffer/model/formaloffer.dart';
+import 'package:flutter_app/formaloffer/store/actions.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/service/dto/product_dto.dart';
 import 'package:flutter_app/service/middleware_service.dart';
@@ -29,6 +31,15 @@ ThunkAction<AppState> loginThunkAction(String username, String password) {
   return (Store<AppState> store) async {
     String tok = await store.state.commedMiddleware.login(username, password);
     store.dispatch(const ToggleAuthToken(true));
+    final Enterprise enterprise = await store.state.commedMiddleware.getMyEnterprise();
+    store.dispatch(setMyEnterpriseDetail(enterprise));
+  };
+}
+
+ThunkAction<AppState> loadMyFormalOffers() {
+  return (Store<AppState> store) async {
+    List<FormalOffer> formalOffers = await store.state.commedMiddleware.getMyFormalOffersEncounter();
+    store.dispatch(SetFormalOffers(formalOffers));
   };
 }
 

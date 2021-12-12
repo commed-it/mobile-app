@@ -11,26 +11,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'model/formaloffer.dart';
 
-Enterprise enterpriseA = Enterprise(
-    "La Bicicleta",
-    "NotADescription",
-    "78099079A",
-    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
-    "contactInfo");
-
-Enterprise enterpriseB = Enterprise(
-    "Rodi",
-    "NotADescription",
-    "78099079A",
-    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fofertes.ccoo.cat%2Fwp-content%2Fuploads%2Fsites%2F131%2F2019%2F05%2FRodi_Motor_Services_logo.jpg&f=1&nofb=1",
-    "contactInfo");
-
-List<FormalOffer> formalOffers = [
-  FormalOffer(enterpriseA, "50 kg of chicken meat", 1, true),
-  FormalOffer(enterpriseB, "Reparation of motors - 3242W", 2, false),
-  FormalOffer(enterpriseB, "Inspection of 3242W", 1, true)
-];
-
 class FormalOffersView extends StatelessWidget {
   const FormalOffersView({Key? key}) : super(key: key);
 
@@ -45,29 +25,36 @@ class FormalOffersView extends StatelessWidget {
               color: theme.background.color,
               child: SingleChildScrollView(
                 child: StoreConnector<AppState, VoidCallback>(
-                  converter: (store) => () => store.dispatch(LambdaAction((s) =>
-                      s.copy(
-                          navigatorKey: s.navigatorKey
-                            ..currentState!.pushNamed(Routes.chat)))),
-                  builder: (ctx, callback) => Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ),
-                      Column(
-                        children: formalOffers
-                            .map((formalOffer) => Column(
-                                  children: [
-                                    FormalOfferItem(
-                                        formalOffer: formalOffer,
-                                        callback: callback,
-                                        theme: theme),
-                                    const ListDivider(),
-                                  ],
-                                ))
-                            .toList(),
-                      ),
-                    ],
+                  converter: (sto) => () => sto.dispatch(loadMyFormalOffers()),
+                  builder: (ctx, callbackThunk) => StoreConnector<AppState, VoidCallback>(
+                    converter: (store) => () => store.dispatch(LambdaAction((s) =>
+                        s.copy(
+                            navigatorKey: s.navigatorKey
+                              ..currentState!.pushNamed(Routes.chat)))),
+                    builder: (ctx, callback) => Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                        ),
+                        StoreConnector<AppState, List<FormalOffer>>(
+                          onInit: (sto) => callbackThunk(),
+                          converter: (sto) => sto.state.formalOffers,
+                          builder: (ctx, formalOffers) => Column(
+                            children: formalOffers
+                                .map((formalOffer) => Column(
+                                      children: [
+                                        FormalOfferItem(
+                                            formalOffer: formalOffer,
+                                            callback: callback,
+                                            theme: theme),
+                                        const ListDivider(),
+                                      ],
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

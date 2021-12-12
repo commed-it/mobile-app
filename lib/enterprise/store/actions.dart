@@ -7,3 +7,9 @@ class NavigateToEnterpriseDetail extends AppAction {
   Enterprise enterprise;
   NavigateToEnterpriseDetail(this.enterprise);
 }
+
+@immutable
+class setMyEnterpriseDetail extends AppAction {
+  Enterprise enterprise;
+  setMyEnterpriseDetail(this.enterprise);
+}

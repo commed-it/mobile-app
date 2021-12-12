@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/appbar.dart';
@@ -18,11 +19,14 @@ class EnterpriseView extends StatelessWidget {
       converter: (sto) => sto.state.theme,
       builder: (ctx, theme) => StoreConnector<AppState, Enterprise>(
         converter: (sto) => sto.state.enterpriseDetail,
-        builder: (ctx, enterprise) => Scaffold(
-          backgroundColor: theme.appBarColor,
-          appBar: buildAppBarLogged(context, theme),
-          body: Container(
-            child: buildProfileView(theme, enterprise),
+        builder: (ctx, enterprise) => StoreConnector<AppState, bool>(
+          converter : (sto) => sto.state.isLogged,
+          builder: (ctx, isLogged) => Scaffold(
+            backgroundColor: theme.appBarColor,
+            appBar: isLogged ? buildAppBarLogged(context, theme) : buildNotloggedAppBar(context, theme),
+            body: Container(
+              child: buildProfileView(theme, enterprise),
+            ),
           ),
         ),
       ),

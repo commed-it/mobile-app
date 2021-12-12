@@ -14,6 +14,9 @@ AppState enterpriseReducer(AppState prev, AppAction action) {
       GlobalKey<NavigatorState> navKey = prev.navigatorKey
         ..currentState!.pushNamed(Routes.enterprise);
       return prev.copy(enterpriseDetail: new_action.enterprise, navigatorKey: navKey);
+    case setMyEnterpriseDetail:
+      var new_action = action as setMyEnterpriseDetail;
+      return prev.copy(myEnterpriseDetail: new_action.enterprise);
     default:
       return prev;
   }
