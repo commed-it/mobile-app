@@ -83,15 +83,8 @@ class CommedAPI {
   }
 
   Future<EnterpriseDTO> getMyEnterprise() async {
-    Uri uri = Uri.parse(postsURL + "/auth/user/");
-    Response res = await get(uri, headers: <String, String>{
-      'Authorization': "Token " + token!,
-    });
-    if (res.statusCode == 200) {
-      int pk = jsonDecode(res.body)['pk'];
-      return getEnterpriseFromOwner(pk);
-    }
-    throw "unable to get the enterprise";
+    var pk = await getMyId();
+    return getEnterpriseFromOwner(pk);
   }
 
   Future<List<FormalOfferDTO>> getFormalOffer(int userId) async {
@@ -128,5 +121,48 @@ class CommedAPI {
     }
     throw "unable to get the encounter listoffer by id encounter " +
         encounterId;
+  }
+
+  Future<String?> register(String username, String email, String password,
+      String repeatPassword) async {
+    Uri uri = Uri.parse(postsURL + "/auth/registration/");
+    Response res = await post(uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'username': username,
+          'password1': password,
+          'password2': repeatPassword,
+        }));
+    if (res.statusCode == 201) {
+      token = jsonDecode(res.body)['key'];
+      setCookie = res.headers['set-cookie']!;
+      return token!;
+    }
+    throw "unable to register";
+  }
+
+  Future<EnterpriseDTO> createEnterprise(
+      String nif, String company, String contact, String s) async {
+    int pk = await getMyId();
+    Uri uri = Uri.parse(postsURL + "/enterprise/");
+    Response res = await post(uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'owner': pk,
+          'NIF': nif,
+          'name': company,
+          'contactInfo': contact,
+          'description': s,
+        }));
+    print(res.statusCode);
+    print(res.body);
+    if (res.statusCode == 201) {
+      return EnterpriseDTO.fromJson(jsonDecode(res.body));
+    }
+    throw "unable to create enterprise";
   }
 }

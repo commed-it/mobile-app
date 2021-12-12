@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/formaloffer/model/formaloffer.dart';
+import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/service/commed_api.dart';
 import 'package:flutter_app/service/dto/enterprise_dto.dart';
@@ -50,9 +51,9 @@ class CommedMiddleware {
     return ent.copy(urlLogo: getMedia(ent.urlLogo));
   }
 
-  Future<String> login(String username, String password) async {
+  Future<String?> login(String username, String password) async {
     String? token = await api.login(username, password);
-    return token!;
+    return token;
   }
 
   Future<Enterprise> getMyEnterprise() async {
@@ -94,5 +95,19 @@ class CommedMiddleware {
 
   Enterprise checkURL(Enterprise fromDTO) {
     return fromDTO.copy(urlLogo: getMedia(fromDTO.urlLogo));
+  }
+
+  Future<String?> register(LoginState loginViewState) async {
+    String? token = await api.register(
+        loginViewState.username,
+        loginViewState.email,
+        loginViewState.password,
+        loginViewState.repeatPassword);
+    return token;
+  }
+
+  Future<Enterprise> createEnterprise(LoginState loginViewState) async {
+    return Enterprise.fromDTO(await api.createEnterprise(loginViewState.nif,
+        loginViewState.company, loginViewState.contact, 'Description'));
   }
 }

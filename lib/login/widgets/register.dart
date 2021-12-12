@@ -75,7 +75,7 @@ class RegisterWidget extends StatelessWidget {
           height: 10,
         ),
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(loginThunkAction(sto.state.loginViewState.username, sto.state.loginViewState.password)),
+          converter: (sto) => () => sto.dispatch(registerThunkAction(sto.state.loginViewState)),
           builder: (cto, callback) => buildGenericBottomWidget(
               context,
               (x) => x.register,
