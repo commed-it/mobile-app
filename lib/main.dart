@@ -15,11 +15,8 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'enterprise/profile_view.dart';
 
 void main() {
-  final store = Store<AppState>(
-    (x, a) => appReducer(x, a),
-    initialState: AppState.init(),
-    middleware: [thunkMiddleware]
-  );
+  final store = Store<AppState>((x, a) => appReducer(x, a),
+      initialState: AppState.init(), middleware: [thunkMiddleware]);
   runApp(MyApp(
     store: store,
   ));

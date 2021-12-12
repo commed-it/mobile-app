@@ -11,6 +11,7 @@ import 'package:flutter_app/root/store/store.dart';
 import 'package:flutter_app/searcher/action.dart';
 import 'package:flutter_app/searcher/model.dart';
 import 'package:flutter_app/service/commed_api.dart';
+import 'package:flutter_app/service/middleware_service.dart';
 import 'package:flutter_app/service/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
@@ -49,7 +50,7 @@ class AppState {
   final Enterprise enterpriseDetail;
   final Searcher searcher;
   final bool isLogged;
-  final CommedAPI api;
+  final CommedMiddleware commedMiddleware;
 
   // add User, ...
   AppState(
@@ -61,7 +62,7 @@ class AppState {
       this.enterpriseDetail,
       this.searcher,
       this.isLogged,
-      this.api);
+      this.commedMiddleware);
 
   // add User, ...
 
@@ -74,7 +75,7 @@ class AppState {
         enterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
         isLogged = false,
-        api = CommedAPI();
+        commedMiddleware = CommedMiddleware();
 
   AppState copy(
           {LoginState? loginViewState,
@@ -94,7 +95,7 @@ class AppState {
           enterpriseDetail ?? this.enterpriseDetail,
           searcher ?? this.searcher,
           isLogged ?? this.isLogged,
-          this.api);
+          this.commedMiddleware);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {

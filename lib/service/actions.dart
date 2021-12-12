@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/product/model/product.dart';
@@ -12,15 +13,22 @@ import 'package:redux_thunk/redux_thunk.dart';
 
 ThunkAction<AppState> reloadProducts() {
   return (Store<AppState> store) async {
-    final HashMap<int, Product> products = await CommedMiddleware().getProducts();
+    final HashMap<int, Product> products = await store.state.commedMiddleware.getProducts();
     store.dispatch(SetProductList(products));
   };
 }
 
 ThunkAction<AppState> loadEnterprise(int userId) {
   return (Store<AppState> store) async {
-    final Enterprise enterprise = await CommedMiddleware().getEnterprise(userId);
+    final Enterprise enterprise = await store.state.commedMiddleware.getEnterprise(userId);
     store.dispatch(NavigateToEnterpriseDetail(enterprise));
+  };
+}
+
+ThunkAction<AppState> loginThunkAction(String username, String password) {
+  return (Store<AppState> store) async {
+    String tok = await store.state.commedMiddleware.login(username, password);
+    store.dispatch(const ToggleAuthToken(true));
   };
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/login/store/actions.dart';
 import 'package:flutter_app/login/utils/generic_field.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -74,7 +75,7 @@ class RegisterWidget extends StatelessWidget {
           height: 10,
         ),
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(ToggleAuthToken(true)),
+          converter: (sto) => () => sto.dispatch(loginThunkAction(sto.state.loginViewState.username, sto.state.loginViewState.password)),
           builder: (cto, callback) => buildGenericBottomWidget(
               context,
               (x) => x.register,
