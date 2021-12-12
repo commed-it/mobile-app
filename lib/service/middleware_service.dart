@@ -95,11 +95,11 @@ class CommedMiddleware {
         .toList();
   }
 
-  Future<List<ChatModel>> getListChat() async {
+  Future<List<ChatItemModel>> getListChat() async {
     int pk = await api.getMyId();
     List<ListChatDTO> listChats = await api.getListChatDTO(pk);
     return listChats
-        .map<ChatModel>((chat) => ChatModel(getMedia(chat.theOtherClient.profileImage),
+        .map<ChatItemModel>((chat) => ChatItemModel(chat.encounter.id, chat.theOtherClient.owner, getMedia(chat.theOtherClient.profileImage),
             chat.theOtherClient.name, chat.product.title))
         .toList();
   }

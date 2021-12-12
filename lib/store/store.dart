@@ -36,7 +36,8 @@ class AppState {
   final GlobalKey<NavigatorState> navigatorKey;
   final HashMap<int, Product> products;
   final List<FormalOffer> formalOffers;
-  final List<ChatModel> listChats;
+  final List<ChatItemModel> listChats;
+  final ChatModel chatModel;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
@@ -52,6 +53,7 @@ class AppState {
       this.products,
       this.formalOffers,
       this.listChats,
+      this.chatModel,
       this.theme,
       this.enterpriseDetail,
       this.myEnterpriseDetail,
@@ -68,6 +70,7 @@ class AppState {
         products = HashMap(),
         formalOffers = List.empty(),
         listChats = List.empty(),
+  chatModel = ChatModel.init(),
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         myEnterpriseDetail = const Enterprise.init(),
@@ -81,12 +84,12 @@ class AppState {
           GlobalKey<NavigatorState>? navigatorKey,
           HashMap<int, Product>? products,
           List<FormalOffer>? formalOffers,
-          List<ChatModel>? listChats,
+          List<ChatItemModel>? listChats,
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
           Enterprise? myEnterpriseDetail,
           Searcher? searcher,
-          bool? isLogged}) =>
+          bool? isLogged, ChatModel? chatModel}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
@@ -94,6 +97,7 @@ class AppState {
           products ?? this.products,
           formalOffers ?? this.formalOffers,
           listChats ?? this.listChats,
+          chatModel ?? this.chatModel,
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
           myEnterpriseDetail ?? this.myEnterpriseDetail,

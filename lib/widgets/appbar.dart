@@ -102,14 +102,14 @@ class ProfileAppBarButton extends StatelessWidget {
 }
 
 
-AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpriseName, String urlImage, int conversationId) {
+AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpriseName, String urlImage, String conversationId, int enterpriseId) {
   return AppBar(
     systemOverlayStyle:
     SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
     backgroundColor: theme.appBarColor,
     title: StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
-      builder: (ctx, theme) => buildLogoAndEnterprise(theme, enterpriseName, urlImage, conversationId),
+      builder: (ctx, theme) => buildLogoAndEnterprise(theme, enterpriseName, urlImage, conversationId, enterpriseId),
     ),
     actions: [
       buildSearchButton(theme, context),
@@ -119,12 +119,12 @@ AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpris
   );
 }
 
-Row buildLogoAndEnterprise(CommedTheme theme, String enterpriseName, String urlImage, int conversationId) {
+Row buildLogoAndEnterprise(CommedTheme theme, String enterpriseName, String urlImage, String conversationId, int enterpriseId) {
   return Row(
     children: [
       StoreConnector<AppState, VoidCallback>(
         converter: (sto) =>
-            () => sto.dispatch(loadEnterprise(conversationId)),
+            () => sto.dispatch(loadEnterprise(enterpriseId)),
         builder: (con, callback) => InkWell(
           child: CircleAvatar(
             radius: 20,

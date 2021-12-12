@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/chat/store/actions.dart';
 import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -25,12 +26,9 @@ class ChatView extends StatelessWidget {
               child: SingleChildScrollView(
                 child: StoreConnector<AppState, VoidCallback>(
                   onInit: (sto) => sto.dispatch(loadListChat()),
-                  converter: (store) => () => store.dispatch(LambdaAction((s) =>
-                      s.copy(
-                          navigatorKey: s.navigatorKey
-                            ..currentState!.pushNamed(Routes.chat)))),
+                  converter: (store) => () {},
                   builder: (ctx, callback) =>
-                      StoreConnector<AppState, List<ChatModel>>(
+                      StoreConnector<AppState, List<ChatItemModel>>(
                     converter: (sto) => sto.state.listChats,
                     builder: (cto, list) => Column(
                       children: [
@@ -46,8 +44,11 @@ class ChatView extends StatelessWidget {
                                 padding: EdgeInsets.only(top: 5),
                               ),
                         ...(list.map((e) => [
-                                  buildItem(1, callback, e.image, e.title,
-                                      e.subtitle), // TODO: TODO
+                                  StoreConnector<AppState, VoidCallback>(
+                                    converter: (sto) => () => sto.dispatch(NavigateToChat(ChatModel(e.idEncounter, e.idEnterprise, e.title, e.image))),
+                                    builder: (cto, callback) => buildItem(e.idEnterprise, callback, e.image, e.title,
+                                        e.subtitle),
+                                  ), // TODO: TODO
                                   const ListDivider(),
                                 ]))
                             .fold(

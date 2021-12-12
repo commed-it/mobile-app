@@ -60,7 +60,7 @@ ThunkAction<AppState> loadMyFormalOffers() {
 
 ThunkAction<AppState> loadListChat() {
   return (Store<AppState> store) async {
-    List<ChatModel> chatModels = await store.state.commedMiddleware.getListChat();
+    List<ChatItemModel> chatModels = await store.state.commedMiddleware.getListChat();
     store.dispatch(SetListChat(chatModels));
   };
 }

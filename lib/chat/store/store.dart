@@ -8,6 +8,11 @@ AppState ListChatReducer(AppState prev, AppAction action) {
     case SetListChat:
       action = action as SetListChat;
       return prev.copy(listChats: action.chatModel);
+    case NavigateToChat:
+      action = action as NavigateToChat;
+      return prev.copy(
+          navigatorKey: prev.navigatorKey
+            ..currentState!.pushNamed(Routes.chat), chatModel: action.chatModel);
     default:
       return prev;
   }
