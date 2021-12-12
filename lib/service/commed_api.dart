@@ -33,6 +33,21 @@ class CommedAPI {
     }
   }
 
+  Future<List<ProductDTO>> searchProduct() async {
+    Uri uri = Uri.parse(postsURL + "/product");
+    Response res = await get(uri);
+    if (res.statusCode == 200) {
+      List<ProductDTO> posts = jsonDecode(res.body)
+          .map<ProductDTO>(
+            (dynamic item) => ProductDTO.fromJson(item),
+      )
+          .toList();
+      return posts;
+    } else {
+      throw "Unable to retrieve posts.";
+    }
+  }
+
   Future<ProductDTO> getProduct(int productId) async {
     Uri uri = Uri.parse(postsURL + "/product/" + productId.toString());
     Response res = await get(uri);
