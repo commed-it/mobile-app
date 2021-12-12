@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter_app/auth/actions.dart';
+import 'package:flutter_app/chat/models.dart';
+import 'package:flutter_app/chat/store/actions.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/formaloffer/model/formaloffer.dart';
@@ -53,6 +55,13 @@ ThunkAction<AppState> loadMyFormalOffers() {
     List<FormalOffer> formalOffers =
         await store.state.commedMiddleware.getMyFormalOffersEncounter();
     store.dispatch(SetFormalOffers(formalOffers));
+  };
+}
+
+ThunkAction<AppState> loadListChat() {
+  return (Store<AppState> store) async {
+    List<ChatModel> chatModels = await store.state.commedMiddleware.getListChat();
+    store.dispatch(SetListChat(chatModels));
   };
 }
 

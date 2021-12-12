@@ -24,6 +24,7 @@
     "search" : "Cerca",
     "dots": "...",
     "connect" : "Connectar",
-    "no_formal_offers" : "No hay contratos!"
+    "no_formal_offers" : "¡No hay contratos!",
+    "no_chats" :"¡Ooops! ¡Aún no has conectado con ninguna empresa!"
 
 }

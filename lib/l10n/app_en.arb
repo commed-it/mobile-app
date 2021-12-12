@@ -23,5 +23,6 @@
     "search" : "Search",
     "dots": "...",
     "connect" : "Connect",
-    "no_formal_offers" : "There is no formal offers!"
+    "no_formal_offers" : "There is no formal offers!",
+    "no_chats" : "Ooops! You have not connected to any company!"
 }

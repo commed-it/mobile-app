@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter_app/chat/models.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/formaloffer/model/formaloffer.dart';
 import 'package:flutter_app/login/store/store.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_app/service/commed_api.dart';
 import 'package:flutter_app/service/dto/enterprise_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_encounter_dto.dart';
+import 'package:flutter_app/service/dto/list_chat_dto.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 
 import 'dto/encounter_dto.dart';
@@ -90,6 +92,15 @@ class CommedMiddleware {
             e.product.title,
             e.formalOffer.version,
             false))
+        .toList();
+  }
+
+  Future<List<ChatModel>> getListChat() async {
+    int pk = await api.getMyId();
+    List<ListChatDTO> listChats = await api.getListChatDTO(pk);
+    return listChats
+        .map<ChatModel>((chat) => ChatModel(getMedia(chat.theOtherClient.profileImage),
+            chat.theOtherClient.name, chat.product.title))
         .toList();
   }
 

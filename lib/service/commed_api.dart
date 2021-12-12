@@ -7,6 +7,7 @@ import 'package:flutter_app/service/dto/product_dto.dart';
 import 'package:http/http.dart';
 
 import 'dto/encounter_dto.dart';
+import 'dto/list_chat_dto.dart';
 
 class CommedAPI {
   final String postsURL = "http://10.0.2.2:8000";
@@ -26,7 +27,6 @@ class CommedAPI {
             (dynamic item) => ProductDTO.fromJson(item),
           )
           .toList();
-
       return posts;
     } else {
       throw "Unable to retrieve posts.";
@@ -108,6 +108,20 @@ class CommedAPI {
       return (jsonDecode(res.body) as List)
           .map<FormalOfferEncounterDTO>(
               (e) => FormalOfferEncounterDTO.fromJson(e))
+          .toList();
+    }
+    throw "unable to get the list of encounters and formal offers";
+  }
+
+  Future<List<ListChatDTO>> getListChatDTO(
+      int userId) async {
+    Uri uri = Uri.parse(
+        postsURL + "/offer/encounter/fromUser/" + userId.toString());
+    Response res = await get(uri);
+    if (res.statusCode == 200) {
+      return (jsonDecode(res.body) as List)
+          .map<ListChatDTO>(
+              (e) => ListChatDTO.fromJson(e))
           .toList();
     }
     throw "unable to get the list of encounters and formal offers";

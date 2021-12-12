@@ -2,6 +2,8 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/auth/store.dart';
+import 'package:flutter_app/chat/models.dart';
+import 'package:flutter_app/chat/store/store.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/enterprise/store/store.dart';
 import 'package:flutter_app/formaloffer/model/formaloffer.dart';
@@ -34,6 +36,7 @@ class AppState {
   final GlobalKey<NavigatorState> navigatorKey;
   final HashMap<int, Product> products;
   final List<FormalOffer> formalOffers;
+  final List<ChatModel> listChats;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
@@ -48,6 +51,7 @@ class AppState {
       this.navigatorKey,
       this.products,
       this.formalOffers,
+      this.listChats,
       this.theme,
       this.enterpriseDetail,
       this.myEnterpriseDetail,
@@ -63,6 +67,7 @@ class AppState {
         navigatorKey = GlobalKey<NavigatorState>(),
         products = HashMap(),
         formalOffers = List.empty(),
+        listChats = List.empty(),
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         myEnterpriseDetail = const Enterprise.init(),
@@ -76,6 +81,7 @@ class AppState {
           GlobalKey<NavigatorState>? navigatorKey,
           HashMap<int, Product>? products,
           List<FormalOffer>? formalOffers,
+          List<ChatModel>? listChats,
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
           Enterprise? myEnterpriseDetail,
@@ -87,6 +93,7 @@ class AppState {
           navigatorKey ?? this.navigatorKey,
           products ?? this.products,
           formalOffers ?? this.formalOffers,
+          listChats ?? this.listChats,
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
           myEnterpriseDetail ?? this.myEnterpriseDetail,
@@ -127,6 +134,7 @@ AppState appReducer(AppState prev, action) {
     prev = searcherReducer(prev, action);
     prev = listProductsReducerService(prev, action);
     prev = formalOfferReducer(prev, action);
+    prev = ListChatReducer(prev, action);
   }
   return prev;
 }

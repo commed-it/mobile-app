@@ -1,35 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/generic_summary.dart';
 import 'package:flutter_app/widgets/search.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-class _ChatModel {
-  final String image;
-  final String title;
-  final String subtitle;
-
-  _ChatModel(this.image, this.title, this.subtitle);
-}
-
-List<_ChatModel> list = [
-  _ChatModel(
-      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
-      "La Bicicleta",
-      "50kg of Chicken meat"),
-  _ChatModel(
-      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fofertes.ccoo.cat%2Fwp-content%2Fuploads%2Fsites%2F131%2F2019%2F05%2FRodi_Motor_Services_logo.jpg&f=1&nofb=1",
-      "Rodi",
-      "Reparation of motors"),
-  _ChatModel(
-      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fofertes.ccoo.cat%2Fwp-content%2Fuploads%2Fsites%2F131%2F2019%2F05%2FRodi_Motor_Services_logo.jpg&f=1&nofb=1",
-      "Rodi",
-      "inspection of 3242W"),
-];
+import 'models.dart';
 
 class ChatView extends StatelessWidget {
   ChatView({Key? key}) : super(key: key);
@@ -45,28 +24,39 @@ class ChatView extends StatelessWidget {
               color: theme.background.color,
               child: SingleChildScrollView(
                 child: StoreConnector<AppState, VoidCallback>(
-                  // TODO change action
+                  onInit: (sto) => sto.dispatch(loadListChat()),
                   converter: (store) => () => store.dispatch(LambdaAction((s) =>
                       s.copy(
                           navigatorKey: s.navigatorKey
                             ..currentState!.pushNamed(Routes.chat)))),
-                  builder: (ctx, callback) => Column(
-                    children: [
-                      const Searcher(),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 5),
-                      ), ...(list.map((e) => [
-                                  buildItem(1,
-                                      callback, e.image, e.title, e.subtitle), // TODO: TODO
+                  builder: (ctx, callback) =>
+                      StoreConnector<AppState, List<ChatModel>>(
+                    converter: (sto) => sto.state.listChats,
+                    builder: (cto, list) => Column(
+                      children: [
+                        const Searcher(),
+                        list.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Center(
+                                    child: Text(
+                                        AppLocalizations.of(ctx)!.no_chats)),
+                              )
+                            : const Padding(
+                                padding: EdgeInsets.only(top: 5),
+                              ),
+                        ...(list.map((e) => [
+                                  buildItem(1, callback, e.image, e.title,
+                                      e.subtitle), // TODO: TODO
                                   const ListDivider(),
                                 ]))
                             .fold(
                                 [],
-                                (previousValue,
-                                        List<Widget> element) =>
+                                (previousValue, List<Widget> element) =>
                                     (previousValue as List<Widget>)
                                       ..addAll(element)),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
