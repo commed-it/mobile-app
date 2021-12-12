@@ -22,6 +22,7 @@
     "not_signed" : "no signado",
     "num_version" : "versión: ",
     "search" : "Cerca",
-    "dots": "..."
+    "dots": "...",
+    "loginError": "Verifica que el campo sea correcto"
 
 }

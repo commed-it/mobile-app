@@ -93,7 +93,7 @@ AppBar buildAppBar(BuildContext context, CommedTheme theme) {
               );
             },
             converter: (store) =>
-                () => store.state.isLogged ? store.dispatch(NavigateToEnterpriseDetail(1)): store.dispatch(const NavigateToNext(Routes.login))),
+                () => store.state.loggedState == LoggedState.Logged ? store.dispatch(NavigateToEnterpriseDetail(1)): store.dispatch(const NavigateToNext(Routes.login))),
       ),
     ],
     elevation: 0,

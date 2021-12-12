@@ -26,13 +26,15 @@ typedef String Converter(Store<AppState> store);
 typedef AppAction NewAction(String value);
 
 class GenericField extends StatelessWidget {
+
   const GenericField({
     Key? key,
     required this.context,
     required this.icon,
     required this.func,
     required this.converter,
-    required this.newAction
+    required this.newAction,
+    this.errorText
   }) : super(key: key);
 
   final BuildContext context;
@@ -40,6 +42,7 @@ class GenericField extends StatelessWidget {
   final fromAppLocalization func;
   final Converter converter;
   final NewAction newAction;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,7 @@ class GenericField extends StatelessWidget {
                     decoration: InputDecoration(
                       label: Text(" " + func(AppLocalizations.of(context)!)),
                       border: InputBorder.none,
+                      errorText: errorText,
                     ),
                     initialValue: count.value,
                       onChanged: (value)  => {

@@ -21,5 +21,6 @@
     "not_signed" : "not signed",
     "num_version" : "num version: ",
     "search" : "Search",
-    "dots": "..."
+    "dots": "...",
+    "loginError": "Please, check if the field is correct"
 }

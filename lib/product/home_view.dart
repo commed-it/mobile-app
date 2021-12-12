@@ -96,7 +96,7 @@ class ProductItem extends StatelessWidget {
                         subtitle: product.content.company.name,
                         onPressedLogo: onPressedLogo,
                         secondWidget: StoreConnector<AppState, bool>(
-                          converter: (sto) => sto.state.isLogged,
+                          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
                           builder: (cto, isLogged) =>
                               isLogged ? ChatButton(theme: theme) : Container(),
                         ),

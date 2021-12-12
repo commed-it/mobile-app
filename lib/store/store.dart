@@ -34,6 +34,12 @@ class LambdaAction extends AppAction {
   const LambdaAction(this.func);
 }
 
+enum LoggedState {
+  NotLogged,
+  Logged,
+  CouldntLog,
+}
+
 @immutable
 class AppState {
   final LoginState loginViewState;
@@ -43,7 +49,7 @@ class AppState {
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
-  final bool isLogged;
+  final LoggedState loggedState;
 
   // add User, ...
   AppState(
@@ -54,7 +60,7 @@ class AppState {
       this.theme,
       this.enterpriseDetail,
       this.searcher,
-      this.isLogged);
+      this.loggedState);
 
   // add User, ...
 
@@ -91,7 +97,7 @@ class AppState {
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
-        isLogged = false;
+        loggedState = LoggedState.NotLogged;
 
   AppState copy(
           {LoginState? loginViewState,
@@ -101,7 +107,7 @@ class AppState {
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
           Searcher? searcher,
-          bool? isLogged}) =>
+          LoggedState? loggedState}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
@@ -110,7 +116,7 @@ class AppState {
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
           searcher ?? this.searcher,
-          isLogged ?? this.isLogged);
+          loggedState ?? this.loggedState);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
