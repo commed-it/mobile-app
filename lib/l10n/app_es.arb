@@ -23,6 +23,7 @@
     "num_version" : "versión: ",
     "search" : "Cerca",
     "dots": "...",
-    "connect" : "Connectar"
+    "connect" : "Connectar",
+    "no_formal_offers" : "No hay contratos!"
 
 }
