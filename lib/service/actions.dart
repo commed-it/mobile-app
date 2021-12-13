@@ -17,6 +17,7 @@ import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 ThunkAction<AppState> reloadProducts() {
   return (Store<AppState> store) async {
@@ -38,7 +39,7 @@ ThunkAction<AppState> loginThunkAction(String username, String password) {
   return (Store<AppState> store) async {
     String? tok = await store.state.commedMiddleware.login(username, password);
     print(tok);
-    if (tok==null) {
+    if (tok == null) {
       store.dispatch(CouldntLogAction());
       return;
     }
@@ -89,7 +90,7 @@ ThunkAction<AppState> loadListChat() {
 
 ThunkAction<AppState> submitSearch(String text) {
   return (Store<AppState> store) async {
-    if (text == ""){
+    if (text == "") {
       store.dispatch(NavigateBack());
       return;
     }
@@ -107,21 +108,34 @@ ThunkAction<AppState> submitSearch(String text) {
   };
 }
 
-
 ThunkAction<AppState> clearSearchAndReload() {
   return (Store<AppState> store) async {
     store.dispatch(ClearSearch());
     final HashMap<int, Product> products =
-    await store.state.commedMiddleware.getProducts();
+        await store.state.commedMiddleware.getProducts();
     store.dispatch(SetProductList(products));
   };
 }
 
 ThunkAction<AppState> loadThunkConversationModel(ChatModel chatModel) {
   return (Store<AppState> store) async {
-    List<CommedMessage> chatModels = await store.state.commedMiddleware.getMessagesFromChat(chatModel.idEncounter);
+    List<CommedMessage> chatModels = await store.state.commedMiddleware
+        .getMessagesFromChat(chatModel.idEncounter);
     store.dispatch(SetListMessages(chatModels));
     store.dispatch(NavigateToChat(chatModel));
+  };
+}
+
+ThunkAction<AppState> connectThunkWebSocketChannel(String idEncounter) {
+  return (Store<AppState> store) async {
+    print(idEncounter);
+    print(store.state.chatState.webSockets.keys.toList());
+    print(!store.state.chatState.webSockets.containsKey(idEncounter));
+    WebSocketChannel channel = !store.state.chatState.webSockets
+            .containsKey(idEncounter)
+        ? WebSocketChannel.connect(Uri.parse(store.state.getWebSocketURI()!))
+        : store.state.chatState.webSockets[idEncounter]!;
+    store.dispatch(SetEncounterChannel(idEncounter, channel));
   };
 }
 

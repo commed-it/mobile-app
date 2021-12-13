@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -6,14 +8,14 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'actions.dart';
 
 class ChatState {
-  final List<WebSocketChannel> webSockets;
+  final HashMap<String, WebSocketChannel> webSockets;
   final WebSocketChannel? currentChatWebSocket;
   final List<CommedMessage> messages;
 
   const ChatState(this.webSockets, this.currentChatWebSocket, this.messages);
 
   ChatState.init()
-      : webSockets = List.empty(),
+      : webSockets = HashMap.identity(),
         currentChatWebSocket = null,
         messages = List.filled(20, [
           const MessageModal(false, "Hi nice to meet y'all!"),
@@ -26,7 +28,7 @@ class ChatState {
           ..add(FormalOfferMessage(false, 4));
 
   ChatState copy(
-          {List<WebSocketChannel>? webSockets,
+          {HashMap<String, WebSocketChannel>? webSockets,
           WebSocketChannel? currentWebSocket,
           List<CommedMessage>? messages}) =>
       ChatState(
@@ -51,6 +53,11 @@ AppState ListChatReducer(AppState prev, AppAction action) {
       action = action as SetListMessages;
       ChatState chatState = prev.chatState.copy(messages: action.msgs);
       return prev.copy(chatState: chatState);
+    case SetEncounterChannel:
+      action = action as SetEncounterChannel;
+      var websockets = prev.chatState.webSockets;
+      websockets[action.idEncounter] = action.webSocketChannel;
+      return prev.copy(chatState: prev.chatState.copy(currentWebSocket: action.webSocketChannel, webSockets: websockets));
     default:
       return prev;
   }

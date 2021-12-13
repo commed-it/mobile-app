@@ -2,6 +2,7 @@
 import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/chat/models.dart';
 import 'package:flutter_app/store/actions.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class SetListChat extends AppAction {
   final List<ChatItemModel> chatModel;
@@ -20,4 +21,10 @@ class SetListMessages extends AppAction {
 
 class ClearSearch extends AppAction {
   const ClearSearch();
+}
+
+class SetEncounterChannel extends AppAction {
+  final String idEncounter;
+  final WebSocketChannel webSocketChannel;
+  const SetEncounterChannel(this.idEncounter, this.webSocketChannel);
 }
