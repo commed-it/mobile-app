@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/chat/models.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
 import 'package:flutter_app/formaloffer/model/formaloffer.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_app/service/dto/search_dto.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 
 import 'dto/encounter_dto.dart';
+import 'dto/message_dto.dart';
 import 'dto/product_dto.dart';
 
 class CommedMiddleware {
@@ -150,5 +152,13 @@ class CommedMiddleware {
           tag: dto.tag);
     }).toList();
     return turnProductsToHashMap(dtos);
+  }
+
+  Future<List<MessageModel>> getMessagesFromChat(String channelId) async {
+    List<MessageDTO> dtos = await api.getMessagesFromChat(channelId);
+    int id = await api.getMyId();
+    return dtos
+        .map<MessageModel>((e) => MessageModel(e.userId != id, e.msg))
+        .toList();
   }
 }

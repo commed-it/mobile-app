@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/auth/actions.dart';
-import 'package:flutter_app/enterprise/model/enterprise.dart';
-import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/chat/store/actions.dart';
+import 'package:flutter_app/searcher/model.dart';
 import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -20,21 +19,11 @@ AppBar buildNotloggedAppBar(BuildContext context, CommedTheme theme) {
       height: 50,
     ),
     actions: [
-      Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, VoidCallback>(
-            converter: (store) =>
-                () => store.dispatch(const NavigateToNext(Routes.searcher)),
-            builder: (ctx, callback) => IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: callback,
-            ),
-          )),
+      searchActionBuilder(theme),
     ],
     elevation: 0,
   );
 }
-
 
 AppBar buildAppBarLogged(BuildContext context, CommedTheme theme) {
   return AppBar(
@@ -46,19 +35,50 @@ AppBar buildAppBarLogged(BuildContext context, CommedTheme theme) {
       height: 50,
     ),
     actions: [
-      Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: StoreConnector<AppState, VoidCallback>(
-            converter: (store) =>
-                () => store.dispatch(const NavigateToNext(Routes.searcher)),
-            builder: (ctx, callback) => IconButton(
-              icon: Icon(Icons.search, color: theme.primary.textColor),
-              onPressed: callback,
-            ),
-          )),
+      searchActionBuilder(theme),
       ProfileAppBarButton(theme: theme),
     ],
     elevation: 0,
+  );
+}
+
+Padding searchActionBuilder(CommedTheme theme) {
+  return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Row(
+          children: [
+            buildTextSearched(theme),
+            StoreConnector<AppState, VoidCallback>(
+              converter: (store) =>
+                  () => store.dispatch(const NavigateToNext(Routes.searcher)),
+              builder: (ctx, callback) => IconButton(
+                icon: Icon(Icons.search, color: theme.primary.textColor),
+                onPressed: callback,
+              ),
+            ),
+          ],
+        ));
+}
+
+Widget buildTextSearched(CommedTheme theme) {
+  return StoreConnector<AppState, Searcher>(
+    converter: (sto) => sto.state.searcher,
+    builder: (cto, searcher) => Padding(
+      padding: EdgeInsets.only(right: 10),
+      child: searcher.hasSearched ? Row(
+        children: [
+          StoreConnector<AppState, VoidCallback>(
+            converter: (store) => () => store.dispatch(clearSearchAndReload()),
+            builder: (ctx, callback) => IconButton(
+              icon: Icon(Icons.delete_forever_outlined,
+                  color: theme.primary.textColor),
+              onPressed: callback,
+            ),
+          ),
+          Text(searcher.textSearched),
+        ],
+      ) : Container(),
+    ),
   );
 }
 
@@ -77,39 +97,44 @@ class ProfileAppBarButton extends StatelessWidget {
           builder: (context, callback) {
             return PopupMenuButton(
                 itemBuilder: (cto) => <PopupMenuEntry<Object>>[
-                  /*PopupMenuItem(
+                      /*PopupMenuItem(
                     value: 1,
                     child: Text("Settings"),
                   ),
                   PopupMenuDivider(
                     height: 10,
                   ),*/
-                  PopupMenuItem(
-                    value: 1,
-                    child: Text("Log out"),
-                    onTap: callback(PopMenuOptions.LOGOUT),
-                  ),
-                ]);
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text("Log out"),
+                        onTap: callback(PopMenuOptions.LOGOUT),
+                      ),
+                    ]);
           },
           converter: (store) => (option) => () {
-            switch (option) {
-              case PopMenuOptions.LOGOUT:
-                return store.dispatch(const LogoutAction());
-            }
-          }),
+                switch (option) {
+                  case PopMenuOptions.LOGOUT:
+                    return store.dispatch(logoutThunk());
+                }
+              }),
     );
   }
 }
 
-
-AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpriseName, String urlImage, String conversationId, int enterpriseId) {
+AppBar buildChatAppBar(
+    BuildContext context,
+    CommedTheme theme,
+    String enterpriseName,
+    String urlImage,
+    String conversationId,
+    int enterpriseId) {
   return AppBar(
-    systemOverlayStyle:
-    SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
+    systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: theme.appBarColor),
     backgroundColor: theme.appBarColor,
     title: StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
-      builder: (ctx, theme) => buildLogoAndEnterprise(theme, enterpriseName, urlImage, conversationId, enterpriseId),
+      builder: (ctx, theme) => buildLogoAndEnterprise(
+          theme, enterpriseName, urlImage, conversationId, enterpriseId),
     ),
     actions: [
       buildSearchButton(theme, context),
@@ -119,12 +144,12 @@ AppBar buildChatAppBar(BuildContext context, CommedTheme theme, String enterpris
   );
 }
 
-Row buildLogoAndEnterprise(CommedTheme theme, String enterpriseName, String urlImage, String conversationId, int enterpriseId) {
+Row buildLogoAndEnterprise(CommedTheme theme, String enterpriseName,
+    String urlImage, String conversationId, int enterpriseId) {
   return Row(
     children: [
       StoreConnector<AppState, VoidCallback>(
-        converter: (sto) =>
-            () => sto.dispatch(loadEnterprise(enterpriseId)),
+        converter: (sto) => () => sto.dispatch(loadEnterprise(enterpriseId)),
         builder: (con, callback) => InkWell(
           child: CircleAvatar(
             radius: 20,

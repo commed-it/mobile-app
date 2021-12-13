@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter_app/auth/actions.dart';
+import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/chat/models.dart';
 import 'package:flutter_app/chat/store/actions.dart';
 import 'package:flutter_app/enterprise/model/enterprise.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_app/formaloffer/model/formaloffer.dart';
 import 'package:flutter_app/formaloffer/store/actions.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
+import 'package:flutter_app/searcher/action.dart';
 import 'package:flutter_app/service/dto/product_dto.dart';
 import 'package:flutter_app/service/dto/search_dto.dart';
 import 'package:flutter_app/store/actions.dart';
@@ -44,6 +46,7 @@ ThunkAction<AppState> loginThunkAction(String username, String password) {
     final Enterprise enterprise =
         await store.state.commedMiddleware.getMyEnterprise();
     store.dispatch(setMyEnterpriseDetail(enterprise));
+    store.dispatch(ClearSearch());
   };
 }
 
@@ -58,6 +61,13 @@ ThunkAction<AppState> registerThunkAction(LoginState loginViewState) {
         await store.state.commedMiddleware.createEnterprise(loginViewState);
     store.dispatch(LoginAction(tok != null));
     store.dispatch(setMyEnterpriseDetail(enterprise));
+    store.dispatch(ClearSearch());
+  };
+}
+
+ThunkAction<AppState> logoutThunk() {
+  return (Store<AppState> store) async {
+    store.dispatch(LogoutAction());
   };
 }
 
@@ -79,6 +89,10 @@ ThunkAction<AppState> loadListChat() {
 
 ThunkAction<AppState> submitSearch(String text) {
   return (Store<AppState> store) async {
+    if (text == ""){
+      store.dispatch(NavigateBack());
+      return;
+    }
     SearchDTO searchDTO = SearchDTO(
         locationDTO: LocationDTO(latitude: 0.0, longitude: 0.0, distance: 5.0),
         tag: List.generate(1, (index) => TagDTO(name: text)));
@@ -87,8 +101,25 @@ ThunkAction<AppState> submitSearch(String text) {
     products.forEach((key, value) {
       print(value.content.name);
     });
+    store.dispatch(SetSearch(text));
     store.dispatch(SetProductList(products));
     store.dispatch(NavigateBack());
+  };
+}
+
+ThunkAction<AppState> loadMessagesFromEncounter(String channelId) {
+  return (Store<AppState> store) async {
+    List<MessageModel> chatModels = await store.state.commedMiddleware.getMessagesFromChat(channelId);
+    store.dispatch(SetListMessages(chatModels));
+  };
+}
+
+ThunkAction<AppState> clearSearchAndReload() {
+  return (Store<AppState> store) async {
+    store.dispatch(ClearSearch());
+    final HashMap<int, Product> products =
+    await store.state.commedMiddleware.getProducts();
+    store.dispatch(SetProductList(products));
   };
 }
 

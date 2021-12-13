@@ -34,7 +34,13 @@ class ConversationScreen extends StatelessWidget {
       converter: (s) => s.state.theme,
       builder: (ctx, theme) => Scaffold(
         appBar: buildChatAppBar(
-            context, theme, enterprise, urlImage, conversationId, enterpriseId),
+          context,
+          theme,
+          enterprise,
+          urlImage,
+          conversationId,
+          enterpriseId,
+        ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -47,7 +53,6 @@ class ConversationScreen extends StatelessWidget {
           ),
           child: Stack(
             alignment: AlignmentDirectional.bottomStart,
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 children: [
@@ -72,22 +77,16 @@ class MockConversation extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, ChatModel>(
       converter: (sto) => sto.state.chatModel,
-      builder: (cto, chatModel) => ConversationScreen(
-        conversationId: chatModel.idEncounter,
-        messages: List.filled(20, [
-          const MessageModel(false, "Hi nice to meet y'all!"),
-          const MessageModel(true, "Hi how are you doing!")
-        ]).fold([], (xs, x) {
-          xs.addAll(x);
-          return xs;
-        })
-          ..add(FormalOfferMessage(true, 3))
-          ..add(FormalOfferMessage(false, 4)),
-        enterpriseId: chatModel.idEnterprise,
-        enterprise: chatModel.nameCompany,
-        urlImage:
-            chatModel.urlProfile,
-        theme: theme,
+      builder: (cto, chatModel) => StoreConnector<AppState, List<CommedMessage>>(
+        converter: (sto) => sto.state.chatState.messages,
+        builder: (cto, messages) => ConversationScreen(
+          conversationId: chatModel.idEncounter,
+          messages: messages,
+          enterpriseId: chatModel.idEnterprise,
+          enterprise: chatModel.nameCompany,
+          urlImage: chatModel.urlProfile,
+          theme: theme,
+        ),
       ),
     );
   }

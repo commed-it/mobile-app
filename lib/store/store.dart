@@ -44,6 +44,7 @@ class AppState {
   final List<FormalOffer> formalOffers;
   final List<ChatItemModel> listChats;
   final ChatModel chatModel;
+  final ChatState chatState;
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
@@ -60,6 +61,7 @@ class AppState {
       this.formalOffers,
       this.listChats,
       this.chatModel,
+      this.chatState,
       this.theme,
       this.enterpriseDetail,
       this.myEnterpriseDetail,
@@ -76,7 +78,8 @@ class AppState {
         products = HashMap(),
         formalOffers = List.empty(),
         listChats = List.empty(),
-  chatModel = ChatModel.init(),
+        chatModel = ChatModel.init(),
+        chatState = ChatState.init(),
         theme = CommedTheme.init(),
         enterpriseDetail = const Enterprise.init(),
         myEnterpriseDetail = const Enterprise.init(),
@@ -91,6 +94,7 @@ class AppState {
           HashMap<int, Product>? products,
           List<FormalOffer>? formalOffers,
           List<ChatItemModel>? listChats,
+          ChatState? chatState,
           CommedTheme? theme,
           Enterprise? enterpriseDetail,
           Enterprise? myEnterpriseDetail,
@@ -105,12 +109,21 @@ class AppState {
           formalOffers ?? this.formalOffers,
           listChats ?? this.listChats,
           chatModel ?? this.chatModel,
+          chatState ?? this.chatState,
           theme ?? this.theme,
           enterpriseDetail ?? this.enterpriseDetail,
           myEnterpriseDetail ?? this.myEnterpriseDetail,
           searcher ?? this.searcher,
           this.commedMiddleware,
           loggedState ?? this.loggedState);
+
+  String? getWebSocketURI() {
+    return "ws://" +
+        this.commedMiddleware.api.host +
+        "/ws/chat" +
+        chatModel.idEncounter +
+        "/";
+  }
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {
