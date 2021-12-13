@@ -5,18 +5,19 @@ import 'package:flutter_app/store/store.dart';
 
 AppState authenticationReducer(AppState prev, AppAction action) {
   switch (action.runtimeType) {
-    case ToggleAuthToken:
-      var newAction = action as ToggleAuthToken;
+    case LoginAction:
       GlobalKey<NavigatorState> navKey = prev.navigatorKey..currentState!.pop()
         ..currentState!.pushReplacementNamed(Routes.home);
-      return prev.copy(isLogged: newAction.authenticate, navigatorKey: navKey);
+      return prev.copy(loggedState: LoggedState.Logged, navigatorKey: navKey);
     case LogoutAction:
       GlobalKey<NavigatorState> navKey = prev.navigatorKey;
       while (navKey.currentState!.canPop()) {
         navKey = navKey..currentState!.pop();
       }
       navKey = navKey..currentState!.pushNamed(Routes.home);
-      return prev.copy(isLogged: false, navigatorKey: navKey);
+      return prev.copy(loggedState: LoggedState.NotLogged, navigatorKey: navKey);
+    case CouldntLogAction:
+      return prev.copy(loggedState: LoggedState.CouldntLog);
   }
   return prev;
 }

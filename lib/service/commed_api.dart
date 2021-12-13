@@ -106,7 +106,7 @@ class CommedAPI {
       setCookie = res.headers['set-cookie']!;
       return token!;
     }
-    throw "Unable to login with " + username + " and " + password;
+    return null;
   }
 
   Future<int> getMyId() async {
@@ -190,7 +190,7 @@ class CommedAPI {
       setCookie = res.headers['set-cookie']!;
       return token!;
     }
-    throw "unable to register";
+    return null;
   }
 
   Future<EnterpriseDTO> createEnterprise(

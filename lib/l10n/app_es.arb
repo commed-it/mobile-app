@@ -25,6 +25,7 @@
     "dots": "...",
     "connect" : "Connectar",
     "no_formal_offers" : "¡No hay contratos!",
-    "no_chats" :"¡Ooops! ¡Aún no has conectado con ninguna empresa!"
+    "no_chats" :"¡Ooops! ¡Aún no has conectado con ninguna empresa!",
+    "loginError": "Verifica que el campo sea correcto"
 
 }

@@ -29,6 +29,12 @@ class LambdaAction extends AppAction {
   const LambdaAction(this.func);
 }
 
+enum LoggedState {
+  NotLogged,
+  Logged,
+  CouldntLog,
+}
+
 @immutable
 class AppState {
   final LoginState loginViewState;
@@ -41,9 +47,9 @@ class AppState {
   final CommedTheme theme;
   final Enterprise enterpriseDetail;
   final Searcher searcher;
-  final bool isLogged;
   final CommedMiddleware commedMiddleware;
   final Enterprise myEnterpriseDetail;
+  final LoggedState loggedState;
 
   // add User, ...
   AppState(
@@ -58,8 +64,8 @@ class AppState {
       this.enterpriseDetail,
       this.myEnterpriseDetail,
       this.searcher,
-      this.isLogged,
-      this.commedMiddleware);
+      this.commedMiddleware,
+      this.loggedState);
 
   // add User, ...
 
@@ -75,8 +81,8 @@ class AppState {
         enterpriseDetail = const Enterprise.init(),
         myEnterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
-        isLogged = false,
-        commedMiddleware = CommedMiddleware();
+        commedMiddleware = CommedMiddleware(),
+        loggedState = LoggedState.NotLogged;
 
   AppState copy(
           {LoginState? loginViewState,
@@ -89,7 +95,8 @@ class AppState {
           Enterprise? enterpriseDetail,
           Enterprise? myEnterpriseDetail,
           Searcher? searcher,
-          bool? isLogged, ChatModel? chatModel}) =>
+          ChatModel? chatModel,
+          LoggedState? loggedState}) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
@@ -102,8 +109,8 @@ class AppState {
           enterpriseDetail ?? this.enterpriseDetail,
           myEnterpriseDetail ?? this.myEnterpriseDetail,
           searcher ?? this.searcher,
-          isLogged ?? this.isLogged,
-          this.commedMiddleware);
+          this.commedMiddleware,
+          loggedState ?? this.loggedState);
 }
 
 AppState navigationReducer(AppState prev, AppAction action) {

@@ -18,10 +18,12 @@ class EnterpriseView extends StatelessWidget {
       builder: (ctx, theme) => StoreConnector<AppState, Enterprise>(
         converter: (sto) => sto.state.enterpriseDetail,
         builder: (ctx, enterprise) => StoreConnector<AppState, bool>(
-          converter : (sto) => sto.state.isLogged,
+          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
           builder: (ctx, isLogged) => Scaffold(
             backgroundColor: theme.appBarColor,
-            appBar: isLogged ? buildAppBarLogged(context, theme) : buildNotloggedAppBar(context, theme),
+            appBar: isLogged
+                ? buildAppBarLogged(context, theme)
+                : buildNotloggedAppBar(context, theme),
             body: Container(
               child: buildProfileView(theme, enterprise),
             ),
@@ -30,9 +32,6 @@ class EnterpriseView extends StatelessWidget {
       ),
     );
   }
-
-
-
 }
 
 Padding body(CommedTheme theme, Enterprise enterprise, yPadding) {

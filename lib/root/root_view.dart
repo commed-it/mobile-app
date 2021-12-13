@@ -19,7 +19,7 @@ class RootWidget extends StatelessWidget {
     return StoreConnector<AppState, VoidCallback>(
       converter: (sto) => () => sto.dispatch(reloadProducts()),
       builder: (cto, callback) => StoreConnector<AppState, bool>(
-          converter: (sto) => sto.state.isLogged,
+          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
           builder: (cto, isLogged) =>
               isLogged ? PageControlWidget() : NotLoggedView(),
         onInit: (sto) => callback(),

@@ -35,7 +35,12 @@ ThunkAction<AppState> loadEnterprise(int userId) {
 ThunkAction<AppState> loginThunkAction(String username, String password) {
   return (Store<AppState> store) async {
     String? tok = await store.state.commedMiddleware.login(username, password);
-    store.dispatch(ToggleAuthToken(tok != null));
+    print(tok);
+    if (tok==null) {
+      store.dispatch(CouldntLogAction());
+      return;
+    }
+    store.dispatch(LoginAction(tok != null));
     final Enterprise enterprise =
         await store.state.commedMiddleware.getMyEnterprise();
     store.dispatch(setMyEnterpriseDetail(enterprise));
@@ -45,9 +50,13 @@ ThunkAction<AppState> loginThunkAction(String username, String password) {
 ThunkAction<AppState> registerThunkAction(LoginState loginViewState) {
   return (Store<AppState> store) async {
     String? tok = await store.state.commedMiddleware.register(loginViewState);
+    if (tok == null) {
+      store.dispatch(CouldntLogAction());
+      return;
+    }
     final Enterprise enterprise =
         await store.state.commedMiddleware.createEnterprise(loginViewState);
-    store.dispatch(ToggleAuthToken(tok != null));
+    store.dispatch(LoginAction(tok != null));
     store.dispatch(setMyEnterpriseDetail(enterprise));
   };
 }
