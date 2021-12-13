@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 
 import 'dto/encounter_dto.dart';
 import 'dto/list_chat_dto.dart';
+import 'dto/search_dto.dart';
 
 class CommedAPI {
   final String postsURL = "http://10.0.2.2:8000";
@@ -33,19 +34,41 @@ class CommedAPI {
     }
   }
 
-  Future<List<ProductDTO>> searchProduct() async {
-    Uri uri = Uri.parse(postsURL + "/product");
-    Response res = await get(uri);
+  Future<List<ProductDTO>> searchProduct(SearchDTO searchDTO) async {
+    Uri uri = Uri.parse(postsURL + "/product/search/");
+    var encoded = jsonEncodeSearch(searchDTO);
+    Response res = await post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: encoded,
+    );
     if (res.statusCode == 200) {
       List<ProductDTO> posts = jsonDecode(res.body)
           .map<ProductDTO>(
             (dynamic item) => ProductDTO.fromJson(item),
-      )
+          )
           .toList();
       return posts;
     } else {
       throw "Unable to retrieve posts.";
     }
+  }
+
+  String jsonEncodeSearch(SearchDTO searchDTO) {
+    return jsonEncode(<String, dynamic>{
+      'location': <String, double>{
+        'longitude': searchDTO.locationDTO.longitude,
+        'latitude': searchDTO.locationDTO.latitude,
+        'distance_km': searchDTO.locationDTO.distance,
+      },
+      'tags': searchDTO.tag
+          .map((tagDTO) => <String, String>{
+                'name': tagDTO.name,
+              })
+          .toList(),
+    });
   }
 
   Future<ProductDTO> getProduct(int productId) async {
@@ -128,15 +151,13 @@ class CommedAPI {
     throw "unable to get the list of encounters and formal offers";
   }
 
-  Future<List<ListChatDTO>> getListChatDTO(
-      int userId) async {
-    Uri uri = Uri.parse(
-        postsURL + "/offer/encounter/fromUser/" + userId.toString());
+  Future<List<ListChatDTO>> getListChatDTO(int userId) async {
+    Uri uri =
+        Uri.parse(postsURL + "/offer/encounter/fromUser/" + userId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
-          .map<ListChatDTO>(
-              (e) => ListChatDTO.fromJson(e))
+          .map<ListChatDTO>((e) => ListChatDTO.fromJson(e))
           .toList();
     }
     throw "unable to get the list of encounters and formal offers";

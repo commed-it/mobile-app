@@ -10,6 +10,7 @@ import 'package:flutter_app/service/dto/enterprise_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_encounter_dto.dart';
 import 'package:flutter_app/service/dto/list_chat_dto.dart';
+import 'package:flutter_app/service/dto/search_dto.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 
 import 'dto/encounter_dto.dart';
@@ -24,6 +25,11 @@ class CommedMiddleware {
 
   Future<HashMap<int, Product>> getProducts() async {
     final List<ProductDTO> dtos = await api.getProducts();
+    return await turnProductsToHashMap(dtos);
+  }
+
+  Future<HashMap<int, Product>> turnProductsToHashMap(
+      List<ProductDTO> dtos) async {
     HashMap<int, Product> products = HashMap();
     for (ProductDTO e in dtos) {
       EnterpriseDTO enterpriseDTO = await api.getEnterpriseFromOwner(e.owner);
@@ -99,8 +105,12 @@ class CommedMiddleware {
     int pk = await api.getMyId();
     List<ListChatDTO> listChats = await api.getListChatDTO(pk);
     return listChats
-        .map<ChatItemModel>((chat) => ChatItemModel(chat.encounter.id, chat.theOtherClient.owner, getMedia(chat.theOtherClient.profileImage),
-            chat.theOtherClient.name, chat.product.title))
+        .map<ChatItemModel>((chat) => ChatItemModel(
+            chat.encounter.id,
+            chat.theOtherClient.owner,
+            getMedia(chat.theOtherClient.profileImage),
+            chat.theOtherClient.name,
+            chat.product.title))
         .toList();
   }
 
@@ -120,5 +130,25 @@ class CommedMiddleware {
   Future<Enterprise> createEnterprise(LoginState loginViewState) async {
     return Enterprise.fromDTO(await api.createEnterprise(loginViewState.nif,
         loginViewState.company, loginViewState.contact, 'Description'));
+  }
+
+  Future<HashMap<int, Product>> searchProducts(SearchDTO searchDTO) async {
+    List<ProductDTO> dtos = await api.searchProduct(searchDTO);
+    dtos = dtos.map<ProductDTO>((dto) {
+      List<ImageContainerDTO> images = dto.images
+          .map<ImageContainerDTO>((e) => ImageContainerDTO(
+              id: e.id, name: e.name, image: getMedia(e.image)))
+          .toList();
+      return ProductDTO(
+          id: dto.id,
+          owner: dto.owner,
+          title: dto.title,
+          images: images,
+          description: dto.description,
+          latitude: dto.latitude,
+          longitude: dto.longitude,
+          tag: dto.tag);
+    }).toList();
+    return turnProductsToHashMap(dtos);
   }
 }

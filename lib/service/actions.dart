@@ -9,6 +9,8 @@ import 'package:flutter_app/formaloffer/model/formaloffer.dart';
 import 'package:flutter_app/formaloffer/store/actions.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
+import 'package:flutter_app/service/dto/product_dto.dart';
+import 'package:flutter_app/service/dto/search_dto.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:redux/redux.dart';
@@ -60,15 +62,22 @@ ThunkAction<AppState> loadMyFormalOffers() {
 
 ThunkAction<AppState> loadListChat() {
   return (Store<AppState> store) async {
-    List<ChatItemModel> chatModels = await store.state.commedMiddleware.getListChat();
+    List<ChatItemModel> chatModels =
+        await store.state.commedMiddleware.getListChat();
     store.dispatch(SetListChat(chatModels));
   };
 }
 
 ThunkAction<AppState> submitSearch(String text) {
   return (Store<AppState> store) async {
+    SearchDTO searchDTO = SearchDTO(
+        locationDTO: LocationDTO(latitude: 0.0, longitude: 0.0, distance: 5.0),
+        tag: List.generate(1, (index) => TagDTO(name: text)));
     final HashMap<int, Product> products =
-        await store.state.commedMiddleware.getProducts();
+        await store.state.commedMiddleware.searchProducts(searchDTO);
+    products.forEach((key, value) {
+      print(value.content.name);
+    });
     store.dispatch(SetProductList(products));
     store.dispatch(NavigateBack());
   };
@@ -79,4 +88,3 @@ class SetProductList extends AppAction {
 
   const SetProductList(this.products);
 }
-
