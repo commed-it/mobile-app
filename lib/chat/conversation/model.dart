@@ -16,11 +16,11 @@ class CommedMessage {
 }
 
 @immutable
-class MessageModel implements CommedMessage {
+class MessageModal implements CommedMessage {
   final bool isOther;
   final String message;
 
-  const MessageModel(this.isOther, this.message);
+  const MessageModal(this.isOther, this.message);
 
   @override
   Widget buildWidget() {

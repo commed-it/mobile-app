@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 class MessageDTO {
   final int userId;
   final String channelId;
-  final String msg;
+  final ConvItemContentDTO msg;
   final String timestamp;
 
   MessageDTO({
@@ -12,15 +14,47 @@ class MessageDTO {
   });
 
   factory MessageDTO.fromJson(Map<String, dynamic> json) {
+    var jsonContent = jsonDecode(json['msg']);
+    var type = jsonContent['type'];
+    ConvItemContentDTO? content;
+    if (type == 'message') {
+      content = MessageContentDTO.fromJson(jsonContent);
+    } else {
+      content = MessageFormalOfferDTO.fromJson(jsonContent);
+    }
     return MessageDTO(
       userId: json['author'] as int,
       channelId: json['channel_context'] as String,
-      msg: json['msg'] as String,
+      msg: content,
       timestamp: json['timestamp'] as String,
     );
   }
 }
 
-class MessageContentDTO {
+class ConvItemContentDTO {
+  final String type;
 
+  ConvItemContentDTO(this.type);
+}
+
+class MessageContentDTO extends ConvItemContentDTO {
+  final String message;
+
+  MessageContentDTO(String type, this.message) : super(type);
+
+  factory MessageContentDTO.fromJson(Map<String, dynamic> json) {
+    return MessageContentDTO(json['type'], json['message']);
+  }
+}
+
+class MessageFormalOfferDTO extends ConvItemContentDTO {
+  final int user;
+  final int formalOffer;
+
+  MessageFormalOfferDTO(String type, this.user, this.formalOffer) : super(type);
+
+  factory MessageFormalOfferDTO.fromJson(Map<String, dynamic> json) {
+    return MessageFormalOfferDTO(
+        json['type'], json['user'], json['formalOffer']);
+  }
 }

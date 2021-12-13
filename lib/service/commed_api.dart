@@ -131,7 +131,7 @@ class CommedAPI {
     return getEnterpriseFromOwner(pk);
   }
 
-  Future<List<FormalOfferDTO>> getFormalOffer(int userId) async {
+  Future<List<FormalOfferDTO>> getFormalOfferFromUserId(int userId) async {
     Uri uri =
         Uri.parse(URLHttp + "/offer/formaloffer/user/" + userId.toString());
     Response res = await get(uri);
@@ -139,6 +139,16 @@ class CommedAPI {
       return (jsonDecode(res.body) as List)
           .map<FormalOfferDTO>((e) => FormalOfferDTO.fromJson(e))
           .toList();
+    }
+    throw "unable to get the list of offers";
+  }
+
+  Future<FormalOfferDTO> getFormalOffer(int formalOfferId) async {
+    Uri uri =
+    Uri.parse(URLHttp + "/offer/formaloffer/" + formalOfferId.toString());
+    Response res = await get(uri);
+    if (res.statusCode == 200) {
+      return FormalOfferDTO.fromJson(jsonDecode(res.body));
     }
     throw "unable to get the list of offers";
   }

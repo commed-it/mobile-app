@@ -45,10 +45,10 @@ class ChatView extends StatelessWidget {
                               ),
                         ...(list.map((e) => [
                                   StoreConnector<AppState, VoidCallback>(
-                                    converter: (sto) => () => sto.dispatch(NavigateToChat(ChatModel(e.idEncounter, e.idEnterprise, e.title, e.image))),
+                                    converter: (sto) => () => sto.dispatch(loadThunkConversationModel(ChatModel(e.idEncounter, e.idEnterprise, e.title, e.image))),
                                     builder: (cto, callback) => buildItem(e.idEnterprise, callback, e.image, e.title,
                                         e.subtitle),
-                                  ), // TODO: TODO
+                                  ),
                                   const ListDivider(),
                                 ]))
                             .fold(

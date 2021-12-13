@@ -14,7 +14,7 @@ class NavigateToChat extends AppAction {
 }
 
 class SetListMessages extends AppAction {
-  final List<MessageModel> msgs;
+  final List<CommedMessage> msgs;
   const SetListMessages(this.msgs);
 }
 

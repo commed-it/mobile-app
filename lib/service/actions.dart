@@ -107,12 +107,6 @@ ThunkAction<AppState> submitSearch(String text) {
   };
 }
 
-ThunkAction<AppState> loadMessagesFromEncounter(String channelId) {
-  return (Store<AppState> store) async {
-    List<MessageModel> chatModels = await store.state.commedMiddleware.getMessagesFromChat(channelId);
-    store.dispatch(SetListMessages(chatModels));
-  };
-}
 
 ThunkAction<AppState> clearSearchAndReload() {
   return (Store<AppState> store) async {
@@ -120,6 +114,14 @@ ThunkAction<AppState> clearSearchAndReload() {
     final HashMap<int, Product> products =
     await store.state.commedMiddleware.getProducts();
     store.dispatch(SetProductList(products));
+  };
+}
+
+ThunkAction<AppState> loadThunkConversationModel(ChatModel chatModel) {
+  return (Store<AppState> store) async {
+    List<CommedMessage> chatModels = await store.state.commedMiddleware.getMessagesFromChat(chatModel.idEncounter);
+    store.dispatch(SetListMessages(chatModels));
+    store.dispatch(NavigateToChat(chatModel));
   };
 }
 

@@ -44,8 +44,8 @@ class CommedMiddleware {
     return Product(e.id, getProductContentFrom(e, enterpriseDTO));
   }
 
-  ProductContent getProductContentFrom(
-      ProductDTO e, EnterpriseDTO enterpriseDTO) {
+  ProductContent getProductContentFrom(ProductDTO e,
+      EnterpriseDTO enterpriseDTO) {
     return ProductContent(
         ImageContainer(e.images.map((img) => img.image).toList()),
         e.title,
@@ -57,7 +57,7 @@ class CommedMiddleware {
 
   Future<Enterprise> getEnterprise(int userId) async {
     Enterprise ent =
-        Enterprise.fromDTO(await api.getEnterpriseFromOwner(userId));
+    Enterprise.fromDTO(await api.getEnterpriseFromOwner(userId));
     return ent.copy(urlLogo: getMedia(ent.urlLogo));
   }
 
@@ -73,18 +73,19 @@ class CommedMiddleware {
 
   Future<List<FormalOffer>> getMyFormalOffers() async {
     int pk = await api.getMyId();
-    List<FormalOfferDTO> formalOffersDTO = await api.getFormalOffer(pk);
+    List<FormalOfferDTO> formalOffersDTO = await api.getFormalOfferFromUserId(
+        pk);
     List<FormalOffer> res = List.empty(growable: true);
     for (FormalOfferDTO formalOffer in formalOffersDTO) {
       EncounterDTO encounterDTO =
-          await api.getEncounters(formalOffer.encounterId);
+      await api.getEncounters(formalOffer.encounterId);
       EnterpriseDTO enterpriseDTO =
-          await api.getEnterpriseFromOwner(encounterDTO.client);
+      await api.getEnterpriseFromOwner(encounterDTO.client);
       Enterprise ent = Enterprise.fromDTO(enterpriseDTO);
       ent = ent.copy(urlLogo: getMedia(ent.urlLogo));
       ProductDTO productDTO = await api.getProduct(encounterDTO.product);
       FormalOffer offer =
-          FormalOffer(ent, productDTO.title, formalOffer.version, true);
+      FormalOffer(ent, productDTO.title, formalOffer.version, true);
       res.add(offer);
     }
     return res;
@@ -93,9 +94,10 @@ class CommedMiddleware {
   Future<List<FormalOffer>> getMyFormalOffersEncounter() async {
     int pk = await api.getMyId();
     List<FormalOfferEncounterDTO> formalOffersDTO =
-        await api.getFormalOfferEncounterDTO(pk);
+    await api.getFormalOfferEncounterDTO(pk);
     return formalOffersDTO
-        .map<FormalOffer>((e) => FormalOffer(
+        .map<FormalOffer>((e) =>
+        FormalOffer(
             checkURL(Enterprise.fromDTO(e.theOtherClient)),
             e.product.title,
             e.formalOffer.version,
@@ -107,7 +109,8 @@ class CommedMiddleware {
     int pk = await api.getMyId();
     List<ListChatDTO> listChats = await api.getListChatDTO(pk);
     return listChats
-        .map<ChatItemModel>((chat) => ChatItemModel(
+        .map<ChatItemModel>((chat) =>
+        ChatItemModel(
             chat.encounter.id,
             chat.theOtherClient.owner,
             getMedia(chat.theOtherClient.profileImage),
@@ -138,7 +141,8 @@ class CommedMiddleware {
     List<ProductDTO> dtos = await api.searchProduct(searchDTO);
     dtos = dtos.map<ProductDTO>((dto) {
       List<ImageContainerDTO> images = dto.images
-          .map<ImageContainerDTO>((e) => ImageContainerDTO(
+          .map<ImageContainerDTO>((e) =>
+          ImageContainerDTO(
               id: e.id, name: e.name, image: getMedia(e.image)))
           .toList();
       return ProductDTO(
@@ -154,11 +158,25 @@ class CommedMiddleware {
     return turnProductsToHashMap(dtos);
   }
 
-  Future<List<MessageModel>> getMessagesFromChat(String channelId) async {
+  Future<List<CommedMessage>> getMessagesFromChat(String channelId) async {
     List<MessageDTO> dtos = await api.getMessagesFromChat(channelId);
     int id = await api.getMyId();
-    return dtos
-        .map<MessageModel>((e) => MessageModel(e.userId != id, e.msg))
-        .toList();
+    List<CommedMessage> res = List.empty(growable: true);
+    for (MessageDTO dto in dtos) {
+      bool isOther = dto.userId != id;
+      switch (dto.msg.runtimeType) {
+        case MessageContentDTO:
+          res.add(MessageModal(isOther, (dto.msg as MessageContentDTO).message));
+          break;
+        case MessageFormalOfferDTO:
+          var formalOfferMsg = (dto.msg as MessageFormalOfferDTO);
+          FormalOfferDTO fOfferDTO = await api.getFormalOffer(formalOfferMsg.formalOffer);
+          res.add(FormalOfferMessage(isOther, fOfferDTO.version));
+          break;
+        default:
+          throw "Illegal state";
+      }
+    }
+    return res.reversed.toList();
   }
 }

@@ -16,8 +16,8 @@ class ChatState {
       : webSockets = List.empty(),
         currentChatWebSocket = null,
         messages = List.filled(20, [
-          const MessageModel(false, "Hi nice to meet y'all!"),
-          const MessageModel(true, "Hi how are you doing!")
+          const MessageModal(false, "Hi nice to meet y'all!"),
+          const MessageModal(true, "Hi how are you doing!")
         ]).fold([], (xs, x) {
           xs.addAll(x);
           return xs;
