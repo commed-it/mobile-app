@@ -120,7 +120,7 @@ class AppState {
   String? getWebSocketURI() {
     return "ws://" +
         this.commedMiddleware.api.host +
-        "/ws/chat" +
+        "/ws/chat/" +
         chatModel.idEncounter +
         "/";
   }

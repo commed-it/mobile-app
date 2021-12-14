@@ -31,7 +31,7 @@ class GenericField extends StatelessWidget {
     Key? key,
     required this.context,
     required this.icon,
-    required this.func,
+    required this.translator,
     required this.converter,
     required this.newAction,
     this.errorText
@@ -39,7 +39,7 @@ class GenericField extends StatelessWidget {
 
   final BuildContext context;
   final IconData icon;
-  final fromAppLocalization func;
+  final fromAppLocalization translator;
   final Converter converter;
   final NewAction newAction;
   final String? errorText;
@@ -67,7 +67,7 @@ class GenericField extends StatelessWidget {
                     builder: (ctx, count) => TextFormField(
                     maxLines: 1,
                     decoration: InputDecoration(
-                      label: Text(" " + func(AppLocalizations.of(context)!)),
+                      label: Text(" " + translator(AppLocalizations.of(context)!)),
                       border: InputBorder.none,
                       errorText: errorText,
                     ),

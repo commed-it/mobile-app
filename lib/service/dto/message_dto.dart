@@ -38,12 +38,14 @@ class ConvItemContentDTO {
 }
 
 class MessageContentDTO extends ConvItemContentDTO {
+  final int user;
   final String message;
 
-  MessageContentDTO(String type, this.message) : super(type);
+  MessageContentDTO(this.user, String type, this.message) : super(type);
 
   factory MessageContentDTO.fromJson(Map<String, dynamic> json) {
-    return MessageContentDTO(json['type'], json['message']);
+    return MessageContentDTO(json['user'] as int,
+        json['type'] as String, json['message'] as String);
   }
 }
 

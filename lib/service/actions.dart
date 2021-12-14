@@ -38,7 +38,6 @@ ThunkAction<AppState> loadEnterprise(int userId) {
 ThunkAction<AppState> loginThunkAction(String username, String password) {
   return (Store<AppState> store) async {
     String? tok = await store.state.commedMiddleware.login(username, password);
-    print(tok);
     if (tok == null) {
       store.dispatch(CouldntLogAction());
       return;
@@ -99,9 +98,6 @@ ThunkAction<AppState> submitSearch(String text) {
         tag: List.generate(1, (index) => TagDTO(name: text)));
     final HashMap<int, Product> products =
         await store.state.commedMiddleware.searchProducts(searchDTO);
-    products.forEach((key, value) {
-      print(value.content.name);
-    });
     store.dispatch(SetSearch(text));
     store.dispatch(SetProductList(products));
     store.dispatch(NavigateBack());
@@ -128,14 +124,20 @@ ThunkAction<AppState> loadThunkConversationModel(ChatModel chatModel) {
 
 ThunkAction<AppState> connectThunkWebSocketChannel(String idEncounter) {
   return (Store<AppState> store) async {
-    print(idEncounter);
-    print(store.state.chatState.webSockets.keys.toList());
-    print(!store.state.chatState.webSockets.containsKey(idEncounter));
     WebSocketChannel channel = !store.state.chatState.webSockets
             .containsKey(idEncounter)
         ? WebSocketChannel.connect(Uri.parse(store.state.getWebSocketURI()!))
         : store.state.chatState.webSockets[idEncounter]!;
+    print(idEncounter);
     store.dispatch(SetEncounterChannel(idEncounter, channel));
+  };
+}
+
+ThunkAction<AppState> sendThunkMessageThroughChat(String message) {
+  return (Store<AppState> store) async {
+    print(store.state.chatState.webSockets.keys);
+    store.state.chatState.currentChatWebSocket!.sink.add(message);
+    store.dispatch(const SetSenderMessage(''));
   };
 }
 

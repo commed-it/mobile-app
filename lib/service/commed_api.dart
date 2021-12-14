@@ -224,8 +224,6 @@ class CommedAPI {
           'contactInfo': contact,
           'description': s,
         }));
-    print(res.statusCode);
-    print(res.body);
     if (res.statusCode == 201) {
       return EnterpriseDTO.fromJson(jsonDecode(res.body));
     }
@@ -236,6 +234,7 @@ class CommedAPI {
     Uri uri =
         Uri.parse(URLHttp + "/chat/encounter/" + channelId + "/messages/");
     Response res = await get(uri);
+    print(res.body);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
           .map<MessageDTO>((e) => MessageDTO.fromJson(e))

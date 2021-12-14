@@ -31,16 +31,15 @@ class LoginWidget extends StatelessWidget {
               GenericField(
                 context: context,
                 icon: Icons.account_circle,
-                func: (x) => x.username,
+                translator: (x) => x.username,
                 newAction: (v) => SetUsernameAction(v),
                 converter: (s) => s.state.loginViewState.username,
                 errorText: errorText,
-
               ),
               GenericField(
                 context: context,
                 icon: Icons.password_outlined,
-                func: (x) => x.password,
+                translator: (x) => x.password,
                 newAction: (v) => SetPasswordAction(v),
                 converter: (s) => s.state.loginViewState.password,
                 errorText: errorText,

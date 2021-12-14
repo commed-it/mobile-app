@@ -1,11 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/chat/message/conversation.dart';
 import 'package:flutter_app/chat/message/sender.dart';
-import 'package:flutter_app/chat/store/actions.dart';
 import 'package:flutter_app/chat/store/store.dart';
 import 'package:flutter_app/service/actions.dart';
-import 'package:flutter_app/store/actions.dart';
+import 'package:flutter_app/service/dto/message_dto.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/appbar.dart';
@@ -82,24 +83,30 @@ class MockConversation extends StatelessWidget {
     return StoreConnector<AppState, ChatModel>(
       converter: (sto) => sto.state.chatModel,
       builder: (cto, chatModel) => StoreConnector<AppState, ChatState>(
-        onInit: (sto) => sto.dispatch(connectThunkWebSocketChannel(chatModel.idEncounter)),
+        onInit: (sto) =>
+            sto.dispatch(connectThunkWebSocketChannel(chatModel.idEncounter)),
         converter: (sto) => sto.state.chatState,
-        builder: (cto, chatState) => chatState.webSockets.containsKey(chatModel.idEncounter) ? Container() : StreamBuilder(
+        builder: (cto, chatState) =>
+            StreamBuilder(
           stream: chatState.currentChatWebSocket!.stream,
-          builder: (cto, snapshot) => buildConversationScreen(chatModel, chatState, snapshot),
+          builder: (cto, snapshot) =>
+              buildConversationScreen(chatModel, chatState, snapshot),
         ),
       ),
     );
   }
 
-  ConversationScreen buildConversationScreen(ChatModel chatModel, ChatState chatState, snapshot) {
+  ConversationScreen buildConversationScreen(
+      ChatModel chatModel, ChatState chatState, snapshot) {
     return ConversationScreen(
-          conversationId: chatModel.idEncounter,
-          messages: chatState.messages,
-          enterpriseId: chatModel.idEnterprise,
-          enterprise: chatModel.nameCompany,
-          urlImage: chatModel.urlProfile,
-          theme: theme,
-        );
+      conversationId: chatModel.idEncounter,
+      messages: snapshot.hasData
+          ? (chatState.messages..add(MessageModal(true, MessageContentDTO.fromJson(jsonDecode(snapshot.data)))))
+          : chatState.messages,
+      enterpriseId: chatModel.idEnterprise,
+      enterprise: chatModel.nameCompany,
+      urlImage: chatModel.urlProfile,
+      theme: theme,
+    );
   }
 }

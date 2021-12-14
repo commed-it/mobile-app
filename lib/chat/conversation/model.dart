@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/service/dto/message_dto.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +19,7 @@ class CommedMessage {
 @immutable
 class MessageModal implements CommedMessage {
   final bool isOther;
-  final String message;
+  final MessageContentDTO message;
 
   const MessageModal(this.isOther, this.message);
 
@@ -27,7 +28,7 @@ class MessageModal implements CommedMessage {
     return StoreConnector<AppState, CommedTheme>(
       converter: (s) => s.state.theme,
       builder: (ctx, theme) => Text(
-        message,
+        message.message,
         style: TextStyle(
             color:
                 isOther ? theme.primary.textColor : theme.background.textColor),

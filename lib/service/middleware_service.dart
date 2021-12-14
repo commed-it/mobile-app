@@ -166,7 +166,7 @@ class CommedMiddleware {
       bool isOther = dto.userId != id;
       switch (dto.msg.runtimeType) {
         case MessageContentDTO:
-          res.add(MessageModal(isOther, (dto.msg as MessageContentDTO).message));
+          res.add(MessageModal(isOther, (dto.msg as MessageContentDTO)));
           break;
         case MessageFormalOfferDTO:
           var formalOfferMsg = (dto.msg as MessageFormalOfferDTO);

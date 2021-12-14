@@ -28,7 +28,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.work_outline,
-            func: (x) => x.company_name,
+            translator: (x) => x.company_name,
             newAction: (v) => SetCompanyAction(v),
             converter: (s) => s.state.loginViewState.company,
             errorText: errorText,
@@ -36,7 +36,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.article_outlined,
-            func: (x) => x.nif,
+            translator: (x) => x.nif,
             newAction: (v) => SetNifAction(v),
             converter: (s) => s.state.loginViewState.nif,
             errorText: errorText,
@@ -45,7 +45,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.account_circle,
-            func: (x) => x.username,
+            translator: (x) => x.username,
             newAction: (v) => SetUsernameAction(v),
             converter: (s) => s.state.loginViewState.username,
             errorText: errorText,
@@ -54,7 +54,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.password_outlined,
-            func: (x) => x.password,
+            translator: (x) => x.password,
             newAction: (v) => SetPasswordAction(v),
             converter: (s) => s.state.loginViewState.password,
             errorText: errorText,
@@ -63,7 +63,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.password_outlined,
-            func: (x) => x.repeat_password,
+            translator: (x) => x.repeat_password,
             newAction: (v) => SetRepeatPasswordAction(v),
             converter: (s) => s.state.loginViewState.repeatPassword,
             errorText: errorText,
@@ -73,7 +73,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.alternate_email,
-            func: (x) => x.email,
+            translator: (x) => x.email,
             newAction: (v) => SetEmailAction(v),
             converter: (s) => s.state.loginViewState.email,
             errorText: errorText,
@@ -82,7 +82,7 @@ class RegisterWidget extends StatelessWidget {
           GenericField(
             context: context,
             icon: Icons.local_phone,
-            func: (x) => x.contact,
+            translator: (x) => x.contact,
             newAction: (v) => SetContactAction(v),
             converter: (s) => s.state.loginViewState.contact,
             errorText: errorText,

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
@@ -11,30 +12,31 @@ class ChatState {
   final HashMap<String, WebSocketChannel> webSockets;
   final WebSocketChannel? currentChatWebSocket;
   final List<CommedMessage> messages;
+  final String writingMessage;
+  final TextEditingController controller;
 
-  const ChatState(this.webSockets, this.currentChatWebSocket, this.messages);
+  const ChatState(this.webSockets, this.currentChatWebSocket, this.messages,
+      this.writingMessage, this.controller);
 
   ChatState.init()
       : webSockets = HashMap.identity(),
         currentChatWebSocket = null,
-        messages = List.filled(20, [
-          const MessageModal(false, "Hi nice to meet y'all!"),
-          const MessageModal(true, "Hi how are you doing!")
-        ]).fold([], (xs, x) {
-          xs.addAll(x);
-          return xs;
-        })
-          ..add(FormalOfferMessage(true, 3))
-          ..add(FormalOfferMessage(false, 4));
+        messages = List.empty(),
+        writingMessage = '',
+        controller = TextEditingController();
 
   ChatState copy(
           {HashMap<String, WebSocketChannel>? webSockets,
           WebSocketChannel? currentWebSocket,
-          List<CommedMessage>? messages}) =>
+          List<CommedMessage>? messages,
+          String? writingMessage,
+          TextEditingController? controller}) =>
       ChatState(
         webSockets ?? this.webSockets,
         currentWebSocket ?? this.currentChatWebSocket,
         messages ?? this.messages,
+        writingMessage ?? this.writingMessage,
+        controller ?? this.controller,
       );
 }
 
@@ -45,7 +47,6 @@ AppState ListChatReducer(AppState prev, AppAction action) {
       return prev.copy(listChats: action.chatModel);
     case NavigateToChat:
       action = action as NavigateToChat;
-      print(action.chatModel.idEncounter);
       return prev.copy(
           navigatorKey: prev.navigatorKey..currentState!.pushNamed(Routes.chat),
           chatModel: action.chatModel);
@@ -57,7 +58,15 @@ AppState ListChatReducer(AppState prev, AppAction action) {
       action = action as SetEncounterChannel;
       var websockets = prev.chatState.webSockets;
       websockets[action.idEncounter] = action.webSocketChannel;
-      return prev.copy(chatState: prev.chatState.copy(currentWebSocket: action.webSocketChannel, webSockets: websockets));
+      return prev.copy(
+          chatState: prev.chatState.copy(
+              currentWebSocket: action.webSocketChannel,
+              webSockets: websockets));
+    case SetSenderMessage:
+      action = action as SetSenderMessage;
+      return prev.copy(
+          chatState: prev.chatState.copy(
+              controller: prev.chatState.controller..clear()));
     default:
       return prev;
   }

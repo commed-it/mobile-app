@@ -61,7 +61,6 @@ class SearcherView extends StatelessWidget {
           converter: (sto) => (txt) => sto.dispatch(submitSearch(txt)),
           builder: (cto, submitSearchCallback) => TextFormField(
             onFieldSubmitted: (text) {
-              print(text);
               submitSearchCallback(text);
             },
             controller: _controller,

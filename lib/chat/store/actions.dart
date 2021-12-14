@@ -28,3 +28,8 @@ class SetEncounterChannel extends AppAction {
   final WebSocketChannel webSocketChannel;
   const SetEncounterChannel(this.idEncounter, this.webSocketChannel);
 }
+
+class SetSenderMessage extends AppAction {
+  final String msg;
+  const SetSenderMessage(this.msg);
+}
