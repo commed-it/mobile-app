@@ -54,6 +54,12 @@ AppState ListChatReducer(AppState prev, AppAction action) {
       action = action as SetListMessages;
       ChatState chatState = prev.chatState.copy(messages: action.msgs);
       return prev.copy(chatState: chatState);
+    case AddListMessages:
+      action = action as AddListMessages;
+      print("ADDED NEW MESSAGE");
+      return prev.copy(
+          chatState: prev.chatState
+              .copy(messages: prev.chatState.messages..add(action.msg)));
     case SetEncounterChannel:
       action = action as SetEncounterChannel;
       var websockets = prev.chatState.webSockets;
@@ -65,8 +71,8 @@ AppState ListChatReducer(AppState prev, AppAction action) {
     case SetSenderMessage:
       action = action as SetSenderMessage;
       return prev.copy(
-          chatState: prev.chatState.copy(
-              controller: prev.chatState.controller..clear()));
+          chatState: prev.chatState
+              .copy(controller: prev.chatState.controller..clear()));
     default:
       return prev;
   }

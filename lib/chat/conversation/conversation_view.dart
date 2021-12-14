@@ -80,33 +80,34 @@ class MockConversation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, ChatModel>(
-      converter: (sto) => sto.state.chatModel,
-      builder: (cto, chatModel) => StoreConnector<AppState, ChatState>(
-        onInit: (sto) =>
-            sto.dispatch(connectThunkWebSocketChannel(chatModel.idEncounter)),
-        converter: (sto) => sto.state.chatState,
-        builder: (cto, chatState) =>
-            StreamBuilder(
-          stream: chatState.currentChatWebSocket!.stream,
-          builder: (cto, snapshot) =>
-              buildConversationScreen(chatModel, chatState, snapshot),
+    return StoreConnector<AppState, int>(
+      converter: (sto) => sto.state.userId,
+      builder: (cto, userId) => StoreConnector<AppState, ChatModel>(
+        converter: (sto) => sto.state.chatModel,
+        builder: (cto, chatModel) => StoreConnector<AppState, ChatState>(
+          onInit: (sto) =>
+              sto.dispatch(connectThunkWebSocketChannel(chatModel.idEncounter)),
+          converter: (sto) => sto.state.chatState,
+          builder: (cto, chatState) =>
+               buildConversationScreen(chatModel, chatState, userId),
         ),
       ),
     );
   }
 
   ConversationScreen buildConversationScreen(
-      ChatModel chatModel, ChatState chatState, snapshot) {
+      ChatModel chatModel, ChatState chatState, userId) {
     return ConversationScreen(
       conversationId: chatModel.idEncounter,
-      messages: snapshot.hasData
-          ? (chatState.messages..add(MessageModal(true, MessageContentDTO.fromJson(jsonDecode(snapshot.data)))))
-          : chatState.messages,
+      messages: getMessages(chatState, userId),
       enterpriseId: chatModel.idEnterprise,
       enterprise: chatModel.nameCompany,
       urlImage: chatModel.urlProfile,
       theme: theme,
     );
+  }
+
+  List<CommedMessage> getMessages(ChatState chatState, userId) {
+    return chatState.messages;
   }
 }

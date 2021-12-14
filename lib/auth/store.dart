@@ -18,6 +18,9 @@ AppState authenticationReducer(AppState prev, AppAction action) {
       return prev.copy(loggedState: LoggedState.NotLogged, navigatorKey: navKey);
     case CouldntLogAction:
       return prev.copy(loggedState: LoggedState.CouldntLog);
+    case SetUserId:
+      action = action as SetUserId;
+      return prev.copy(userId: action.ID);
   }
   return prev;
 }

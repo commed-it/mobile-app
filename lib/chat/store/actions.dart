@@ -19,6 +19,11 @@ class SetListMessages extends AppAction {
   const SetListMessages(this.msgs);
 }
 
+class AddListMessages extends AppAction {
+  final CommedMessage msg;
+  const AddListMessages(this.msg);
+}
+
 class ClearSearch extends AppAction {
   const ClearSearch();
 }

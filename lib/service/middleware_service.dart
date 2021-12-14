@@ -25,6 +25,10 @@ class CommedMiddleware {
     return api.URL() + URN;
   }
 
+  Future<int> getMyId() async {
+    return await api.getMyId();
+  }
+
   Future<HashMap<int, Product>> getProducts() async {
     final List<ProductDTO> dtos = await api.getProducts();
     return await turnProductsToHashMap(dtos);

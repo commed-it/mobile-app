@@ -51,23 +51,26 @@ class AppState {
   final CommedMiddleware commedMiddleware;
   final Enterprise myEnterpriseDetail;
   final LoggedState loggedState;
+  final int userId;
 
   // add User, ...
   AppState(
-      this.loginViewState,
-      this.pageControlState,
-      this.navigatorKey,
-      this.products,
-      this.formalOffers,
-      this.listChats,
-      this.chatModel,
-      this.chatState,
-      this.theme,
-      this.enterpriseDetail,
-      this.myEnterpriseDetail,
-      this.searcher,
-      this.commedMiddleware,
-      this.loggedState);
+    this.loginViewState,
+    this.pageControlState,
+    this.navigatorKey,
+    this.products,
+    this.formalOffers,
+    this.listChats,
+    this.chatModel,
+    this.chatState,
+    this.theme,
+    this.enterpriseDetail,
+    this.myEnterpriseDetail,
+    this.searcher,
+    this.commedMiddleware,
+    this.loggedState,
+    this.userId,
+  );
 
   // add User, ...
 
@@ -85,22 +88,25 @@ class AppState {
         myEnterpriseDetail = const Enterprise.init(),
         searcher = Searcher.init(),
         commedMiddleware = CommedMiddleware(),
-        loggedState = LoggedState.NotLogged;
+        loggedState = LoggedState.NotLogged,
+        userId = 1;
 
-  AppState copy(
-          {LoginState? loginViewState,
-          PageControlState? pageControlState,
-          GlobalKey<NavigatorState>? navigatorKey,
-          HashMap<int, Product>? products,
-          List<FormalOffer>? formalOffers,
-          List<ChatItemModel>? listChats,
-          ChatState? chatState,
-          CommedTheme? theme,
-          Enterprise? enterpriseDetail,
-          Enterprise? myEnterpriseDetail,
-          Searcher? searcher,
-          ChatModel? chatModel,
-          LoggedState? loggedState}) =>
+  AppState copy({
+    LoginState? loginViewState,
+    PageControlState? pageControlState,
+    GlobalKey<NavigatorState>? navigatorKey,
+    HashMap<int, Product>? products,
+    List<FormalOffer>? formalOffers,
+    List<ChatItemModel>? listChats,
+    ChatState? chatState,
+    CommedTheme? theme,
+    Enterprise? enterpriseDetail,
+    Enterprise? myEnterpriseDetail,
+    Searcher? searcher,
+    ChatModel? chatModel,
+    LoggedState? loggedState,
+    int? userId,
+  }) =>
       AppState(
           loginViewState ?? this.loginViewState,
           pageControlState ?? this.pageControlState,
@@ -115,7 +121,8 @@ class AppState {
           myEnterpriseDetail ?? this.myEnterpriseDetail,
           searcher ?? this.searcher,
           this.commedMiddleware,
-          loggedState ?? this.loggedState);
+          loggedState ?? this.loggedState,
+          userId ?? this.userId);
 
   String? getWebSocketURI() {
     return "ws://" +

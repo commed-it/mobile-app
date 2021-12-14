@@ -16,3 +16,8 @@ class LogoutAction extends AppAction {
 class CouldntLogAction extends AppAction {
   const CouldntLogAction();
 }
+
+class SetUserId extends AppAction {
+  final int ID;
+  const SetUserId(this.ID);
+}
