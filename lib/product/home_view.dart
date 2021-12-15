@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/enterprise/store/actions.dart';
 import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/product/store/actions.dart';
@@ -115,7 +114,7 @@ class ProductItem extends StatelessWidget {
                         secondWidget: StoreConnector<AppState, bool>(
                           converter: (sto) => sto.state.loggedState == LoggedState.Logged,
                           builder: (cto, isLogged) =>
-                              isLogged ? ChatButton(theme: theme) : Container(),
+                              isLogged ? ChatButton(theme: theme, productId: product.id,) : Container(),
                         ),
                       )),
               Container(
@@ -154,9 +153,11 @@ class ChatButton extends StatelessWidget {
   const ChatButton({
     Key? key,
     required this.theme,
+    required this.productId,
   }) : super(key: key);
 
   final CommedTheme theme;
+  final int productId;
 
   @override
   Widget build(BuildContext context) {
@@ -166,9 +167,7 @@ class ChatButton extends StatelessWidget {
           height: 10,
         ),
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(LambdaAction((s) => s.copy(
-              navigatorKey: s.navigatorKey
-                ..currentState!.pushNamed(Routes.chat)))),
+          converter: (sto) => () => sto.dispatch(connectThunkChat(productId)),
           builder: (cto, onPressedChat) => ElevatedButton(
             onPressed: onPressedChat,
             child: Row(children: [
@@ -179,7 +178,7 @@ class ChatButton extends StatelessWidget {
                   top: 18,
                   bottom: 18,
                 ),
-                child: Text("Connect"),
+                child: Text(AppLocalizations.of(context)!.connect),
               ),
             ]),
             style: ElevatedButton.styleFrom(

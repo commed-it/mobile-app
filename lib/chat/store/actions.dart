@@ -14,6 +14,12 @@ class NavigateToChat extends AppAction {
   const NavigateToChat(this.chatModel);
 }
 
+class SetChatModel extends AppAction {
+  final ChatModel chatModel;
+  const SetChatModel(this.chatModel);
+}
+
+
 class SetListMessages extends AppAction {
   final List<CommedMessage> msgs;
   const SetListMessages(this.msgs);
@@ -32,6 +38,12 @@ class SetEncounterChannel extends AppAction {
   final String idEncounter;
   final WebSocketChannel webSocketChannel;
   const SetEncounterChannel(this.idEncounter, this.webSocketChannel);
+}
+
+class AddChannel extends AppAction {
+  final WebSocketChannel channel;
+  final String idEncounter;
+  AddChannel(this.idEncounter, this.channel);
 }
 
 class SetSenderMessage extends AppAction {

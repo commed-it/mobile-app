@@ -127,43 +127,52 @@ ThunkAction<AppState> loadThunkConversationModel(ChatModel chatModel) {
         .getMessagesFromChat(chatModel.idEncounter);
     store.dispatch(SetListMessages(chatModels));
     store.dispatch(NavigateToChat(chatModel));
+    store.dispatch(SetChatModel(chatModel));
   };
 }
 
 ThunkAction<AppState> connectThunkWebSocketChannel(String idEncounter) {
   return (Store<AppState> store) async {
-    WebSocketChannel channel;
     int userId = store.state.userId;
-    if (!store.state.chatState.webSockets.containsKey(idEncounter)) {
-      channel =
-          WebSocketChannel.connect(Uri.parse(store.state.getWebSocketURI()!));
-      store.state.chatState.webSockets[idEncounter] = channel;
-      channel.stream.listen((event) async {
-        print("has listened: " + event);
-        var json = jsonDecode(event);
-        CommedMessage message;
-        if (json['type'] == 'message') {
-          var dto = MessageContentDTO.fromJson(json);
-          message = MessageModal(userId != dto.user, dto);
-        } else {
-          var dto = MessageFormalOfferDTO.fromJson(json);
-          FormalOfferDTO fOfferDTO = await store.state.commedMiddleware.api
-              .getFormalOffer(dto.formalOffer);
-          message = FormalOfferMessage(userId != dto.user, fOfferDTO.version);
-        }
-        store.dispatch(AddListMessages(message));
-      }, onError: (error) => print(error));
-    } else {
-      channel = store.state.chatState.webSockets[idEncounter]!;
-    }
+    WebSocketChannel channel =
+        await getAndConnectWebSocketChannel(store, idEncounter, userId);
     store.dispatch(SetEncounterChannel(idEncounter, channel));
   };
 }
 
+Future<WebSocketChannel> getAndConnectWebSocketChannel(
+    Store<AppState> store, String idEncounter, int userId) async {
+  WebSocketChannel channel;
+  print(!store.state.chatState.webSockets.containsKey(idEncounter));
+  if (!store.state.chatState.webSockets.containsKey(idEncounter)) {
+
+    channel =
+        WebSocketChannel.connect(Uri.parse(store.state.getWebSocketURI()!));
+    store.dispatch(AddChannel(idEncounter, channel));
+    channel.stream.listen((event) async {
+      print("has listened: " + event);
+      var json = jsonDecode(event);
+      CommedMessage message;
+      if (json['type'] == 'message') {
+        var dto = MessageContentDTO.fromJson(json);
+        message = MessageModal(userId != dto.user, dto);
+      } else {
+        var dto = MessageFormalOfferDTO.fromJson(json);
+        FormalOfferDTO fOfferDTO = await store.state.commedMiddleware.api
+            .getFormalOffer(dto.formalOffer);
+        message = FormalOfferMessage(userId != dto.user, fOfferDTO.version);
+      }
+      store.dispatch(AddListMessages(message));
+    }, onError: (error) => print(error));
+  } else {
+    channel = store.state.chatState.webSockets[idEncounter]!;
+  }
+  return channel;
+}
+
 ThunkAction<AppState> sendThunkMessageThroughChat(String message) {
   return (Store<AppState> store) async {
-    if (message == '')
-      return;
+    if (message == '') return;
     var content = <String, dynamic>{
       'user': store.state.userId,
       'type': 'message',
@@ -171,6 +180,18 @@ ThunkAction<AppState> sendThunkMessageThroughChat(String message) {
     };
     store.state.chatState.currentChatWebSocket!.sink.add(jsonEncode(content));
     store.dispatch(const SetSenderMessage(''));
+  };
+}
+
+ThunkAction<AppState> connectThunkChat(int productId) {
+  return (Store<AppState> store) async {
+    ChatModel chatModel = await store.state.commedMiddleware
+        .createOrGetEncounter(store.state.userId, productId);
+    store.dispatch(SetChatModel(chatModel));
+    WebSocketChannel channel = await getAndConnectWebSocketChannel(
+        store, chatModel.idEncounter, store.state.userId);
+    store.dispatch(NavigateToChat(chatModel));
+    store.dispatch(SetEncounterChannel(chatModel.idEncounter, channel));
   };
 }
 

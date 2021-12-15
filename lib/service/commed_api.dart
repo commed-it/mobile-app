@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/service/dto/create_encounter_dto.dart';
 import 'package:flutter_app/service/dto/enterprise_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_encounter_dto.dart';
@@ -145,7 +146,7 @@ class CommedAPI {
 
   Future<FormalOfferDTO> getFormalOffer(int formalOfferId) async {
     Uri uri =
-    Uri.parse(URLHttp + "/offer/formaloffer/" + formalOfferId.toString());
+        Uri.parse(URLHttp + "/offer/formaloffer/" + formalOfferId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return FormalOfferDTO.fromJson(jsonDecode(res.body));
@@ -234,12 +235,28 @@ class CommedAPI {
     Uri uri =
         Uri.parse(URLHttp + "/chat/encounter/" + channelId + "/messages/");
     Response res = await get(uri);
-    print(res.body);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
           .map<MessageDTO>((e) => MessageDTO.fromJson(e))
           .toList();
     }
     throw "unable to get the messages from chat " + channelId;
+  }
+
+  Future<CreateEncounterDTO> createOrGetEncounter(
+      int userId, int productId) async {
+    Uri uri = Uri.parse(URLHttp + "/offer/encounter/create-if-not-exists");
+    Response res = await post(uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'client': userId,
+          'product': productId,
+        }));
+    if (res.statusCode == 200) {
+      return CreateEncounterDTO.fromJson(jsonDecode(res.body));
+    }
+    throw "unable to get or create the encounter";
   }
 }

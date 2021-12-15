@@ -8,22 +8,23 @@ class Enterprise {
   final String nif;
   final String urlLogo;
   final String contactInfo;
+  final String location;
 
   Enterprise(
-      this.name, this.description, this.nif, this.urlLogo, this.contactInfo);
+      this.name, this.description, this.nif, this.urlLogo, this.contactInfo, this.location);
 
   Enterprise copy(
           {String? name,
           String? description,
           String? nif,
           String? urlLogo,
-          String? contactInfo}) =>
+          String? contactInfo, String? location}) =>
       Enterprise(
           name ?? this.name,
           description ?? this.description,
           nif ?? this.nif,
           urlLogo ?? this.urlLogo,
-          contactInfo ?? this.contactInfo);
+          contactInfo ?? this.contactInfo, location ?? this.location);
 
   const Enterprise.init()
       : name = "La Bicicleta",
@@ -32,8 +33,9 @@ class Enterprise {
         nif = "78099079A",
         urlLogo =
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Flogo-semplice-della-tagliatella-piano-marchio-130436365.jpg&f=1&nofb=1",
-        contactInfo = "+34 625485223";
+        contactInfo = "+34 625485223",
+  location = "No location";
 
   static Enterprise fromDTO(EnterpriseDTO dto) => Enterprise(
-      dto.name, dto.description, dto.NIF, dto.profileImage, dto.contactInfo);
+      dto.name, dto.description, dto.NIF, dto.profileImage, dto.contactInfo, dto.location);
 }

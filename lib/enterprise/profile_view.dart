@@ -162,6 +162,10 @@ class CardEnterpriseInformation extends StatelessWidget {
                   title: AppLocalizations.of(context)!.contact,
                   subtitle: enterprise.contactInfo,
                   iconData: Icons.local_phone),
+              RowListItem(
+                  title: AppLocalizations.of(context)!.location,
+                  subtitle: enterprise.location,
+                  iconData: Icons.map),
             ],
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:flutter_app/formaloffer/model/formaloffer.dart';
 import 'package:flutter_app/login/store/store.dart';
 import 'package:flutter_app/product/model/product.dart';
 import 'package:flutter_app/service/commed_api.dart';
+import 'package:flutter_app/service/dto/create_encounter_dto.dart';
 import 'package:flutter_app/service/dto/enterprise_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_dto.dart';
 import 'package:flutter_app/service/dto/formal_offer_encounter_dto.dart';
@@ -182,5 +183,10 @@ class CommedMiddleware {
       }
     }
     return res.reversed.toList();
+  }
+
+  Future<ChatModel> createOrGetEncounter(int userId, int productId) async {
+    CreateEncounterDTO dto = await api.createOrGetEncounter(userId, productId);
+    return ChatModel(dto.encounterDTO.id, dto.enterpriseDTO.owner, dto.enterpriseDTO.name, getMedia(dto.enterpriseDTO.profileImage));
   }
 }

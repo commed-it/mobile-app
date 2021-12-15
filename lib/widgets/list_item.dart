@@ -38,8 +38,8 @@ class ListItem extends StatefulWidget {
 class _ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: widget.onPressed,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Container(
           height: 50.0,
           width: double.infinity,
@@ -75,12 +75,15 @@ class _ListItemState extends State<ListItem> {
                           )
                         : Container(),
                     widget.describe != null
-                        ? Text(
-                            widget.describe!,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: widget.describeColor, fontSize: 14.0),
-                          )
+                        ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                          child: Text(
+                              widget.describe!,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: widget.describeColor, fontSize: 14.0),
+                            ),
+                        )
                         : Container(),
                   ],
                 ),

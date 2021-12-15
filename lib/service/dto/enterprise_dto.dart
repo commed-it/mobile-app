@@ -6,6 +6,7 @@ class EnterpriseDTO {
   final String description;
   final String profileImage;
   final String bannerImage;
+  final String location;
 
   EnterpriseDTO(
       {required this.owner,
@@ -14,7 +15,8 @@ class EnterpriseDTO {
       required this.contactInfo,
       required this.description,
       required this.profileImage,
-      required this.bannerImage});
+      required this.bannerImage,
+      required this.location});
 
   factory EnterpriseDTO.fromJson(Map<String, dynamic> json) {
     return EnterpriseDTO(
@@ -25,6 +27,7 @@ class EnterpriseDTO {
       description: json['description'] as String,
       profileImage: json['profileImage'] as String,
       bannerImage: json['bannerImage'] as String,
+      location: json['location'] as String,
     );
   }
 }

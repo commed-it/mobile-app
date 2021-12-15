@@ -21,7 +21,7 @@ class ChatState {
   ChatState.init()
       : webSockets = HashMap.identity(),
         currentChatWebSocket = null,
-        messages = List.empty(),
+        messages = List.empty(growable: true),
         writingMessage = '',
         controller = TextEditingController();
 
@@ -48,8 +48,10 @@ AppState ListChatReducer(AppState prev, AppAction action) {
     case NavigateToChat:
       action = action as NavigateToChat;
       return prev.copy(
-          navigatorKey: prev.navigatorKey..currentState!.pushNamed(Routes.chat),
-          chatModel: action.chatModel);
+          navigatorKey: prev.navigatorKey..currentState!.pushNamed(Routes.chat));
+    case SetChatModel:
+      action = action as SetChatModel;
+      return prev.copy(chatModel: action.chatModel);
     case SetListMessages:
       action = action as SetListMessages;
       ChatState chatState = prev.chatState.copy(messages: action.msgs);
@@ -73,6 +75,10 @@ AppState ListChatReducer(AppState prev, AppAction action) {
       return prev.copy(
           chatState: prev.chatState
               .copy(controller: prev.chatState.controller..clear()));
+    case AddChannel:
+      action = action as AddChannel;
+      prev.chatState.webSockets[action.idEncounter] = action.channel;
+      return prev.copy(chatState: prev.chatState.copy(webSockets: prev.chatState.webSockets));
     default:
       return prev;
   }
