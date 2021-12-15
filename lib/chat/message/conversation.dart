@@ -20,15 +20,14 @@ class Conversation extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: messages
                 .map((x) => (Row(
-              mainAxisAlignment: x.isOther
-                  ? MainAxisAlignment.start
-                  : MainAxisAlignment.end,
-              children: [MessageWidget(message: x)],
-            )) as Widget) // ITS NOT UNNECESSARY!
+                      mainAxisAlignment: x.isOther
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.end,
+                      children: [MessageWidget(message: x)],
+                    )) as Widget) // ITS NOT UNNECESSARY!
                 .toList()
-              ..add(const Padding(padding: EdgeInsets.all(35))),
+              ..add(const Padding(padding: EdgeInsets.all(46))),
           )),
     );
   }
 }
-

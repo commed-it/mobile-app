@@ -35,7 +35,7 @@ class PageControlWidget extends StatelessWidget {
                         ChatView(),
                         FormalOffersView(),
                         StoreConnector<AppState, Enterprise>(
-                            converter: (sto) => sto.state.enterpriseDetail,
+                            converter: (sto) => sto.state.myEnterpriseDetail,
                             builder: (ctx, enterprise) =>
                                 buildProfileView(theme, enterprise)),
                       ]),

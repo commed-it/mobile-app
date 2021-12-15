@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/root/pagecontrol_view.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_app/widgets/appbar.dart';
@@ -18,19 +17,21 @@ class EnterpriseView extends StatelessWidget {
       converter: (sto) => sto.state.theme,
       builder: (ctx, theme) => StoreConnector<AppState, Enterprise>(
         converter: (sto) => sto.state.enterpriseDetail,
-        builder: (ctx, enterprise) => Scaffold(
-          backgroundColor: theme.appBarColor,
-          appBar: buildAppBarLogged(context, theme),
-          body: Container(
-            child: buildProfileView(theme, enterprise),
+        builder: (ctx, enterprise) => StoreConnector<AppState, bool>(
+          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
+          builder: (ctx, isLogged) => Scaffold(
+            backgroundColor: theme.appBarColor,
+            appBar: isLogged
+                ? buildAppBarLogged(context, theme)
+                : buildNotloggedAppBar(context, theme),
+            body: Container(
+              child: buildProfileView(theme, enterprise),
+            ),
           ),
         ),
       ),
     );
   }
-
-
-
 }
 
 Padding body(CommedTheme theme, Enterprise enterprise, yPadding) {
@@ -161,6 +162,10 @@ class CardEnterpriseInformation extends StatelessWidget {
                   title: AppLocalizations.of(context)!.contact,
                   subtitle: enterprise.contactInfo,
                   iconData: Icons.local_phone),
+              RowListItem(
+                  title: AppLocalizations.of(context)!.location,
+                  subtitle: enterprise.location,
+                  iconData: Icons.map),
             ],
           ),
         ),

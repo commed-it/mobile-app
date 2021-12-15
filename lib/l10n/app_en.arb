@@ -22,5 +22,9 @@
     "num_version" : "num version: ",
     "search" : "Search",
     "dots": "...",
-    "connect" : "Connect"
+    "connect" : "Connect",
+    "no_formal_offers" : "There is no formal offers!",
+    "no_chats" : "Ooops! You have not connected to any company!",
+    "loginError": "Please, check if the field is correct",
+    "location": "Address"
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/product/home_view.dart';
 import 'package:flutter_app/root/pagecontrol_view.dart';
 import 'package:flutter_app/root/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -15,10 +16,15 @@ class RootWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-        converter: (sto) => sto.state.isLogged,
-        builder: (cto, isLogged) =>
-            isLogged ? PageControlWidget() : NotLoggedView());
+    return StoreConnector<AppState, VoidCallback>(
+      converter: (sto) => () => sto.dispatch(reloadProducts()),
+      builder: (cto, callback) => StoreConnector<AppState, bool>(
+          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
+          builder: (cto, isLogged) =>
+              isLogged ? PageControlWidget() : NotLoggedView(),
+        onInit: (sto) => callback(),
+      ),
+    );
   }
 }
 

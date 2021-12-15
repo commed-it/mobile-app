@@ -1,6 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/enterprise/store/actions.dart';
+import 'package:flutter_app/service/actions.dart';
 import 'package:flutter_app/widgets/carroussel.dart';
 import 'package:flutter_app/product/store/actions.dart';
 import 'package:flutter_app/store/actions.dart';
@@ -45,7 +47,7 @@ class HomeBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: theme.background.color,
-      child: StoreConnector<AppState, List<Product>>(
+      child: StoreConnector<AppState, HashMap<int, Product>>(
         converter: (store) => store.state.products,
         builder: (context, products) {
           return Column(
@@ -54,7 +56,7 @@ class HomeBody extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: products
+                    children: products.values
                         .map((prod) => ProductItem(product: prod, theme: theme))
                         .fold(
                             [],
@@ -102,7 +104,7 @@ class ProductItem extends StatelessWidget {
             children: [
               StoreConnector<AppState, VoidCallback>(
                   converter: (sto) =>
-                      () => sto.dispatch(NavigateToEnterpriseDetail(1)),
+                      () => sto.dispatch(loadEnterprise(product.content.company.userID)),
                   builder: (cto, onPressedLogo) => GenericSummary.only(
                         ratio: 0.8,
                         image: NetworkImage(product.content.company.logoURI),
@@ -110,9 +112,9 @@ class ProductItem extends StatelessWidget {
                         subtitle: product.content.company.name,
                         onPressedLogo: onPressedLogo,
                         secondWidget: StoreConnector<AppState, bool>(
-                          converter: (sto) => sto.state.isLogged,
+                          converter: (sto) => sto.state.loggedState == LoggedState.Logged,
                           builder: (cto, isLogged) =>
-                              isLogged ? ChatButton(theme: theme) : Container(),
+                              isLogged ? ChatButton(theme: theme, productId: product.id,) : Container(),
                         ),
                       )),
               Container(
@@ -151,9 +153,11 @@ class ChatButton extends StatelessWidget {
   const ChatButton({
     Key? key,
     required this.theme,
+    required this.productId,
   }) : super(key: key);
 
   final CommedTheme theme;
+  final int productId;
 
   @override
   Widget build(BuildContext context) {
@@ -163,9 +167,7 @@ class ChatButton extends StatelessWidget {
           height: 10,
         ),
         StoreConnector<AppState, VoidCallback>(
-          converter: (sto) => () => sto.dispatch(LambdaAction((s) => s.copy(
-              navigatorKey: s.navigatorKey
-                ..currentState!.pushNamed(Routes.chat)))),
+          converter: (sto) => () => sto.dispatch(connectThunkChat(productId)),
           builder: (cto, onPressedChat) => ElevatedButton(
             onPressed: onPressedChat,
             child: Row(children: [
@@ -176,7 +178,7 @@ class ChatButton extends StatelessWidget {
                   top: 18,
                   bottom: 18,
                 ),
-                child: Text("Connect"),
+                child: Text(AppLocalizations.of(context)!.connect),
               ),
             ]),
             style: ElevatedButton.styleFrom(
