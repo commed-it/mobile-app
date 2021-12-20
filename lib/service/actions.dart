@@ -158,9 +158,7 @@ Future<WebSocketChannel> getAndConnectWebSocketChannel(
         message = MessageModal(userId != dto.user, dto);
       } else {
         var dto = MessageFormalOfferDTO.fromJson(json);
-        FormalOfferDTO fOfferDTO = await store.state.commedMiddleware.api
-            .getFormalOffer(dto.formalOffer);
-        message = FormalOfferMessage(userId != dto.user, fOfferDTO.version);
+        message = FormalOfferMessage(userId != dto.user, dto.formalOffer.version);
       }
       store.dispatch(AddListMessages(message));
     }, onError: (error) => print(error));

@@ -175,8 +175,7 @@ class CommedMiddleware {
           break;
         case MessageFormalOfferDTO:
           var formalOfferMsg = (dto.msg as MessageFormalOfferDTO);
-          FormalOfferDTO fOfferDTO = await api.getFormalOffer(formalOfferMsg.formalOffer);
-          res.add(FormalOfferMessage(isOther, fOfferDTO.version));
+          res.add(FormalOfferMessage(isOther, formalOfferMsg.formalOffer.version));
           break;
         default:
           throw "Illegal state";

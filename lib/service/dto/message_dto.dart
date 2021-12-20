@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'formal_offer_dto.dart';
+
 class MessageDTO {
   final int userId;
   final String channelId;
@@ -51,12 +53,12 @@ class MessageContentDTO extends ConvItemContentDTO {
 
 class MessageFormalOfferDTO extends ConvItemContentDTO {
   final int user;
-  final int formalOffer;
+  final FormalOfferDTO formalOffer;
 
   MessageFormalOfferDTO(String type, this.user, this.formalOffer) : super(type);
 
   factory MessageFormalOfferDTO.fromJson(Map<String, dynamic> json) {
     return MessageFormalOfferDTO(
-        json['type'], json['user'], json['formalOffer']);
+        json['type'], json['user'], FormalOfferDTO.fromJson(json['formalOffer']));
   }
 }
