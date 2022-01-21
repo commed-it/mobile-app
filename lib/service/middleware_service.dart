@@ -90,7 +90,7 @@ class CommedMiddleware {
       ent = ent.copy(urlLogo: getMedia(ent.urlLogo));
       ProductDTO productDTO = await api.getProduct(encounterDTO.product);
       FormalOffer offer =
-      FormalOffer(ent, productDTO.title, formalOffer.version, true);
+      FormalOffer(ent, productDTO.title, formalOffer.version, formalOffer.signedPDF != null);
       res.add(offer);
     }
     return res;

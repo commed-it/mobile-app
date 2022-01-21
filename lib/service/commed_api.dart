@@ -13,7 +13,7 @@ import 'dto/list_chat_dto.dart';
 import 'dto/search_dto.dart';
 
 class CommedAPI {
-  final String host = "10.0.2.2:8000";
+  final String host = "commed-demo.herokuapp.com";
   late final String URLHttp;
   String? token = null;
   String? setCookie = null;
