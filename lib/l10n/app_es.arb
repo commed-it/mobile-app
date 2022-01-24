@@ -27,5 +27,7 @@
     "no_formal_offers" : "¡No hay contratos!",
     "no_chats" :"¡Ooops! ¡Aún no has conectado con ninguna empresa!",
     "loginError": "Verifica que el campo sea correcto",
-    "location": "Dirección"
+    "location": "Dirección",
+    "question_sign": "Quieres signar el contrato?",
+    "email_has_sent": "Se ha enviado un correo a su e-mail personal para signar."
 }

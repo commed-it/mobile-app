@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/chat/conversation/popup.dart';
 import 'package:flutter_app/service/dto/message_dto.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
@@ -41,8 +42,11 @@ class MessageModal implements CommedMessage {
 class FormalOfferMessage implements CommedMessage {
   final bool isOther;
   final int version;
+  final String PDFUrl;
+  final String name;
+  final int formalOfferId;
 
-  FormalOfferMessage(this.isOther, this.version);
+  FormalOfferMessage(this.isOther, this.version, this.PDFUrl, this.name, this.formalOfferId);
 
   @override
   Widget buildWidget() {
@@ -50,8 +54,16 @@ class FormalOfferMessage implements CommedMessage {
       converter: (s) => s.state.theme,
       builder: (ctx, theme) => Column(children: [
         Text(
-          AppLocalizations.of(ctx)!.formal_offer_version +
-              version.toString(),
+          this.name,
+          style: TextStyle(
+            fontSize: 16,
+              color: isOther
+                  ? theme.primary.textColor
+                  : theme.background.textColor, ),
+        ),
+        SizedBox(height: 10,),
+        Text(
+          AppLocalizations.of(ctx)!.formal_offer_version + ": " + version.toString(),
           style: TextStyle(
               color: isOther
                   ? theme.primary.textColor
@@ -60,19 +72,27 @@ class FormalOfferMessage implements CommedMessage {
         Row(
           children: [
             buildButton(theme, AppLocalizations.of(ctx)!.download_pdf,
-                Icons.download),
+                Icons.download, () {}),
             const SizedBox(
               width: 20,
             ),
             buildButton(
-                theme, AppLocalizations.of(ctx)!.sign_pdf, Icons.vpn_key),
+                theme, AppLocalizations.of(ctx)!.sign_pdf, Icons.vpn_key, () {
+              showDialog(
+                  context: ctx,
+                  builder: (ctx) => PopUpSign(
+                        name: this.name,
+                    formalOfferId: this.formalOfferId,
+                      ));
+            }),
           ],
         ),
       ]),
     );
   }
 
-  ElevatedButton buildButton(CommedTheme theme, String message, IconData icon) {
+  ElevatedButton buildButton(CommedTheme theme, String message, IconData icon,
+      VoidCallback onPressed) {
     return ElevatedButton.icon(
       label: Text(
         message,
@@ -84,7 +104,7 @@ class FormalOfferMessage implements CommedMessage {
         primary: isOther ? theme.background.color : theme.primary.color,
         onPrimary: theme.accent.color,
       ),
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(icon,
           color: isOther ? theme.primary.color : theme.background.color),
     );

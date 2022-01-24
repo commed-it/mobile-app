@@ -90,7 +90,7 @@ class CommedMiddleware {
       ent = ent.copy(urlLogo: getMedia(ent.urlLogo));
       ProductDTO productDTO = await api.getProduct(encounterDTO.product);
       FormalOffer offer =
-      FormalOffer(ent, productDTO.title, formalOffer.version, formalOffer.signedPDF != null);
+      FormalOffer(ent, productDTO.title, formalOffer.version, formalOffer.pdfURL != null);
       res.add(offer);
     }
     return res;
@@ -175,7 +175,7 @@ class CommedMiddleware {
           break;
         case MessageFormalOfferDTO:
           var formalOfferMsg = (dto.msg as MessageFormalOfferDTO);
-          res.add(FormalOfferMessage(isOther, formalOfferMsg.formalOffer.version));
+          res.add(FormalOfferMessage(isOther, formalOfferMsg.formalOffer.version, getMedia(formalOfferMsg.formalOffer.pdfURL), formalOfferMsg.formalOffer.contract, formalOfferMsg.formalOffer.formalOfferId));
           break;
         default:
           throw "Illegal state";
@@ -187,5 +187,9 @@ class CommedMiddleware {
   Future<ChatModel> createOrGetEncounter(int userId, int productId) async {
     CreateEncounterDTO dto = await api.createOrGetEncounter(userId, productId);
     return ChatModel(dto.encounterDTO.id, dto.enterpriseDTO.owner, dto.enterpriseDTO.name, getMedia(dto.enterpriseDTO.profileImage));
+  }
+
+  Future<bool> attemptOfSign(int formalOfferId) async {
+    return await api.attemptOfSign(formalOfferId);
   }
 }

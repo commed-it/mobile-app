@@ -3,13 +3,15 @@ class FormalOfferDTO {
   final String encounterId;
   final int version;
   final String contract;
-  final String? signedPDF;
+  final String pdfURL;
+  final int formalOfferId;
 
   FormalOfferDTO({
     required this.encounterId,
     required this.version,
     required this.contract,
-    required this.signedPDF,
+    required this.pdfURL,
+    required this.formalOfferId,
   });
 
   factory FormalOfferDTO.fromJson(Map<String, dynamic> json) {
@@ -17,7 +19,8 @@ class FormalOfferDTO {
       encounterId: json['encounterId'] as String,
       version: json['version'] as int,
       contract: json['contract'] as String,
-      signedPDF: json['signedPDF'] as String?,
+      pdfURL: json['pdf'] as String,
+      formalOfferId: json['id'] as int,
     );
   }
 }

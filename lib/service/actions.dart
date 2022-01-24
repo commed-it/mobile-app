@@ -143,9 +143,7 @@ ThunkAction<AppState> connectThunkWebSocketChannel(String idEncounter) {
 Future<WebSocketChannel> getAndConnectWebSocketChannel(
     Store<AppState> store, String idEncounter, int userId) async {
   WebSocketChannel channel;
-  print(!store.state.chatState.webSockets.containsKey(idEncounter));
   if (!store.state.chatState.webSockets.containsKey(idEncounter)) {
-
     channel =
         WebSocketChannel.connect(Uri.parse(store.state.getWebSocketURI()!));
     store.dispatch(AddChannel(idEncounter, channel));
@@ -158,7 +156,7 @@ Future<WebSocketChannel> getAndConnectWebSocketChannel(
         message = MessageModal(userId != dto.user, dto);
       } else {
         var dto = MessageFormalOfferDTO.fromJson(json);
-        message = FormalOfferMessage(userId != dto.user, dto.formalOffer.version);
+        message = FormalOfferMessage(userId != dto.user, dto.formalOffer.version, store.state.commedMiddleware.getMedia(dto.formalOffer.pdfURL), dto.formalOffer.contract, dto.formalOffer.formalOfferId);
       }
       store.dispatch(AddListMessages(message));
     }, onError: (error) => print(error));
@@ -180,6 +178,14 @@ ThunkAction<AppState> sendThunkMessageThroughChat(String message) {
     store.dispatch(const SetSenderMessage(''));
   };
 }
+
+ThunkAction<AppState> signCall(int formalOfferId) {
+  return (Store<AppState> store) async {
+    store.state.commedMiddleware.attemptOfSign(formalOfferId);
+    store.dispatch(NavigateBack());
+  };
+}
+
 
 ThunkAction<AppState> connectThunkChat(int productId) {
   return (Store<AppState> store) async {

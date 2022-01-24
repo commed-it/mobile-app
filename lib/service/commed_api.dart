@@ -33,7 +33,7 @@ class CommedAPI {
       List<ProductDTO> posts = jsonDecode(res.body)
           .map<ProductDTO>(
             (dynamic item) => ProductDTO.fromJson(item),
-          )
+      )
           .toList();
       return posts;
     } else {
@@ -55,7 +55,7 @@ class CommedAPI {
       List<ProductDTO> posts = jsonDecode(res.body)
           .map<ProductDTO>(
             (dynamic item) => ProductDTO.fromJson(item),
-          )
+      )
           .toList();
       return posts;
     } else {
@@ -71,9 +71,10 @@ class CommedAPI {
         'distance_km': searchDTO.locationDTO.distance,
       },
       'tags': searchDTO.tag
-          .map((tagDTO) => <String, String>{
-                'name': tagDTO.name,
-              })
+          .map((tagDTO) =>
+      <String, String>{
+        'name': tagDTO.name,
+      })
           .toList(),
     });
   }
@@ -92,7 +93,7 @@ class CommedAPI {
     Response res = await get(uri);
     if (res.statusCode == 200) {
       EnterpriseDTO enterpriseDTO =
-          EnterpriseDTO.fromJson(jsonDecode(res.body));
+      EnterpriseDTO.fromJson(jsonDecode(res.body));
       return enterpriseDTO;
     }
     throw "Unable to retrieve enterprise from owner: " + owner.toString();
@@ -134,7 +135,7 @@ class CommedAPI {
 
   Future<List<FormalOfferDTO>> getFormalOfferFromUserId(int userId) async {
     Uri uri =
-        Uri.parse(URLHttp + "/offer/formaloffer/user/" + userId.toString());
+    Uri.parse(URLHttp + "/offer/formaloffer/user/" + userId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
@@ -146,7 +147,7 @@ class CommedAPI {
 
   Future<FormalOfferDTO> getFormalOffer(int formalOfferId) async {
     Uri uri =
-        Uri.parse(URLHttp + "/offer/formaloffer/" + formalOfferId.toString());
+    Uri.parse(URLHttp + "/offer/formaloffer/" + formalOfferId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return FormalOfferDTO.fromJson(jsonDecode(res.body));
@@ -157,7 +158,7 @@ class CommedAPI {
   Future<List<FormalOfferEncounterDTO>> getFormalOfferEncounterDTO(
       int userId) async {
     Uri uri =
-        Uri.parse(URLHttp + "/offer/formaloffer/fromUser/" + userId.toString());
+    Uri.parse(URLHttp + "/offer/formaloffer/fromUser/" + userId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
@@ -170,7 +171,7 @@ class CommedAPI {
 
   Future<List<ListChatDTO>> getListChatDTO(int userId) async {
     Uri uri =
-        Uri.parse(URLHttp + "/offer/encounter/fromUser/" + userId.toString());
+    Uri.parse(URLHttp + "/offer/encounter/fromUser/" + userId.toString());
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
@@ -210,8 +211,8 @@ class CommedAPI {
     return null;
   }
 
-  Future<EnterpriseDTO> createEnterprise(
-      String nif, String company, String contact, String s) async {
+  Future<EnterpriseDTO> createEnterprise(String nif, String company,
+      String contact, String s) async {
     int pk = await getMyId();
     Uri uri = Uri.parse(URLHttp + "/enterprise/");
     Response res = await post(uri,
@@ -233,7 +234,7 @@ class CommedAPI {
 
   Future<List<MessageDTO>> getMessagesFromChat(String channelId) async {
     Uri uri =
-        Uri.parse(URLHttp + "/chat/encounter/" + channelId + "/messages/");
+    Uri.parse(URLHttp + "/chat/encounter/" + channelId + "/messages/");
     Response res = await get(uri);
     if (res.statusCode == 200) {
       return (jsonDecode(res.body) as List)
@@ -243,8 +244,8 @@ class CommedAPI {
     throw "unable to get the messages from chat " + channelId;
   }
 
-  Future<CreateEncounterDTO> createOrGetEncounter(
-      int userId, int productId) async {
+  Future<CreateEncounterDTO> createOrGetEncounter(int userId,
+      int productId) async {
     Uri uri = Uri.parse(URLHttp + "/offer/encounter/create-if-not-exists");
     Response res = await post(uri,
         headers: <String, String>{
@@ -258,5 +259,22 @@ class CommedAPI {
       return CreateEncounterDTO.fromJson(jsonDecode(res.body));
     }
     throw "unable to get or create the encounter";
+  }
+
+  Future<bool> attemptOfSign(int formalOfferId) async {
+    Uri uri = Uri.parse(URLHttp + "/offer/formaloffer/start-signature");
+    Response res = await post(uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'fo': formalOfferId
+      }),
+    );
+    print(res.statusCode);
+    if (res.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

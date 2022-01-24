@@ -26,5 +26,7 @@
     "no_formal_offers" : "There is no formal offers!",
     "no_chats" : "Ooops! You have not connected to any company!",
     "loginError": "Please, check if the field is correct",
-    "location": "Address"
+    "location": "Address",
+    "question_sign": "Would you like to sign the contract?",
+    "email_has_sent": "It has been sent an e-mail to your personal e-mail to sign."
 }
