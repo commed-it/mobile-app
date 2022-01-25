@@ -6,6 +6,7 @@ import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommedMessage {
   final bool isOther;
@@ -46,7 +47,15 @@ class FormalOfferMessage implements CommedMessage {
   final String name;
   final int formalOfferId;
 
-  FormalOfferMessage(this.isOther, this.version, this.PDFUrl, this.name, this.formalOfferId);
+  FormalOfferMessage(
+      this.isOther, this.version, this.PDFUrl, this.name, this.formalOfferId);
+
+  void _launchURL() async {
+    print(this.PDFUrl);
+    if (!await launch('https://cs.nju.edu.cn/wujx/paper/CNN.pdf',
+        headers: <String, String>{"Accept": "application/pdf"}))
+      throw 'Could not launch $this.PDFUrl';
+  }
 
   @override
   Widget buildWidget() {
@@ -57,13 +66,17 @@ class FormalOfferMessage implements CommedMessage {
           this.name,
           style: TextStyle(
             fontSize: 16,
-              color: isOther
-                  ? theme.primary.textColor
-                  : theme.background.textColor, ),
+            color:
+                isOther ? theme.primary.textColor : theme.background.textColor,
+          ),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Text(
-          AppLocalizations.of(ctx)!.formal_offer_version + ": " + version.toString(),
+          AppLocalizations.of(ctx)!.formal_offer_version +
+              ": " +
+              version.toString(),
           style: TextStyle(
               color: isOther
                   ? theme.primary.textColor
@@ -72,7 +85,7 @@ class FormalOfferMessage implements CommedMessage {
         Row(
           children: [
             buildButton(theme, AppLocalizations.of(ctx)!.download_pdf,
-                Icons.download, () {}),
+                Icons.download, _launchURL),
             const SizedBox(
               width: 20,
             ),
@@ -82,7 +95,8 @@ class FormalOfferMessage implements CommedMessage {
                   context: ctx,
                   builder: (ctx) => PopUpSign(
                         name: this.name,
-                    formalOfferId: this.formalOfferId,
+                        formalOfferId: this.formalOfferId,
+                        urlPDF: this.PDFUrl,
                       ));
             }),
           ],

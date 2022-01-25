@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_app/auth/actions.dart';
 import 'package:flutter_app/chat/conversation/model.dart';
 import 'package:flutter_app/chat/models.dart';
@@ -203,4 +204,9 @@ class SetProductList extends AppAction {
   final HashMap<int, Product> products;
 
   const SetProductList(this.products);
+}
+
+Future downloadFile(String PDFUrl) async {
+  Dio dio = Dio();
+
 }

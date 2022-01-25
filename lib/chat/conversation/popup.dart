@@ -4,14 +4,18 @@ import 'package:flutter_app/store/actions.dart';
 import 'package:flutter_app/store/store.dart';
 import 'package:flutter_app/store/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class PopUpSign extends StatelessWidget {
   final String name;
   final int formalOfferId;
+  final String urlPDF;
 
-  const PopUpSign({Key? key, required this.name, required this.formalOfferId})
+  const PopUpSign(
+      {Key? key,
+      required this.name,
+      required this.formalOfferId,
+      required this.urlPDF})
       : super(key: key);
 
   @override
@@ -64,9 +68,7 @@ class PopUpSign extends StatelessWidget {
                       ),
                       action: SnackBarAction(
                         label: 'OK',
-                        onPressed: () {
-
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   );
